@@ -1,0 +1,239 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
+import RectangleIcon from "@/assets/images/Ic_Rectangle.svg";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+// import { useNavigate } from "react-router-dom";
+import AutocompleteInput from "@/components/ui/inputLocation";
+import ButtonUx from "./common/button";
+import AutocompleteInputMultiple from "./ui/autoSelectMultiple";
+
+const experienceArray = [
+  { name: "Fresher (Less then 1 Year)" },
+  { name: "1 year" },
+  { name: "2 years" },
+  { name: "3 years" },
+  { name: "4 years" },
+  { name: "5 years" },
+  { name: "6 years" },
+  { name: "7 years" },
+];
+
+const formSchema = z.object({
+  // search: z
+  //   .string()
+  //   .min(1, {
+  //     message: "Username must be at least 1 character.",
+  //   })
+  //   .optional(),
+  search: z
+    .array(
+      z.string().min(1, {
+        message: "Each item must be at least 1 character.",
+      })
+    )
+    .optional(),
+  experience: z
+    .string()
+    .min(1, {
+      message: "Experience must be specified.",
+    })
+    .optional(),
+  city: z
+    .string()
+    .min(1, {
+      message: "City must be specified.",
+    })
+    .optional(),
+});
+
+const SearchJob: React.FC = () => {
+  // const navigate = useNavigate();
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    console.log(data);
+
+    // const queryParams: string[] = [];
+    // if (data.search !== undefined) {
+    //   const formattedSearch = data.search.trim().replace(/[\s,]+/g, "-");
+    //   queryParams.push(`search=${encodeURIComponent(formattedSearch)}`);
+    // }
+    // if (data.experience !== undefined) {
+    //   const formattedexperience = data.experience.trim().replace(/[\s,]+/g, "-");
+    //   queryParams.push(`experience=${encodeURIComponent(formattedexperience)}`);
+    // }
+    // if (data.city !== undefined) {
+    //   const formattedCity = data.city.trim().replace(/[\s,]+/g, "-");
+    //   queryParams.push(`city=${encodeURIComponent(formattedCity)}`);
+    // }
+
+    // if (queryParams.length > 0) {
+    //   const queryString = queryParams.join("&");
+    //   navigate(`/jobs?${queryString}`);
+    // }
+  };
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  useEffect(() => {
+    const element = document.querySelector(".nav-popup");
+    if (element) {
+      setTimeout(() => {
+        element.classList.add("open");
+      }, 100);
+    }
+  }, []);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  return (
+    <>
+      <div className="nav-popup relative z-50">
+        <div className="p-4 lg:p-5 laptop:py-7 laptop:px-8 bg-black2 border-2 border-black w-full z-50 relative flex">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col laptop:flex-row gap-3 w-full"
+            >
+              <div className="w-full laptop:w-[37%]">
+                <FormField
+                  control={form.control}
+                  name="search"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormControl>
+                        <AutocompleteInputMultiple
+                          value={field.value || selectedItems}
+                          onChange={(newItems) => {
+                            setSelectedItems(newItems);
+                            field.onChange(newItems);
+                          }}
+                          placeholder="Search for Skills, Companies"
+                          className="h-10 lg:h-12"
+                        />
+                      </FormControl>
+                      {fieldState.error && (
+                        <FormMessage>{fieldState.error.message}</FormMessage>
+                      )}
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-full laptop:w-[24%]">
+                <FormField
+                  control={form.control}
+                  name="experience"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select
+                          onValueChange={(value: any) => {
+                            field.onChange(value);
+                          }}
+                        >
+                          <SelectTrigger
+                            className={`h-10 lg:h-12 bg-white text-lg ${
+                              fieldState.error
+                                ? "border-red"
+                                : "border-gray6 hover:border-primary"
+                            } rounded-[8px]`}
+                          >
+                            <SelectValue placeholder="Select experience" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white">
+                            <SelectGroup>
+                              {experienceArray.map(
+                                (data: any, index: number) => (
+                                  <SelectItem key={index} value={data.name}>
+                                    {data.name}
+                                  </SelectItem>
+                                )
+                              )}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-full laptop:w-[24%]">
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormControl>
+                        <AutocompleteInput
+                          value={field.value || ""}
+                          onChange={(newValue) => field.onChange(newValue)}
+                          placeholder="Enter location"
+                          className="h-10 lg:h-12"
+                        />
+                      </FormControl>
+                      {fieldState.error && (
+                        <FormMessage>{fieldState.error.message}</FormMessage>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <label className="container text-white text-sm mt-2 mb-3">
+                  Remote Jobs Only
+                  <input type="checkbox" />
+                  <span className="checkmark"></span>
+                </label>
+              </div>
+              <div className="w-full md:w-[15%]">
+                <ButtonUx
+                  label="Find Jobs"
+                  buttonClassName="text-lg px-8 py-2 w-full h-10 lg:h-12 font-semibold text-primary bg-yellow border-primary rounded-[8px] hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2"
+                  type="submit"
+                />
+              </div>
+            </form>
+          </Form>
+        </div>
+        <img
+          src={RectangleIcon}
+          alt="Top left rectangle"
+          className="absolute top-[-6px] left-[-6px] z-40"
+        />
+        <img
+          src={RectangleIcon}
+          alt="Top right rectangle"
+          className="absolute top-[-6px] right-[-6px] z-40"
+        />
+        <img
+          src={RectangleIcon}
+          alt="Bottom left rectangle"
+          className="absolute bottom-[-6px] left-[-6px] z-40"
+        />
+        <img
+          src={RectangleIcon}
+          alt="Bottom right rectangle"
+          className="absolute bottom-[-6px] right-[-6px] z-40"
+        />
+      </div>
+    </>
+  );
+};
+
+export default SearchJob;

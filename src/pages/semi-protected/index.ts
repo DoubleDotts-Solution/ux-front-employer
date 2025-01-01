@@ -1,0 +1,14 @@
+export { LandingPage } from "./LandingPage";
+export { FindTalent } from "./FindTalent";
+export { FindTalentDetail } from "./FindTalentDetail";
+export { PostJob } from "./PostJob";
+export { Blogs } from "./Blogs";
+export { BlogsDetails } from "./BlogDetails";
+export { ContactUs } from "./ContactUs";
+export { Faqs } from "./Faqs";
+export { AboutUs } from "./AboutUs";
+export { PrivacyPolicy } from "./PrivacyPolicy";
+export { TermsCondition } from "./TermsCondition";
+export { PageNotFound } from "./PageNotFound";
+export { Profile } from "./Profile";
+export { SearchJobPage } from "./SearchJob";

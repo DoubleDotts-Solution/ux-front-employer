@@ -1,0 +1,52 @@
+import { createBrowserRouter } from "react-router-dom";
+import {
+  AboutUs,
+  Blogs,
+  BlogsDetails,
+  PostJob,
+  ContactUs,
+  Faqs,
+  ForgotPassword,
+  FindTalentDetail,
+  FindTalent,
+  Profile,
+  LandingPage,
+  Login,
+  PageNotFound,
+  PrivacyPolicy,
+  Register,
+  ResetPassword,
+  SearchJobPage,
+  TermsCondition,
+  VerifyOtp,
+} from "./pages";
+import { Layout } from "./layouts";
+
+export const routes = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { path: "", element: <LandingPage /> },
+      { path: "/find-talent", element: <FindTalent /> },
+      { path: "/post-job", element: <PostJob /> },
+      { path: "/edit-job/:id", element: <PostJob /> },
+      { path: "/blogs", element: <Blogs /> },
+      { path: "/contact-us", element: <ContactUs /> },
+      { path: "/faqs", element: <Faqs /> },
+      { path: "/about-us", element: <AboutUs /> },
+      { path: "/privacy-policy", element: <PrivacyPolicy /> },
+      { path: "/terms-condition", element: <TermsCondition /> },
+      { path: "*", element: <PageNotFound /> },
+      { path: "/blog-details/:id", element: <BlogsDetails /> },
+      { path: "/find-talent/:id", element: <FindTalentDetail /> },
+      { path: "login", element: <Login /> },
+      { path: "create-account", element: <Register /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "reset-password", element: <ResetPassword /> },
+      { path: "/profile", element: <Profile /> },
+      { path: "/verify-otp", element: <VerifyOtp /> },
+      { path: "/search-job", element: <SearchJobPage /> },
+    ],
+  },
+]);
