@@ -13,96 +13,39 @@ import Ic_saved_bookmark from "@/assets/images/Ic_saved_bookmark.svg";
 import Ic_file from "@/assets/images/Ic_file.svg";
 import Ic_candidate_call from "@/assets/images/Ic_candidate_call.svg";
 import Ic_candidate_mail from "@/assets/images/Ic_candidate_mail.svg";
+import { useSavedCandidateQuery } from "@/store/slice/apiSlice/profileApi";
+import Loading from "@/components/common/loading";
+import { useSelector } from "react-redux";
 
-const savedJobData = {
-  data: [
-    {
-      id: 8,
-      createdAt: "2024-10-25T05:15:16.840Z",
-      updatedAt: "2024-10-25T05:15:16.840Z",
-      jobs: {
-        id: 2,
-        position: "Ux writer",
-        job_experience: "5 year",
-        work_place_type: "hybrid",
-        location: "Surat, India",
-        description:
-          "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-        tags: "UI Designer",
-        minimum_pay: "100",
-        maximum_pay: "200",
-        apply_text: "send cover letter",
-        job_status: "activate",
-        is_approved: "approved",
-        createdAt: "2024-10-23T04:35:29.761Z",
-        updatedAt: "2024-10-23T12:47:53.244Z",
-        category: {
-          id: 5,
-          name: "UX Writer",
-          updatedAt: "2024-10-17T05:50:32.307Z",
-        },
-        job_type: {
-          id: 3,
-          name: "Contract",
-          updatedAt: "2024-10-17T05:55:36.181Z",
-        },
-        currency: {
-          id: 3,
-          name: "Dollar",
-          symbol: "$",
-          updatedAt: "2024-10-17T06:41:22.686Z",
-        },
-        pay_type: {
-          id: 2,
-          name: "UPI",
-          updatedAt: "2024-10-17T05:55:10.477Z",
-        },
-        apply_by: {
-          id: 3,
-          name: "Directly Submitting Resume",
-          updatedAt: "2024-10-17T05:57:09.342Z",
-        },
-      },
-      employer: {
-        id: 2,
-        company_name: "Doubledotts2",
-        logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-        website: "https://doubledotts.com/",
-        country: "Usa",
-        description:
-          "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-        updatedAt: "2024-10-23T04:33:40.340Z",
-      },
-    },
-  ],
-  pagination: {
-    totalCount: 1,
-    currentPage: 1,
-    limit: 5,
-    totalPages: 1,
-  },
-  status: 200,
-};
 const SavedCandidate: React.FC = () => {
+  const [searchJob, setSearchJob] = useState("");
   const [currentSavedJobDataPage, setCurrentSavedJobDataPage] = useState(1);
   const navigate = useNavigate();
-  const params = {
+  const params: any = {
     page: currentSavedJobDataPage,
     limit: 5,
-    value: "",
+    value: searchJob,
   };
-  const handleSavedJobPageChange = (page: number) => {
+  const handlePageChange = (page: number) => {
     setCurrentSavedJobDataPage(page);
   };
+  const userDetails = useSelector((state: any) => state.user)?.userDetails;
 
-  const savedJobDataArray = (savedJobData as any)?.data || [];
-  const [searchJob, setSearchJob] = useState("");
+  const { data, isLoading } = useSavedCandidateQuery({
+    data: params,
+    id: userDetails?.id,
+  });
+  const savedJobDataArray = (data as any)?.data || [];
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(null);
 
   const toggleDropdown = (index: any, e: any) => {
     e.stopPropagation();
     setIsDropdownOpen((prevIndex) => (prevIndex === index ? null : index));
   };
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <>
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center mb-3 md:mb-6 justify-between">
@@ -110,9 +53,9 @@ const SavedCandidate: React.FC = () => {
           Total Candidate:{" "}
           <span className="text-primary font-medium">
             {savedJobDataArray.length > 0
-              ? savedJobData?.pagination.totalCount > 9
-                ? savedJobData.pagination.totalCount
-                : `0${savedJobData.pagination.totalCount}`
+              ? (data as any)?.pagination.totalCount > 9
+                ? (data as any).pagination.totalCount
+                : `0${(data as any).pagination.totalCount}`
               : 0}
           </span>
         </p>
@@ -286,12 +229,13 @@ const SavedCandidate: React.FC = () => {
                 </div>
               ))}
           </div>
-          {savedJobData?.pagination.totalCount > params.limit ? (
-            <div className="flex justify-center mt-6 lg:mt-8">
+          {(data as any)?.pagination?.totalCount >
+          (data as any)?.pagination?.limit ? (
+            <div className="flex justify-center mt-7 lg:mt-9">
               <Pagination
-                currentPage={currentSavedJobDataPage}
-                totalPages={savedJobData?.pagination.totalPages}
-                onPageChange={handleSavedJobPageChange}
+                currentPage={(data as any)?.pagination.currentPage}
+                totalPages={(data as any)?.pagination.totalPages}
+                onPageChange={handlePageChange}
               />
             </div>
           ) : null}
@@ -304,7 +248,7 @@ const SavedCandidate: React.FC = () => {
               alt="image"
               className="img-fluid mb-[16px] lg:mb-[24px]"
             />
-            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px]">
+            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px] text-center">
               Start Curating Your Job Opportunities!
             </h4>
             <p className="text-gray mt-[8px] text-sm md:text-base desktop:text-lg text-center mb-[16px] lg:mb-[24px]">

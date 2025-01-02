@@ -13,7 +13,7 @@ export function useLoadingWithRefresh() {
     const controller = new AbortController();
 
     const fetchRefreshedData = async () => {
-      const refreshToken = localStorage.getItem("__ux_refresh_");
+      const refreshToken = localStorage.getItem("__ux_employer_refresh_");
 
       if (!refreshToken) {
         if (isMounted) setLoading(false);
@@ -22,7 +22,7 @@ export function useLoadingWithRefresh() {
 
       try {
         const response = await axios.post(
-          `${apiUrl}job-seeker/refresh-token`,
+          `${apiUrl}employer/refresh-token`,
           {
             refresh_token: refreshToken,
           },
@@ -37,8 +37,8 @@ export function useLoadingWithRefresh() {
         if (response.data.status) {
           const { tokens, user } = response.data.data;
 
-          sessionStorage.setItem("__ux_access_", tokens.accessToken);
-          localStorage.setItem("__ux_refresh_", tokens.refreshToken);
+          sessionStorage.setItem("__ux_employer_access_", tokens.accessToken);
+          localStorage.setItem("__ux_employer_refresh_", tokens.refreshToken);
           dispatch(
             setCredentials({
               access_token: tokens.accessToken,
@@ -51,9 +51,9 @@ export function useLoadingWithRefresh() {
         if (isMounted) setLoading(false);
       } catch (err) {
         console.error("Error refreshing token:", err);
-        localStorage.removeItem("__ux_refresh_");
-        sessionStorage.removeItem("__ux_access_");
-        window.location.href = "/login";
+        localStorage.removeItem("__ux_employer_refresh_");
+        sessionStorage.removeItem("__ux_employer_access_");
+        window.location.href = "/";
       }
     };
 

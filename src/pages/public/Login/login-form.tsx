@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,11 +11,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "react-hot-toast";
 import google from "@/assets/images/Img_login_google.svg";
 import Ic_valid from "@/assets/images/Ic_valid.png";
 import { Eye, EyeOff } from "lucide-react";
 import ButtonUx from "@/components/common/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import ApiUtils from "@/api/ApiUtils";
+import { setCredentials } from "@/store/slice/auth.slice";
+import { setUserDetails } from "@/store/slice/user.slice";
 
 const formSchema = z.object({
   email: z
@@ -41,8 +47,84 @@ const LoginForm: React.FC = () => {
     resolver: zodResolver(formSchema),
   });
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+
+  useEffect(() => {
+    const verifyEmail = async () => {
+      try {
+        const tokenResponse = await ApiUtils.verifyEmailWithTokenKey({
+          token: query.get("token") as string,
+          key: query.get("key") as string,
+        });
+
+        if (tokenResponse.status === 200) {
+          const { accessToken, refreshToken } = tokenResponse.data.message;
+          if (accessToken && refreshToken) {
+            sessionStorage.setItem("__ux_employer_access_", accessToken);
+            localStorage.setItem("__ux_employer_refresh_", refreshToken);
+          }
+
+          // navigate("/login");
+        }
+      } catch (error: any) {
+        toast.error(error.data.data.message || "Something went wrong!", {
+          position: "top-right",
+        });
+        console.error("Unexpected error:", error);
+      }
+    };
+    if (query.get("token") && query.get("key")) {
+      verifyEmail();
+    }
+  }, [query]);
+
+  const searchParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    try {
+      const response: any = await ApiUtils.authLogin(data);
+      if (response.data.accessToken) {
+        const { accessToken, refreshToken, user } = response.data;
+        dispatch(
+          setCredentials({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            user,
+          })
+        );
+        localStorage.setItem("employer_email", response.data.user.email);
+        if (searchParams.has("applied-job-post")) {
+          const appliedJobPostId = searchParams.get("applied-job-post");
+          navigate(`/job-details/${appliedJobPostId}`);
+        } else {
+          navigate("/");
+        }
+
+        const userDetails = await ApiUtils.getSingleUser(user.id);
+
+        dispatch(setUserDetails(userDetails?.data));
+        toast.success("Login successfully", { position: "top-right" });
+      } else {
+        toast.error(response.data.message || "Check Email or Password", {
+          position: "top-right",
+        });
+
+        console.error("API error:", response.error);
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, {
+        position: "top-right",
+      });
+
+      console.error("Validation error:", error);
+    }
   };
 
   return (

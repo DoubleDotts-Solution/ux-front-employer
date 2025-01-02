@@ -7,5 +7,5 @@ export const useAuth = () => {
 };
 
 export const useIsAuthenticated = () => {
-  return Boolean(sessionStorage.getItem("__ux_access_"));
+  return Boolean(sessionStorage.getItem("__ux_employer_access_"));
 };

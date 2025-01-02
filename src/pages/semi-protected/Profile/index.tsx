@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Ic_tab_profile from "@/assets/images/Ic_tab_profile.svg";
 import Ic_tab_job from "@/assets/images/Ic_tab_job.svg";
-import Ic_profile_saved_job from "@/assets/images/Ic_profile_saved_job.svg";
+// import Ic_profile_saved_job from "@/assets/images/Ic_profile_saved_job.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import EmployerProfileForm from "./employerProfileForm";
 import JobPosted from "./jobPosted";
 import JobPostedPerson from "./jobPostPerson";
-import SavedCandidate from "./savedCandidate";
-import CandidatePerson from "./candidatePerson";
+// import SavedCandidate from "./savedCandidate";
+// import CandidatePerson from "./candidatePerson";
 
 type Tab = {
   label: {
@@ -32,13 +32,13 @@ const tabs: Tab[] = [
       description: "Manage Posted Jobs",
     },
   },
-  {
-    label: {
-      icon: Ic_profile_saved_job,
-      heading: "Saved Candidates",
-      description: "Manage Saved Candidates",
-    },
-  },
+  // {
+  //   label: {
+  //     icon: Ic_profile_saved_job,
+  //     heading: "Saved Candidates",
+  //     description: "Manage Saved Candidates",
+  //   },
+  // },
 ];
 
 export const Profile: React.FC = () => {
@@ -56,12 +56,12 @@ export const Profile: React.FC = () => {
     if (searchParams.has("job-posted") || searchParams.get("person-id")) {
       setActiveTabIndex(1);
     }
-    if (
-      searchParams.has("saved-candidates") ||
-      searchParams.get("candidate-id")
-    ) {
-      setActiveTabIndex(2);
-    }
+    // if (
+    //   searchParams.has("saved-candidates") ||
+    //   searchParams.get("candidate-id")
+    // ) {
+    //   setActiveTabIndex(2);
+    // }
   }, [searchParams]);
 
   return (
@@ -124,7 +124,7 @@ export const Profile: React.FC = () => {
               )}
             </>
           )}
-          {activeTabIndex === 2 && (
+          {/* {activeTabIndex === 2 && (
             <>
               {searchParams.has("candidate-id") ? (
                 <CandidatePerson />
@@ -132,7 +132,7 @@ export const Profile: React.FC = () => {
                 <SavedCandidate />
               )}
             </>
-          )}
+          )} */}
         </div>
       </div>
     </div>

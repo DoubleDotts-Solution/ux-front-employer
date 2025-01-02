@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import ButtonUx from "@/components/common/button";
 import Img_hero_sec_img from "@/assets/images/Img_hero_sec_img.png";
@@ -5,7 +6,7 @@ import { Login } from "@/pages/public";
 import MadeInIndiaImg from "@/assets/images/Img_made_in_india.png";
 import { Link } from "react-router-dom";
 
-const MainSection: React.FC = () => {
+const MainSection: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
   return (
     <>
       <div className="bg-lightChiku2 py-[48px] md:py-[72px] big:py-[100px] relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] flex flex-col lg:flex-row gap-[40px] laptop:gap-[68px] sBig:gap-[200px]">
@@ -31,20 +32,36 @@ const MainSection: React.FC = () => {
               />
             </Link>
           </div>
+          {!isUserLogin && (
+            <img
+              src={Img_hero_sec_img}
+              alt="image"
+              className="mt-[36px] lg:mt-[44px] w-[226px]"
+            />
+          )}
+        </div>
+        {!isUserLogin ? (
+          <div className="w-full lg:w-[50%] desktop:w-[40%]">
+            <Login />
+          </div>
+        ) : (
+          <div className="w-full lg:w-[50%] desktop:w-[40%] flex justify-end">
+            <img src={Img_hero_sec_img} alt="image" className="" />
+          </div>
+        )}
+        {!isUserLogin ? (
           <img
-            src={Img_hero_sec_img}
-            alt="image"
-            className="mt-[36px] lg:mt-[44px] w-[226px]"
+            src={MadeInIndiaImg}
+            alt="Made in India"
+            className="made_in_india bottom-[32px] laptop:bottom-[132px] right-[16px] laptop:right-[24px] w-[56px] h-[56px] lg:w-[66px] laptop:w-auto lg:h-[66px] laptop:h-[80px] hidden md:block absolute"
           />
-        </div>
-        <div className="w-full lg:w-[50%] desktop:w-[40%]">
-          <Login />
-        </div>
-        <img
-          src={MadeInIndiaImg}
-          alt="Made in India"
-          className="made_in_india bottom-[32px] laptop:bottom-[132px] right-[16px] laptop:right-[24px] w-[56px] h-[56px] lg:w-[66px] laptop:w-auto lg:h-[66px] laptop:h-[80px] hidden md:block absolute"
-        />
+        ) : (
+          <img
+            src={MadeInIndiaImg}
+            alt="Made in India"
+            className="made_in_india bottom-[32px] laptop:bottom-[-132px] right-[16px] laptop:right-[24px] w-[56px] h-[56px] lg:w-[66px] laptop:w-auto lg:h-[66px] laptop:h-[80px] hidden md:block absolute"
+          />
+        )}
       </div>
     </>
   );

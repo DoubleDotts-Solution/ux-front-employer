@@ -31,11 +31,11 @@ export function formatTimeAgo(dateString: string | Date): string {
 }
 
 export function convertJobLocation(jobLocationString: string): string[] {
-  const locations = jobLocationString.split(",");
+  const locations = jobLocationString?.split(",");
   const jobLocationArray: string[] = [];
 
-  for (let i = 0; i < locations.length; i += 2) {
-    if (i + 1 < locations.length) {
+  for (let i = 0; i < locations?.length; i += 2) {
+    if (i + 1 < locations?.length) {
       jobLocationArray.push(
         `${locations[i].trim()}, ${locations[i + 1].trim()}`
       );
@@ -60,6 +60,28 @@ export function getJobWorkPlaceType(job: any) {
   } else if (job === "on-site") {
     status = "On-site";
     backgroundColor = "#DCF7E8";
+  } else {
+    status = job;
+    backgroundColor = "#FFFFFF";
+  }
+
+  return { status, backgroundColor };
+}
+export function getJobStatus(job: any) {
+  if (!job) return { status: "Unknown", backgroundColor: "#FFFFFF" };
+
+  let status = "";
+  let backgroundColor = "";
+
+  if (job === "close") {
+    status = "Closed";
+    backgroundColor = "#DCEDF7";
+  } else if (job === "activate") {
+    status = "Active";
+    backgroundColor = "#DCF7E8";
+  } else if (job === "deactivate") {
+    status = "Deactive";
+    backgroundColor = "#F7DCDC";
   } else {
     status = job;
     backgroundColor = "#FFFFFF";

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +13,11 @@ import {
 import { Input } from "../ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import ButtonUx from "../common/button";
+import { useUpdatePasswordApiMutation } from "@/store/slice/apiSlice/profileApi";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+import { clearCredentials } from "@/store/slice/auth.slice";
 
 const passwordFormSchema = z
   .object({
@@ -52,10 +58,43 @@ const ChangePassword: React.FC = () => {
   const passwordForm = useForm<z.infer<typeof passwordFormSchema>>({
     resolver: zodResolver(passwordFormSchema),
   });
+  const [handlePassword] = useUpdatePasswordApiMutation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onPasswordFormSubmit = async (
     data: z.infer<typeof passwordFormSchema>
   ) => {
-    console.log(data);
+    const formData = {
+      password: data.new_password,
+    };
+    try {
+      const response: any = await handlePassword({
+        data: formData,
+      });
+
+      if (response) {
+        toast.success("Submit successfully", { position: "top-right" });
+        // form.reset();
+
+        sessionStorage.removeItem("__ux_jobs_access_token__");
+        localStorage.removeItem("__ux_jobs_refresh_token__");
+        localStorage.removeItem("role");
+
+        dispatch(clearCredentials());
+
+        navigate("/");
+      } else {
+        console.error("API error:", response.error);
+        toast.error(response.error, {
+          position: "top-right",
+        });
+      }
+    } catch (error: any) {
+      console.error("Validation error:", error);
+      toast.error("Something Went Wrong!", {
+        position: "top-right",
+      });
+    }
   };
   return (
     <div className="lg:shadow-shadow2 rounded-[8px] relative">

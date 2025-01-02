@@ -7,8 +7,11 @@ interface RegisterParams {
   email: string;
   password: string;
   mobile_no: string;
-  location: string;
-  job_title: string;
+  company_name: string;
+  website: string;
+  logo: string | null;
+  description: string | null;
+  country: string | null;
 }
 interface LoginParams {
   email: string;
@@ -17,7 +20,7 @@ interface LoginParams {
 const ApiUtils = {
   authRegister: async function (value: RegisterParams) {
     try {
-      const response = await api.post(`${BASE_URL}job-seeker/register`, value);
+      const response = await api.post(`${BASE_URL}employer/register`, value);
       return response;
     } catch (error: any) {
       throw error.response;
@@ -36,7 +39,7 @@ const ApiUtils = {
   },
   authLogin: async function (value: LoginParams) {
     try {
-      const response = await api.post(`${BASE_URL}job-seeker/login`, value);
+      const response = await api.post(`${BASE_URL}employer/login`, value);
       return response;
     } catch (error: any) {
       throw error.response;
@@ -44,7 +47,7 @@ const ApiUtils = {
   },
   getSingleUser: async function (userId: string) {
     try {
-      const response = await api.get(`${BASE_URL}job-seeker/find/${userId}`);
+      const response = await api.get(`${BASE_URL}employer/find/${userId}`);
       return response.data;
     } catch (error: any) {
       throw error.response;
@@ -59,7 +62,23 @@ const ApiUtils = {
   }) {
     try {
       const response = await api.get(
-        `${BASE_URL}job-seeker/verify-email/${token}/${key}`
+        `${BASE_URL}employer/verify-email/${token}/${key}`
+      );
+      return response;
+    } catch (error: any) {
+      throw error.response;
+    }
+  },
+  changePasswordWithTokenKey: async function ({
+    token,
+    key,
+  }: {
+    token: string;
+    key: string;
+  }) {
+    try {
+      const response = await api.get(
+        `${BASE_URL}employer/change-password/${token}/${key}`
       );
       return response;
     } catch (error: any) {
@@ -75,7 +94,7 @@ const ApiUtils = {
   }) {
     try {
       const response = await api.get(
-        `${BASE_URL}job-seeker/change-password/${token}/${key}`
+        `${BASE_URL}employer/change-password/${token}/${key}`
       );
       return response;
     } catch (error: any) {
@@ -85,7 +104,7 @@ const ApiUtils = {
   forgotPassword: async function (data: { email: string }) {
     try {
       const response = await api.post(
-        `${BASE_URL}job-seeker/forgot-password`,
+        `${BASE_URL}employer/forgot-password`,
         data
       );
       return response;
@@ -96,7 +115,7 @@ const ApiUtils = {
   resetPassword: async function (data: any) {
     try {
       const response = await api.post(
-        `${BASE_URL}job-seeker/change-password`,
+        `${BASE_URL}employer/change-password`,
         data
       );
       return response;
@@ -106,10 +125,7 @@ const ApiUtils = {
   },
   authGoogleLogin: async function (data: any) {
     try {
-      const response = await api.post(
-        `${BASE_URL}job-seeker/google/login`,
-        data
-      );
+      const response = await api.post(`${BASE_URL}employer/google/login`, data);
       return response;
     } catch (error: any) {
       throw error.response;
@@ -118,7 +134,7 @@ const ApiUtils = {
   authGoogleResponse: async function (data: any) {
     try {
       const response = await api.post(
-        `${BASE_URL}job-seeker/google/response`,
+        `${BASE_URL}employer/google/response`,
         data
       );
       return response;

@@ -11,7 +11,6 @@ import {
   FindTalent,
   Profile,
   LandingPage,
-  Login,
   PageNotFound,
   PrivacyPolicy,
   Register,
@@ -21,6 +20,8 @@ import {
   VerifyOtp,
 } from "./pages";
 import { Layout } from "./layouts";
+import AuthLayout from "./layouts/authLayout";
+import UserLayout from "./layouts/userLayout";
 
 export const routes = createBrowserRouter([
   {
@@ -39,12 +40,34 @@ export const routes = createBrowserRouter([
       { path: "/terms-condition", element: <TermsCondition /> },
       { path: "*", element: <PageNotFound /> },
       { path: "/blog-details/:id", element: <BlogsDetails /> },
+      { path: "change-password", element: <ResetPassword /> },
       { path: "/find-talent/:id", element: <FindTalentDetail /> },
-      { path: "login", element: <Login /> },
-      { path: "create-account", element: <Register /> },
+      {
+        path: "create-account",
+        element: (
+          <UserLayout>
+            <Register />
+          </UserLayout>
+        ),
+      },
+      {
+        path: "verify-email",
+        element: (
+          <UserLayout>
+            <LandingPage />
+          </UserLayout>
+        ),
+      },
       { path: "forgot-password", element: <ForgotPassword /> },
       { path: "reset-password", element: <ResetPassword /> },
-      { path: "/profile", element: <Profile /> },
+      {
+        path: "/profile",
+        element: (
+          <AuthLayout>
+            <Profile />
+          </AuthLayout>
+        ),
+      },
       { path: "/verify-otp", element: <VerifyOtp /> },
       { path: "/search-job", element: <SearchJobPage /> },
     ],

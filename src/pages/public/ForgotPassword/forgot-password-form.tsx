@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +9,8 @@ import Ic_info from "@/assets/images/Ic_info.svg";
 import Ic_valid from "@/assets/images/Ic_valid.png";
 import Ic_close_black from "@/assets/images/Ic_close_black.svg";
 import ButtonUx from "@/components/common/button";
+import { toast } from "react-hot-toast";
+import ApiUtils from "@/api/ApiUtils";
 
 const formSchema = z.object({
   email: z
@@ -23,8 +26,26 @@ const ForgotPasswordForm: React.FC = () => {
   const [verifyMailBox, setVerifyMailBox] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    setVerifyMailBox(true);
+    // setVerifyMailBox(true);
+    try {
+      const response: any = await ApiUtils.forgotPassword(data);
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          position: "top-right",
+        });
+        setVerifyMailBox(true);
+      } else {
+        toast.error(response.error || "Please Enter Valid Email", {
+          position: "top-right",
+        });
+        console.error("Forgot Password error:", response.error);
+      }
+    } catch (error: any) {
+      toast.error("Something went wrong!", {
+        position: "top-right",
+      });
+      console.error("Unexpected error:", error);
+    }
   };
 
   return (

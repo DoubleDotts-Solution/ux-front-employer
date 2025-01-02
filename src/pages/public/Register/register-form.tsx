@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,12 +21,17 @@ import { InputMobile } from "@/components/ui/inputMobile";
 import { Link } from "react-router-dom";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
+import ApiUtils from "@/api/ApiUtils";
+import { setCredentials } from "@/store/slice/auth.slice";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "@/store/slice/user.slice";
+import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  website_link: z
+  website: z
     .string()
     .min(1, { message: "Website Link is required." })
     .url({ message: "Please enter a valid URL." }),
@@ -48,11 +54,16 @@ const formSchema = z.object({
     }),
   mobile_no: z
     .string()
-    .min(1, { message: "Website Link is required." })
-    .url({ message: "Please enter a valid URL." }),
+    .min(10, { message: "Please enter a valid phone number." })
+    .regex(/^\+?\d{1,4}?\s?\d{1,14}$/, {
+      message: "Please enter a valid phone number.",
+    }),
   company_name: z.string().min(2, {
     message: "Job Title must be at least 2 characters.",
   }),
+  logo: z.union([z.literal(null), z.string()]),
+  country: z.union([z.literal(null), z.string()]),
+  description: z.union([z.literal(null), z.string()]),
 });
 
 const RegisterForm: React.FC = () => {
@@ -61,11 +72,42 @@ const RegisterForm: React.FC = () => {
   });
   const [verifyMailBox, setVerifyMailBox] = useState(false);
   const [successfullyRegister, setSuccessfullyRegister] = useState(false);
+  const dispatch = useDispatch();
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     console.log(data);
-    setVerifyMailBox(true);
-    setSuccessfullyRegister(true);
+    // setSuccessfullyRegister(true);
+
+    try {
+      const response: any = await ApiUtils.authRegister(data);
+
+      if (response) {
+        const { accessToken, refreshToken, user } = response.data;
+        dispatch(
+          setCredentials({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            user,
+          })
+        );
+        localStorage.setItem("employer_email", response.data.user.email);
+        const userDetails = await ApiUtils.getSingleUser(user.id);
+
+        dispatch(setUserDetails(userDetails?.data));
+        setVerifyMailBox(true);
+        toast.success("Register successfully", { position: "top-right" });
+      } else {
+        toast.error(response.error || "Registration failed", {
+          position: "top-right",
+        });
+        console.error("API error:", response.error);
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, {
+        position: "top-right",
+      });
+      console.error("Validation error:", error);
+    }
   };
 
   const handleClose = () => {
@@ -201,7 +243,7 @@ const RegisterForm: React.FC = () => {
               <div>
                 <FormField
                   control={form.control}
-                  name="website_link"
+                  name="website"
                   render={({ field, fieldState }) => (
                     <FormItem>
                       <p
@@ -333,6 +375,27 @@ const RegisterForm: React.FC = () => {
                   privacy policy
                 </Link>
                 .
+              </div>
+              <div style={{ display: "none" }}>
+                <input
+                  type="text"
+                  value=""
+                  {...form.register("logo", { setValueAs: () => null })}
+                />
+              </div>
+              <div style={{ display: "none" }}>
+                <input
+                  type="text"
+                  value=""
+                  {...form.register("country", { setValueAs: () => null })}
+                />
+              </div>
+              <div style={{ display: "none" }}>
+                <input
+                  type="text"
+                  value=""
+                  {...form.register("description", { setValueAs: () => null })}
+                />
               </div>
             </div>
             <div className="mt-[24px] md:mt-[32px] md:flex md:justify-center w-full">

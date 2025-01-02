@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Link } from "react-router-dom";
 import ButtonUx from "@/components/common/button";
@@ -6,8 +7,12 @@ import Ic_profile_location from "@/assets/images/Ic_profile_location.svg";
 import Ic_profile_call from "@/assets/images/Ic_profile_call.svg";
 import Ic_profile_link from "@/assets/images/Ic_profile_link.svg";
 import Ic_profile_mail from "@/assets/images/Ic_profile_mail.svg";
+import { PHOTO_URL } from "@/config/constant";
 
-const ProfileData: React.FC<{ value: number }> = ({ value }) => {
+const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
+  value,
+  userDetails,
+}) => {
   return (
     <>
       <div className="rounded-[12px] p-3 desktop:p-6 bg-lightChiku2 flex flex-col gap-4 md:gap-5">
@@ -62,21 +67,31 @@ const ProfileData: React.FC<{ value: number }> = ({ value }) => {
         </div>
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="w-[80px] h-[80px] md:w-[130px] md:h-[130px] lg:w-[180px] lg:h-[180px] desktop:w-[206px] desktop:h-[206px] border-2 border-primary bg-[#D2EBFF] rounded-[8px] flex items-center justify-center text-primary font-semibold text-2xl md:text-3xl desktop:text-[48px]">
-            A
+            {userDetails?.logo ? (
+              <img
+                src={`${PHOTO_URL}/${userDetails?.logo}`}
+                alt="profile"
+                className="w-full h-full"
+              />
+            ) : (
+              userDetails && userDetails?.company_name.charAt(0).toUpperCase()
+            )}
           </div>
           <div className="flex flex-col gap-4 flex-1 w-full">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 w-full">
               <div className="flex flex-col gap-1">
                 <div className="flex gap-3 items-center">
                   <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
-                    Aviva
+                    {userDetails && userDetails?.company_name}
                   </h3>
                 </div>
                 <div className="text-sm md:text-base desktop:text-lg text-gray font-medium">
-                  Milan Shah
+                  {userDetails && userDetails?.name}
                 </div>
                 <p className="text-primary text-sm lg:text-base">
-                  Chief Executive Officer
+                  {userDetails && userDetails?.designation
+                    ? userDetails?.designation?.name
+                    : "-"}
                 </p>
               </div>
             </div>
@@ -86,24 +101,38 @@ const ProfileData: React.FC<{ value: number }> = ({ value }) => {
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_location} alt="location" />
                   <span className="text-sm text-gray">
-                    Bangalore, Karnataka
+                    {userDetails && userDetails?.country
+                      ? userDetails?.country
+                      : "-"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_link} alt="link" />
-                  <Link to={""} className="text-sm text-primary font-semibold">
+                  <a
+                    href={userDetails?.website}
+                    target="__blank"
+                    className="text-sm text-primary font-semibold cursor-pointer"
+                  >
                     Website
-                  </Link>
+                  </a>
                 </div>
               </div>
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_call} alt="call" />
-                  <span className="text-sm text-gray">+91 8988737722</span>
+                  <span className="text-sm text-gray">
+                    {userDetails && userDetails?.mobile_no
+                      ? userDetails?.mobile_no
+                      : "-"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_mail} alt="mail" />
-                  <span className="text-sm text-gray">johndoe@gmail.com</span>
+                  <span className="text-sm text-gray">
+                    {userDetails && userDetails?.email
+                      ? userDetails?.email
+                      : "-"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -114,15 +143,9 @@ const ProfileData: React.FC<{ value: number }> = ({ value }) => {
             About
           </h4>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            {userDetails && userDetails?.description
+              ? userDetails?.description
+              : "-"}
           </p>
         </div>
       </div>

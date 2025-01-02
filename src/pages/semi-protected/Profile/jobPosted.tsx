@@ -4,14 +4,10 @@ import Ic_location from "@/assets/images/Ic_location.svg";
 import Ic_experience from "@/assets/images/Ic_experience.svg";
 import Ic_time from "@/assets/images/Ic_time.svg";
 import Ic_rupee from "@/assets/images/Ic_rupee.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Ic_file from "@/assets/images/Ic_file.svg";
 import Img_profile_no_data from "@/assets/images/Img_profile_no_data.png";
-import {
-  convertJobLocation,
-  formatTimeAgo,
-  getJobWorkPlaceType,
-} from "@/lib/utils";
+import { convertJobLocation, formatTimeAgo, getJobStatus } from "@/lib/utils";
 import Ic_option from "@/assets/images/Ic_option.svg";
 import Ic_person from "@/assets/images/Ic_person.svg";
 import { Pagination } from "@/components/common/pagination";
@@ -38,353 +34,17 @@ import {
 import Modal from "@/components/common/modal";
 import Ic_briefcase from "@/assets/images/Ic_briefcase.svg";
 import Ic_layout_grid from "@/assets/images/Ic_layout_grid.svg";
-
-const jobPostedData = [
-  {
-    id: 3,
-    position: "UI Designer",
-    job_experience: "5 year",
-    work_place_type: "hybrid",
-    location: "Bangalore, India",
-    description:
-      "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, w</p>",
-    tags: "UI Designer",
-    minimum_pay: "100",
-    maximum_pay: "200",
-    apply_text: "send cover letter",
-    job_status: "activate",
-    is_approved: "approved",
-    createdAt: "2024-10-25T05:13:55.225Z",
-    updatedAt: "2024-10-25T05:14:11.531Z",
-    category: {
-      id: 4,
-      name: "UI Designer",
-      updatedAt: "2024-10-17T05:50:24.463Z",
-    },
-    job_type: {
-      id: 4,
-      name: "Freelancing",
-      updatedAt: "2024-10-17T05:55:41.647Z",
-    },
-    currency: {
-      id: 3,
-      name: "Dollar",
-      symbol: "$",
-      updatedAt: "2024-10-17T06:41:22.686Z",
-    },
-    employer: {
-      id: 2,
-      company_name: "Doubledotts2",
-      logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-      website: "https://doubledotts.com/",
-      country: "Usa",
-      description:
-        "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-      updatedAt: "2024-10-23T04:33:40.340Z",
-    },
-    pay_type: {
-      id: 2,
-      name: "UPI",
-      updatedAt: "2024-10-17T05:55:10.477Z",
-    },
-    apply_by: {
-      id: 3,
-      name: "Directly Submitting Resume",
-      updatedAt: "2024-10-17T05:57:09.342Z",
-    },
-  },
-  {
-    id: 2,
-    position: "Ux writer",
-    job_experience: "5 year",
-    work_place_type: "hybrid",
-    location: "Surat, India",
-    description:
-      "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-    tags: "UI Designer",
-    minimum_pay: "100",
-    maximum_pay: "200",
-    apply_text: "send cover letter",
-    job_status: "activate",
-    is_approved: "approved",
-    createdAt: "2024-10-23T04:35:29.761Z",
-    updatedAt: "2024-10-23T12:47:53.244Z",
-    category: {
-      id: 5,
-      name: "UX Writer",
-      updatedAt: "2024-10-17T05:50:32.307Z",
-    },
-    job_type: {
-      id: 3,
-      name: "Contract",
-      updatedAt: "2024-10-17T05:55:36.181Z",
-    },
-    currency: {
-      id: 3,
-      name: "Dollar",
-      symbol: "$",
-      updatedAt: "2024-10-17T06:41:22.686Z",
-    },
-    employer: {
-      id: 2,
-      company_name: "Doubledotts2",
-      logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-      website: "https://doubledotts.com/",
-      country: "Usa",
-      description:
-        "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-      updatedAt: "2024-10-23T04:33:40.340Z",
-    },
-    pay_type: {
-      id: 2,
-      name: "UPI",
-      updatedAt: "2024-10-17T05:55:10.477Z",
-    },
-    apply_by: {
-      id: 3,
-      name: "Directly Submitting Resume",
-      updatedAt: "2024-10-17T05:57:09.342Z",
-    },
-  },
-  {
-    id: 1,
-    position: "UI Designer",
-    job_experience: "3 year",
-    work_place_type: "on-site",
-    location: "Surat, India",
-    description:
-      "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.&nbsp;</p>",
-    tags: "UI Designer",
-    minimum_pay: "10000",
-    maximum_pay: "20000",
-    apply_text: "add resume ",
-    job_status: "activate",
-    is_approved: "approved",
-    createdAt: "2024-10-22T05:49:55.734Z",
-    updatedAt: "2024-10-23T12:47:49.353Z",
-    category: {
-      id: 4,
-      name: "UI Designer",
-      updatedAt: "2024-10-17T05:50:24.463Z",
-    },
-    job_type: {
-      id: 2,
-      name: "Full-time",
-      updatedAt: "2024-10-17T05:55:30.382Z",
-    },
-    currency: {
-      id: 1,
-      name: "ruppee",
-      symbol: "₹",
-      updatedAt: "2024-10-17T06:40:49.873Z",
-    },
-    employer: {
-      id: 2,
-      company_name: "Doubledotts2",
-      logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-      website: "https://doubledotts.com/",
-      country: "Usa",
-      description:
-        "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-      updatedAt: "2024-10-23T04:33:40.340Z",
-    },
-    pay_type: {
-      id: 1,
-      name: "Cash",
-      updatedAt: "2024-10-17T05:55:03.136Z",
-    },
-    apply_by: {
-      id: 3,
-      name: "Directly Submitting Resume",
-      updatedAt: "2024-10-17T05:57:09.342Z",
-    },
-  },
-];
-const AppliedJobData = {
-  data: [
-    {
-      id: 3,
-      createdAt: "2024-10-25T05:14:54.337Z",
-      updatedAt: "2024-10-25T05:14:54.337Z",
-      jobs: {
-        id: 3,
-        position: "UI Designer",
-        job_experience: "5 year",
-        work_place_type: "hybrid",
-        location: "Bangalore, India",
-        description:
-          "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, w</p>",
-        tags: "UI Designer",
-        minimum_pay: "100",
-        maximum_pay: "200",
-        apply_text: "send cover letter",
-        job_status: "activate",
-        is_approved: "approved",
-        createdAt: "2024-10-25T05:13:55.225Z",
-        updatedAt: "2024-10-25T05:14:11.531Z",
-        category: {
-          id: 4,
-          name: "UI Designer",
-          updatedAt: "2024-10-17T05:50:24.463Z",
-        },
-        job_type: {
-          id: 4,
-          name: "Freelancing",
-          updatedAt: "2024-10-17T05:55:41.647Z",
-        },
-        currency: {
-          id: 3,
-          name: "Dollar",
-          symbol: "$",
-          updatedAt: "2024-10-17T06:41:22.686Z",
-        },
-        pay_type: {
-          id: 2,
-          name: "UPI",
-          updatedAt: "2024-10-17T05:55:10.477Z",
-        },
-        apply_by: {
-          id: 3,
-          name: "Directly Submitting Resume",
-          updatedAt: "2024-10-17T05:57:09.342Z",
-        },
-        employer: {
-          id: 2,
-          company_name: "Doubledotts2",
-          logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-          website: "https://doubledotts.com/",
-          country: "Usa",
-          description:
-            "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-          updatedAt: "2024-10-23T04:33:40.340Z",
-        },
-      },
-    },
-    {
-      id: 2,
-      createdAt: "2024-10-23T04:45:57.159Z",
-      updatedAt: "2024-10-23T04:45:57.159Z",
-      jobs: {
-        id: 2,
-        position: "Ux writer",
-        job_experience: "5 year",
-        work_place_type: "hybrid",
-        location: "Surat, India",
-        description:
-          "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-        tags: "UI Designer",
-        minimum_pay: "100",
-        maximum_pay: "200",
-        apply_text: "send cover letter",
-        job_status: "activate",
-        is_approved: "approved",
-        createdAt: "2024-10-23T04:35:29.761Z",
-        updatedAt: "2024-10-23T12:47:53.244Z",
-        category: {
-          id: 5,
-          name: "UX Writer",
-          updatedAt: "2024-10-17T05:50:32.307Z",
-        },
-        job_type: {
-          id: 3,
-          name: "Contract",
-          updatedAt: "2024-10-17T05:55:36.181Z",
-        },
-        currency: {
-          id: 3,
-          name: "Dollar",
-          symbol: "$",
-          updatedAt: "2024-10-17T06:41:22.686Z",
-        },
-        pay_type: {
-          id: 2,
-          name: "UPI",
-          updatedAt: "2024-10-17T05:55:10.477Z",
-        },
-        apply_by: {
-          id: 3,
-          name: "Directly Submitting Resume",
-          updatedAt: "2024-10-17T05:57:09.342Z",
-        },
-        employer: {
-          id: 2,
-          company_name: "Doubledotts2",
-          logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-          website: "https://doubledotts.com/",
-          country: "Usa",
-          description:
-            "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-          updatedAt: "2024-10-23T04:33:40.340Z",
-        },
-      },
-    },
-    {
-      id: 1,
-      createdAt: "2024-10-22T06:09:51.080Z",
-      updatedAt: "2024-10-22T06:09:51.080Z",
-      jobs: {
-        id: 1,
-        position: "UI Designer",
-        job_experience: "3 year",
-        work_place_type: "on-site",
-        location: "Surat, India",
-        description:
-          "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.&nbsp;</p>",
-        tags: "UI Designer",
-        minimum_pay: "10000",
-        maximum_pay: "20000",
-        apply_text: "add resume ",
-        job_status: "activate",
-        is_approved: "approved",
-        createdAt: "2024-10-22T05:49:55.734Z",
-        updatedAt: "2024-10-23T12:47:49.353Z",
-        category: {
-          id: 4,
-          name: "UI Designer",
-          updatedAt: "2024-10-17T05:50:24.463Z",
-        },
-        job_type: {
-          id: 2,
-          name: "Full-time",
-          updatedAt: "2024-10-17T05:55:30.382Z",
-        },
-        currency: {
-          id: 1,
-          name: "ruppee",
-          symbol: "₹",
-          updatedAt: "2024-10-17T06:40:49.873Z",
-        },
-        pay_type: {
-          id: 1,
-          name: "Cash",
-          updatedAt: "2024-10-17T05:55:03.136Z",
-        },
-        apply_by: {
-          id: 3,
-          name: "Directly Submitting Resume",
-          updatedAt: "2024-10-17T05:57:09.342Z",
-        },
-        employer: {
-          id: 2,
-          company_name: "Doubledotts2",
-          logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-          website: "https://doubledotts.com/",
-          country: "Usa",
-          description:
-            "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-          updatedAt: "2024-10-23T04:33:40.340Z",
-        },
-      },
-    },
-  ],
-  pagination: {
-    totalCount: 3,
-    currentPage: 1,
-    limit: 5,
-    totalPages: 1,
-  },
-  status: 200,
-};
+import {
+  useDeleteJobMutation,
+  useJobChangeStatusMutation,
+  useJobPostedQuery,
+  useSingleJobDataMutation,
+} from "@/store/slice/apiSlice/profileApi";
+import { useSelector } from "react-redux";
+import Loading from "@/components/common/loading";
+import { PHOTO_URL } from "@/config/constant";
+import toast from "react-hot-toast";
+import { useCreateJobApiMutation } from "@/store/slice/apiSlice/jobsApi";
 
 const changeStatusFormSchema = z.object({
   job_status: z.string().min(1, {
@@ -393,11 +53,6 @@ const changeStatusFormSchema = z.object({
 });
 
 const JobPosted: React.FC = () => {
-  const params = {
-    page: 1,
-    limit: 5,
-    value: "",
-  };
   const [searchJob, setSearchJob] = useState("");
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(null);
@@ -407,14 +62,25 @@ const JobPosted: React.FC = () => {
     setIsDropdownOpen((prevIndex) => (prevIndex === index ? null : index));
   };
 
+  const navigate = useNavigate();
   // ----
-  const [currentAppliedJobDataPage, setCurrentAppliedJobDataPage] = useState(1);
+  const [jobPostedPage, setJobPostedPage] = useState(1);
 
   const handleAppliedJobPageChange = (page: number) => {
-    setCurrentAppliedJobDataPage(page);
+    setJobPostedPage(page);
   };
+  const params: any = {
+    page: jobPostedPage,
+    limit: 5,
+    value: searchJob,
+  };
+  const userDetails = useSelector((state: any) => state.user)?.userDetails;
 
-  const AppliedJobDataArray = (AppliedJobData as any)?.data || [];
+  const { data, isLoading, refetch } = useJobPostedQuery({
+    data: params,
+    id: userDetails?.id,
+  });
+  const AppliedJobDataArray = (data as any)?.data || [];
 
   const [isChangeJobPost, setIsChangeJobPost] = useState(null);
 
@@ -425,7 +91,7 @@ const JobPosted: React.FC = () => {
   const [isConfirmDelete, setIsConfirmDelete] = useState(null);
 
   const body = document.querySelector("body");
-  const onDelete = async (id: any) => {
+  const onDelete = async (id?: any) => {
     setIsChangeJobPost(null);
     if (isConfirmDelete) {
       setTimeout(() => {
@@ -459,13 +125,36 @@ const JobPosted: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const [deleteJob] = useDeleteJobMutation();
 
   const deleteJobPost = async (id: any) => {
-    console.log(id);
+    try {
+      const response: any = await deleteJob({
+        id: id,
+      });
+
+      if (response && response.data.status === 200) {
+        toast.success(response.data.message, {
+          position: "top-right",
+        });
+        onDelete();
+        refetch();
+      } else {
+        toast.error(response.error.data.message, {
+          position: "top-right",
+        });
+        console.error("API error:", response.error);
+      }
+    } catch (error: any) {
+      console.error("Validation error:", error);
+      toast.error(error.error.message, {
+        position: "top-right",
+      });
+    }
   };
 
   const [isChangeStatus, setIsChangeStatus] = useState(null);
-  const onChangeStatus = async (id: any) => {
+  const onChangeStatus = async (id?: any) => {
     setIsChangeJobPost(null);
     if (isChangeStatus) {
       setTimeout(() => {
@@ -483,15 +172,42 @@ const JobPosted: React.FC = () => {
   const changeStatusForm = useForm<z.infer<typeof changeStatusFormSchema>>({
     resolver: zodResolver(changeStatusFormSchema),
   });
+  const [handleJobStatus] = useJobChangeStatusMutation();
 
   const onChangeStatusSubmit = async (data: any) => {
-    console.log(data);
+    try {
+      const response: any = await handleJobStatus({
+        id: Number(isChangeStatus),
+        data: data,
+      });
+
+      if (response && response.data.status === 200) {
+        toast.success(response.data.message, {
+          position: "top-right",
+        });
+        changeStatusForm.reset();
+        onChangeStatus();
+        refetch();
+      } else {
+        toast.error(response.error.data.message, {
+          position: "top-right",
+        });
+        console.error("API error:", response.error);
+      }
+    } catch (error: any) {
+      console.error("Validation error:", error);
+      toast.error(error.error.message, {
+        position: "top-right",
+      });
+    }
   };
   const [isJobPreviewPopupVisible, setJobPreviewPopupVisible] = useState(null);
-
-  const openJobPreviewPopup = (id: any) => {
+  const [jobPostedData, setJobPostedData] = useState<any>(null);
+  const [singleJobData] = useSingleJobDataMutation();
+  const openJobPreviewPopup = async (id: any) => {
     if (isJobPreviewPopupVisible) {
       setTimeout(() => {
+        navigate("/profile");
         setJobPreviewPopupVisible(null);
         setIsChangeJobPost(null);
       }, 300);
@@ -499,11 +215,86 @@ const JobPosted: React.FC = () => {
       body?.classList.remove("h-screen");
     } else {
       setJobPreviewPopupVisible(id);
+
+      try {
+        const response: any = await singleJobData({ id: id });
+
+        if (response && response.data.status === 200) {
+          setJobPostedData(response.data.data);
+        } else {
+          toast.error(response.error.data.message, {
+            position: "top-right",
+          });
+          console.error("API error:", response.error);
+        }
+      } catch (error: any) {
+        console.error("Validation error:", error);
+        toast.error(error.error.message, {
+          position: "top-right",
+        });
+      }
+      navigate(`${location.pathname}?view-live`);
       body?.classList.add("overflow-hidden");
       body?.classList.add("h-screen");
     }
   };
 
+  const [createJob] = useCreateJobApiMutation();
+
+  const handleDuplicateJob = async (jobId: number) => {
+    const jobToDuplicate = AppliedJobDataArray.find(
+      (job: any) => job.id === jobId
+    );
+    if (!jobToDuplicate) {
+      return;
+    }
+    const skillsIds = jobToDuplicate?.skills
+      ?.map((skill: any) => skill.id)
+      .join(",");
+
+    const duplicatedJob = {
+      // id: null,
+      employer: userDetails?.id,
+      job_title: jobToDuplicate?.job_title,
+      category: jobToDuplicate?.category?.id,
+      job_type: jobToDuplicate?.job_type?.id,
+      currency: jobToDuplicate?.currency?.id,
+      job_experience: jobToDuplicate?.job_experience,
+      location: jobToDuplicate?.location,
+      work_place_type: jobToDuplicate?.work_place_type,
+      skills: skillsIds,
+      description: jobToDuplicate?.description,
+      tags: jobToDuplicate?.tags,
+      minimum_pay: Number(jobToDuplicate?.minimum_pay),
+      maximum_pay: Number(jobToDuplicate?.maximum_pay),
+      pay_type: jobToDuplicate?.pay_type?.id,
+      apply_by: jobToDuplicate?.apply_by?.id,
+      apply_text: jobToDuplicate?.currency,
+    };
+
+    try {
+      const response: any = await createJob({
+        data: duplicatedJob,
+      });
+
+      if (response.data.status === 200) {
+        refetch();
+        toast.success("Job duplicated successfully", {
+          position: "top-right",
+        });
+      } else {
+        toast.error(response.error.data.message, {
+          position: "top-right",
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  if (isLoading) {
+    <Loading />;
+  }
   return (
     <>
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center mb-3 md:mb-6 justify-between">
@@ -511,9 +302,9 @@ const JobPosted: React.FC = () => {
           Total Job Posted:{" "}
           <span className="text-primary font-medium">
             {AppliedJobDataArray.length > 0
-              ? AppliedJobData?.pagination.totalCount > 9
-                ? AppliedJobData.pagination.totalCount
-                : `0${AppliedJobData.pagination.totalCount}`
+              ? (data as any)?.pagination.totalCount > 9
+                ? (data as any).pagination.totalCount
+                : `0${(data as any).pagination.totalCount}`
               : 0}
           </span>
         </p>
@@ -536,15 +327,15 @@ const JobPosted: React.FC = () => {
           <div className="flex flex-col gap-5">
             {AppliedJobDataArray.map((job: any, index: any) => (
               <div
-                key={job?.jobs?.id}
+                key={job?.id}
                 className="border-2 border-primary rounded-[12px] md:rounded-2xl p-4 lg:p-5 desktop:p-6 flex flex-col gap-5 hover:shadow-shadow1"
               >
                 <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
                   <div className="flex items-center gap-2 md:gap-3 lg:gap-4 desktop:gap-5">
-                    {(job?.employer?.logo || job?.jobs?.employer?.logo) && (
+                    {(userDetails?.logo || userDetails?.logo) && (
                       <img
-                        src={`https://uxjobsite.com/public/${
-                          job?.employer?.logo || job?.jobs?.employer?.logo
+                        src={`${PHOTO_URL}/${
+                          userDetails?.logo || userDetails?.logo
                         }`}
                         alt="icon"
                         className="w-[55px] desktop:w-[80px] h-[55px] desktop:h-[80px] border border-gray5 rounded-[8px]"
@@ -552,44 +343,38 @@ const JobPosted: React.FC = () => {
                     )}
                     <div className="flex flex-col gap-2">
                       <h4 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
-                        {job?.jobs?.position}
+                        {job?.job_title}
                         <span
                           className={`font-normal text-sm md:text-base desktop:text-lg border border-primary rounded-lg px-4 py-0.5`}
                           style={{
-                            background: getJobWorkPlaceType(
-                              job.work_place_type ||
-                                (job && job.jobs && job?.jobs?.work_place_type)
+                            background: getJobStatus(
+                              job.job_status ||
+                                (job && job.jobs && job?.job_status)
                             ).backgroundColor,
                           }}
                         >
                           {
-                            getJobWorkPlaceType(
-                              job.work_place_type ||
-                                (job && job.jobs && job?.jobs?.work_place_type)
+                            getJobStatus(
+                              job.job_status ||
+                                (job && job.jobs && job?.job_status)
                             ).status
                           }{" "}
                         </span>
                       </h4>
                     </div>
                   </div>
-                  {/* <p className="text-base lg:text-lg text-gray">
-                    Applied on:{" "}
-                    <span className="text-primary font-medium">
-                      {formatTimeAgo(job.createdAt)}
-                    </span>
-                  </p> */}
                   <div className="flex items-center gap-3">
                     <p className="text-base lg:text-lg text-primary">
-                      {formatTimeAgo(job.createdAt)}
+                      {formatTimeAgo(job.updatedAt)}
                     </p>
                     <div className="bg-[#EFECE5] h-[8px] w-[8px] rounded-full"></div>
                     <Link
-                      to={"/profile?job-posted&&person-id=12"}
+                      to={`/profile?job-posted&&person-id=${job?.id}`}
                       className="flex items-center gap-1 cursor-pointer"
                     >
                       <img src={Ic_person} alt="person" />
                       <span className="text-primary font-semibold text-base lg:text-lg">
-                        {job.appliedJobsCount}23
+                        {job.appliedJobsCount}
                       </span>
                     </Link>
                   </div>
@@ -603,10 +388,10 @@ const JobPosted: React.FC = () => {
                         className="w-[20px] h-[20px] md:w-auto md:h-auto"
                       />
                       <span className="text-gray text-sm md:text-base desktop:text-xl relative">
-                        {convertJobLocation(job?.jobs.location)[0]}
+                        {convertJobLocation(job?.location)[0]}
                         &nbsp;
-                        {convertJobLocation(job?.jobs.location).slice(1)
-                          .length > 0 && (
+                        {convertJobLocation(job?.location).slice(1).length >
+                          0 && (
                           <span
                             className="text-primary underline font-semibold cursor-pointer"
                             onClick={(e) => {
@@ -614,16 +399,12 @@ const JobPosted: React.FC = () => {
                               toggleDropdown(index, e);
                             }}
                           >
-                            +
-                            {
-                              convertJobLocation(job?.jobs.location).slice(1)
-                                .length
-                            }
+                            +{convertJobLocation(job?.location).slice(1).length}
                           </span>
                         )}
                         {isDropdownOpen === index && (
                           <div className="location-dropdown absolute">
-                            {convertJobLocation(job?.jobs.location)
+                            {convertJobLocation(job?.location)
                               .slice(1)
                               .map((location, index) => (
                                 <div key={index} className="dropdown-item">
@@ -642,7 +423,7 @@ const JobPosted: React.FC = () => {
                         className="w-[20px] h-[20px] md:w-auto md:h-auto"
                       />
                       <span className="text-gray text-sm md:text-base desktop:text-xl">
-                        {job?.jobs?.job_experience}
+                        {job?.job_experience}
                       </span>
                     </div>
                     <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
@@ -653,7 +434,7 @@ const JobPosted: React.FC = () => {
                         className="w-[20px] h-[20px] md:w-auto md:h-auto"
                       />
                       <span className="text-gray text-sm md:text-base desktop:text-xl">
-                        {job?.jobs?.job_type.name}
+                        {job?.job_type.name}
                       </span>
                     </div>
                     <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
@@ -664,7 +445,15 @@ const JobPosted: React.FC = () => {
                         className="w-[20px] h-[20px] md:w-auto md:h-auto"
                       />
                       <span className="text-gray text-sm md:text-base desktop:text-xl">
-                        {`${job.jobs?.currency?.symbol} ${job.jobs?.minimum_pay} - ${job.jobs?.currency?.symbol} ${job.jobs?.maximum_pay}`}
+                        {`${
+                          job.currency?.symbol ||
+                          job.jobs?.currency?.symbol ||
+                          ""
+                        } ${job.minimum_pay || job.jobs?.minimum_pay || ""} - ${
+                          job.currency?.symbol ||
+                          job.jobs?.currency?.symbol ||
+                          ""
+                        } ${job.maximum_pay || job.jobs?.maximum_pay || ""}`}
                       </span>
                     </div>
                   </div>
@@ -675,7 +464,7 @@ const JobPosted: React.FC = () => {
                     dangerouslySetInnerHTML={{
                       __html:
                         job.description ||
-                        (job && job.jobs && job?.jobs?.description),
+                        (job && job.jobs && job?.description),
                     }}
                     className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
                   />
@@ -685,8 +474,7 @@ const JobPosted: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-3 md:gap-4 desktop:gap-5">
                     <JobTagsDisplay
                       tags={
-                        job.tags?.split(",") ||
-                        (job && job.jobs && job?.jobs?.tags?.split(","))
+                        job.skills || (job && job.jobs && job?.jobs?.skills)
                       }
                     />
                   </div>
@@ -710,7 +498,7 @@ const JobPosted: React.FC = () => {
                         </Link>
                         <li
                           className="whitespace-nowrap flex gap-3 items-center rounded-[8px] text-primary px-3 py-2 hover:bg-[#EFECE5] cursor-pointer"
-                          // onClick={() => openJobPreviewPopup(job.id)}
+                          onClick={() => handleDuplicateJob(job.id)}
                         >
                           <img src={Ic_copy} alt="eye" />
                           Duplicate
@@ -743,11 +531,11 @@ const JobPosted: React.FC = () => {
               </div>
             ))}
           </div>
-          {AppliedJobData?.pagination.totalCount > params.limit ? (
+          {(data as any)?.pagination.totalCount > params.limit ? (
             <div className="flex justify-center mt-6 lg:mt-8">
               <Pagination
-                currentPage={currentAppliedJobDataPage}
-                totalPages={AppliedJobData?.pagination.totalPages}
+                currentPage={(data as any)?.pagination.currentPage}
+                totalPages={(data as any)?.pagination.totalPages}
                 onPageChange={handleAppliedJobPageChange}
               />
             </div>
@@ -761,7 +549,7 @@ const JobPosted: React.FC = () => {
               alt="image"
               className="img-fluid mb-[16px] lg:mb-[24px]"
             />
-            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px]">
+            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px] text-center">
               Start Showcasing your Opportunities!
             </h4>
             <p className="text-gray mt-[8px] text-sm md:text-base desktop:text-lg text-center mb-[16px] lg:mb-[24px]">
@@ -833,46 +621,49 @@ const JobPosted: React.FC = () => {
                     <FormItem>
                       <FormControl>
                         <div className="flex flex-col gap-[12px]">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="radio"
+                              className="cursor-pointer"
                               id="job_status1"
                               {...field}
                               value="activate"
                               checked={field.value === "activate"}
                             />
                             <label
-                              className="text-primary text-sm md:text-base desktop:text-xl"
+                              className="text-primary text-sm md:text-base desktop:text-xl cursor-pointer"
                               htmlFor="job_status1"
                             >
                               Activate
                             </label>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="radio"
+                              className="cursor-pointer"
                               id="job_status2"
                               {...field}
                               value="deactivate"
                               checked={field.value === "deactivate"}
                             />
                             <label
-                              className="text-primary text-sm md:text-base desktop:text-xl"
+                              className="text-primary text-sm md:text-base desktop:text-xl cursor-pointer"
                               htmlFor="job_status2"
                             >
                               Deactivate
                             </label>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="radio"
+                              className="cursor-pointer"
                               id="job_status3"
                               {...field}
                               value="close"
                               checked={field.value === "close"}
                             />
                             <label
-                              className="text-primary text-sm md:text-base desktop:text-xl"
+                              className="text-primary text-sm md:text-base desktop:text-xl cursor-pointer"
                               htmlFor="job_status3"
                             >
                               Close
@@ -921,122 +712,122 @@ const JobPosted: React.FC = () => {
             <img
               src={Ic_close}
               alt="close"
-              className="absolute top-[16px] md:top-[24px] right-[16px] md:right-[24px]"
+              className="absolute top-[16px] md:top-[24px] right-[16px] md:right-[24px] cursor-pointer"
               onClick={openJobPreviewPopup}
             />
             <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-6 px-4 md:px-6 desktop:px-8">
               Job Post Preview
             </h4>
-
-            {jobPostedData.map(
-              (job: any, index: any) =>
-                job.id === isJobPreviewPopupVisible && (
-                  <div key={index}>
-                    <div className="bg-lightChiku p-3 lg:p-5 desktop:p-6 flex flex-col gap-4 mb-10">
-                      <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
-                        <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
-                          <div className="flex flex-col gap-1">
-                            <div className="text-gray text-sm md:text-lg font-medium">
-                              Perry Street Software
-                            </div>
-                            <h2 className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
-                              {job?.position}
-                            </h2>
-                          </div>
+            {jobPostedData && jobPostedData && (
+              <div>
+                <div className="bg-lightChiku p-3 lg:p-5 desktop:p-6 flex flex-col gap-4 mb-10">
+                  <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
+                    <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
+                      <div className="flex flex-col gap-1">
+                        <div className="text-gray text-sm md:text-lg font-medium">
+                          {jobPostedData?.employer?.company_name}
                         </div>
-                        <p className="text-base lg:text-lg text-gray">
-                          {formatTimeAgo(job?.updatedAt)}
-                        </p>
-                      </div>
-                      <div className="flex flex-wrap gap-2 lg:gap-4 desktop:gap-5 items-center">
-                        <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
-                          <img
-                            src={Ic_layout_grid}
-                            alt="icon"
-                            className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                          />
-                          {job?.position}
-                        </span>
-                        <div className="border-l border-gray5 h-[18px]"></div>
-                        <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                          <img
-                            src={Ic_location}
-                            alt="location"
-                            className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                          />
-                          <span className="text-gray text-sm md:text-base desktop:text-xl relative">
-                            {job?.location}
-                          </span>
-                        </div>
-                        <div className="border-l border-gray5 h-[18px]"></div>
-                        <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                          <img
-                            src={Ic_experience}
-                            alt="experience"
-                            className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                          />
-                          <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
-                            {job?.job_experience}
-                          </span>
-                        </div>
-                        <div className="border-l border-gray5 h-[18px]"></div>
-                        <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                          <img
-                            src={Ic_time}
-                            alt="time"
-                            className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                          />
-                          <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
-                            {job?.job_type?.name}
-                          </span>
-                        </div>
-                        <div className="border-l border-gray5 h-[18px]"></div>
-                        <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                          <img
-                            src={Ic_rupee}
-                            alt="rupee"
-                            className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                          />
-                          <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
-                            {`${job?.currency?.symbol} ${job?.minimum_pay} - ${job?.currency?.symbol} ${job?.maximum_pay}`}
-                          </span>
-                        </div>
-                        <div className="border-l border-gray5 h-[18px]"></div>
-                        <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
-                          <img
-                            src={Ic_briefcase}
-                            alt="briefcase"
-                            className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                          />
-                          {job?.work_place_type}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3 mb-4 md:mb-6">
-                        <span className="text-primary text-sm lg:text-base">
-                          Skills:
-                        </span>
-                        <JobTagsDisplay tags={job.tags.split(",")} />
+                        <h2 className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
+                          {jobPostedData?.job_title}
+                        </h2>
                       </div>
                     </div>
-
-                    <div
-                      style={{
-                        maxHeight: "calc(100vh - 600px)",
-                        overflowY: "auto",
-                      }}
-                      className="overFlowYAuto px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8"
-                    >
-                      <h4 className="mb-3 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
-                        Job Description
-                      </h4>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: job.description,
-                        }}
-                      />
-                    </div>
+                    <p className="text-base lg:text-lg text-gray">
+                      {formatTimeAgo(jobPostedData?.updatedAt)}
+                    </p>
                   </div>
-                )
+                  <div className="flex flex-wrap gap-2 lg:gap-4 desktop:gap-5 items-center">
+                    <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
+                      <img
+                        src={Ic_layout_grid}
+                        alt="icon"
+                        className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                      />
+                      {jobPostedData?.category?.name}
+                    </span>
+                    <div className="border-l border-gray5 h-[18px]"></div>
+                    <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                      <img
+                        src={Ic_location}
+                        alt="location"
+                        className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                      />
+                      <span className="text-primary text-sm md:text-base desktop:text-xl relative">
+                        {jobPostedData?.location}
+                      </span>
+                    </div>
+                    <div className="border-l border-gray5 h-[18px]"></div>
+                    <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                      <img
+                        src={Ic_experience}
+                        alt="experience"
+                        className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                      />
+                      <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
+                        {jobPostedData?.job_experience}
+                      </span>
+                    </div>
+                    <div className="border-l border-gray5 h-[18px]"></div>
+                    <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                      <img
+                        src={Ic_time}
+                        alt="time"
+                        className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                      />
+                      <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
+                        {jobPostedData?.job_type?.name}
+                      </span>
+                    </div>
+                    <div className="border-l border-gray5 h-[18px]"></div>
+                    <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                      <img
+                        src={Ic_rupee}
+                        alt="rupee"
+                        className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                      />
+                      <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
+                        {`${jobPostedData?.currency?.symbol || ""} ${
+                          jobPostedData?.minimum_pay || ""
+                        } - ${jobPostedData?.currency?.symbol || ""} ${
+                          jobPostedData?.maximum_pay || ""
+                        }`}{" "}
+                      </span>
+                    </div>
+                    <div className="border-l border-gray5 h-[18px]"></div>
+                    <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
+                      <img
+                        src={Ic_briefcase}
+                        alt="briefcase"
+                        className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                      />
+                      {jobPostedData?.work_place_type}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 mb-4 md:mb-6">
+                    <span className="text-primary text-sm lg:text-base">
+                      Skills:
+                    </span>
+                    <JobTagsDisplay tags={jobPostedData?.skills} />
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    maxHeight: "calc(100vh - 600px)",
+                    overflowY: "auto",
+                  }}
+                  className="overFlowYAuto px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8"
+                >
+                  <h4 className="mb-4 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
+                    Job Description
+                  </h4>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: jobPostedData?.description,
+                    }}
+                  />
+                </div>
+              </div>
             )}
           </div>
         </div>

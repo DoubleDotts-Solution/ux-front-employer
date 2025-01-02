@@ -8,8 +8,8 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  access_token: sessionStorage.getItem("__ux_access_") || null,
-  refresh_token: localStorage.getItem("__ux_refresh_") || null,
+  access_token: sessionStorage.getItem("__ux_employer_access_") || null,
+  refresh_token: localStorage.getItem("__ux_employer_refresh_") || null,
   user: null,
 };
 
@@ -24,8 +24,8 @@ export const authSlice = createSlice({
       state.user = user;
 
       if (access_token && refresh_token) {
-        sessionStorage.setItem("__ux_access_", access_token);
-        localStorage.setItem("__ux_refresh_", refresh_token);
+        sessionStorage.setItem("__ux_employer_access_", access_token);
+        localStorage.setItem("__ux_employer_refresh_", refresh_token);
       }
     },
     clearCredentials: (state) => {
@@ -33,8 +33,8 @@ export const authSlice = createSlice({
       state.refresh_token = null;
       state.user = null;
 
-      sessionStorage.removeItem("__ux_access_");
-      localStorage.removeItem("__ux_refresh_");
+      sessionStorage.removeItem("__ux_employer_access_");
+      localStorage.removeItem("__ux_employer_refresh_");
     },
   },
 });

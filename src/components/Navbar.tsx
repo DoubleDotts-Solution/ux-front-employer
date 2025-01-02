@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import HandIcon from "@/assets/images/handLogo.png";
@@ -12,6 +13,10 @@ import Ic_search from "@/assets/images/Ic_search.svg";
 import Img_cancel from "@/assets/images/Img_cancel.png";
 import SearchJob from "./searchJob";
 import Modal from "./common/modal";
+import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { PHOTO_URL } from "@/config/constant";
+import { clearCredentials } from "@/store/slice/auth.slice";
 
 export const Navbar: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -23,6 +28,18 @@ export const Navbar: React.FC = () => {
   const currentPath = location.pathname;
 
   const [hasShadow, setHasShadow] = useState(false);
+  const dispatch = useDispatch();
+  const [isUserLogin, setIsUserLogin] = useState(false);
+  const userDetails = useSelector((state: any) => state.user)?.userDetails;
+  const AccessToken = sessionStorage.getItem("__ux_employer_access_");
+
+  useEffect(() => {
+    if (userDetails?.verifyEmail === "yes" && AccessToken) {
+      setIsUserLogin(true);
+    } else {
+      setIsUserLogin(false);
+    }
+  }, [userDetails, AccessToken]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,12 +107,22 @@ export const Navbar: React.FC = () => {
       body?.classList.remove("overflow-hidden");
       body?.classList.remove("h-screen");
     } else {
+      navigate(`${location.pathname}?logout`);
       setIsConfirmLogout(true);
       body?.classList.add("overflow-hidden");
       body?.classList.add("h-screen");
     }
   };
+  const logout = () => {
+    localStorage.removeItem("employer_email");
+    localStorage.removeItem("userDetails_employer");
 
+    dispatch(clearCredentials());
+    onLogout();
+    toast.success("Logged out successfully", { position: "top-right" });
+
+    navigate("/");
+  };
   return (
     <div
       className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] py-2 sticky top-0 bg-white w-full"
@@ -105,7 +132,12 @@ export const Navbar: React.FC = () => {
       }}
     >
       <div className="flex items-center justify-between relative">
-        <div className="gap-[12px] flex items-center laptop:w-[57%] laptop:justify-between">
+        <div
+          className={`gap-3 laptop:gap-6 flex items-center ${
+            (!isUserLogin || (isUserLogin && currentPath === "/")) &&
+            "laptop:w-[57%]"
+          } laptop:justify-between`}
+        >
           <div className="laptop:hidden relative">
             <button
               onClick={toggleDrawer}
@@ -163,48 +195,136 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
         {/* Buttons */}
-        {/* <div className="hidden laptop:flex items-center gap-4 relative">
-          <Link to="/login">
-            <ButtonUx
-              label="Login"
-              buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
-            />
-          </Link>
-          <Link to={"/create-account"}>
-            <ButtonUx
-              label="Register"
-              buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px]"
-            />
-          </Link>
-          <div className="border-l border-gray5 h-[18px] w-1"></div>
-          <p className="text-primary text-lg font-medium">For Job Seekers</p>
-        </div> */}
-        <div className="hidden laptop:flex items-center gap-4">
-          <div
-            className="border h-[40px] rounded-[8px] flex gap-2 py-[10px] px-3 items-center border-gray5 desktop:w-[276px]"
-            onClick={toggleSearchDiv}
-          >
-            <img src={Ic_search} alt="search" />{" "}
-            <span className="text-gray text-sm">
-              Search for Skills, post-job
-            </span>
-          </div>
-          <div className="gap-3 flex">
-            <div className="border-2 border-primary z-50 flex items-center justify-center w-[40px] h-[36px] lg:h-[40px] rounded-[8px] bg-[#D2EBFF] font-semibold">
-              J
-            </div>
-            <div
-              className="flex gap-2 items-start cursor-pointer"
-              onClick={toggleDropdown}
-            >
-              <div>
-                <h5 className="text-primary font-semibold">John Doe</h5>
-                <p className="text-gray text-xs">UX Designer</p>
+        {isUserLogin ? (
+          <>
+            <div className="hidden laptop:flex items-center gap-4">
+              {currentPath !== "/" && (
+                <div
+                  className="border h-[40px] rounded-[8px] flex gap-2 py-[10px] px-3 items-center border-gray5 desktop:w-[276px]"
+                  onClick={toggleSearchDiv}
+                >
+                  <img src={Ic_search} alt="search" />{" "}
+                  <span className="text-gray text-sm">
+                    Search for Skills, Companies
+                  </span>
+                </div>
+              )}
+              <div
+                className="gap-3 flex cursor-pointer"
+                onClick={toggleDropdown}
+              >
+                <div className="border-2 border-primary overflow-hidden z-50 flex items-center justify-center w-[40px] h-[36px] lg:h-[40px] rounded-[8px] bg-[#D2EBFF] font-semibold">
+                  {userDetails?.logo ? (
+                    <img
+                      src={`${PHOTO_URL}/${userDetails?.logo}`}
+                      alt="profile"
+                      className="w-full h-full"
+                    />
+                  ) : (
+                    userDetails &&
+                    userDetails?.company_name.charAt(0).toUpperCase()
+                  )}
+                </div>
+                <div className="flex gap-2 items-start">
+                  <div>
+                    <h5 className="text-primary font-semibold">
+                      {userDetails && userDetails?.company_name}
+                    </h5>
+                    <p className="text-gray text-xs">
+                      {userDetails && userDetails?.name}
+                    </p>
+                  </div>
+                  <img src={Ic_down_arrow} alt="arrow" />
+                </div>
               </div>
-              <img src={Ic_down_arrow} alt="arrow" />
             </div>
+            {isDropdownOpen && (
+              <div
+                className="absolute right-0 w-60 bg-white border border-primary rounded-[8px] z-50 top-12 p-2"
+                ref={dropdownRef}
+              >
+                <div
+                  onClick={() => {
+                    navigate("/profile");
+                    setIsDropdownOpen(false);
+                  }}
+                  className="flex gap-3 items-center py-2 px-3 rounded-[8px] hover:bg-lightChiku cursor-pointer"
+                >
+                  <img src={Ic_profile} alt="profile" />
+                  <span className="text-primary text-base">My Profile</span>
+                </div>
+                <div
+                  onClick={() => {
+                    navigate("/profile?job-posted");
+                    setIsDropdownOpen(false);
+                  }}
+                  className="flex gap-3 items-center py-2 px-3 rounded-[8px] hover:bg-lightChiku cursor-pointer"
+                >
+                  <img src={Ic_job_applied} alt="profile" />
+                  <span className="text-primary text-base">Jobs Posted</span>
+                </div>
+                <div
+                  onClick={() => {
+                    navigate("/profile?saved-candidates");
+                    setIsDropdownOpen(false);
+                  }}
+                  className="flex gap-3 items-center py-2 px-3 rounded-[8px] hover:bg-lightChiku cursor-pointer"
+                >
+                  <img src={Ic_saved_jobs} alt="profile" />
+                  <span className="text-primary text-base">
+                    Saved Candidates
+                  </span>
+                </div>
+                <div
+                  onClick={onLogout}
+                  className="flex gap-3 items-center py-2 px-3 rounded-[8px] hover:bg-lightChiku cursor-pointer"
+                >
+                  <img src={Ic_logout} alt="profile" />
+                  <span className="text-primary text-base">Logout</span>
+                </div>
+              </div>
+            )}
+
+            <div className="flex laptop:hidden items-center gap-3">
+              <Link to={"/search-job"}>
+                <img src={Ic_search} alt="search" />
+              </Link>
+              <Link
+                to={"/profile"}
+                className="border-2 border-primary overflow-hidden z-50 flex items-center justify-center w-[32px] h-[32px] rounded-[8px] bg-[#D2EBFF] font-semibold"
+              >
+                {userDetails?.profile_photo ? (
+                  <img
+                    src={`${PHOTO_URL}/${userDetails?.profile_photo}`}
+                    alt="profile"
+                    className="w-full h-full"
+                  />
+                ) : (
+                  userDetails &&
+                  userDetails?.company_name.charAt(0).toUpperCase()
+                )}
+              </Link>
+            </div>
+          </>
+        ) : (
+          <div className="hidden laptop:flex items-center gap-4 relative">
+            <Link to="/">
+              <ButtonUx
+                label="Login"
+                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+              />
+            </Link>
+            <Link to={"/create-account"}>
+              <ButtonUx
+                label="Register"
+                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px]"
+              />
+            </Link>
+            <div className="border-l border-gray5 h-[18px] w-1"></div>
+            <p className="text-primary text-lg font-medium">For Job Seekers</p>
           </div>
-        </div>
+        )}
+
         {isDropdownOpen && (
           <div
             className="absolute right-0 w-60 bg-white border border-primary rounded-[8px] z-50 top-12 p-2"
@@ -249,17 +369,6 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
         )}
-        <div className="flex laptop:hidden items-center gap-3">
-          <Link to={"/search-job"}>
-            <img src={Ic_search} alt="search" />
-          </Link>
-          <Link
-            to={"/profile"}
-            className="border-2 border-primary z-50 flex items-center justify-center w-[32px] h-[32px] rounded-[8px] bg-[#D2EBFF] font-semibold"
-          >
-            J
-          </Link>
-        </div>
       </div>
       {/* Side Drawer */}
       <div
@@ -313,7 +422,7 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="w-full flex gap-[16px]">
-            <Link to="/login" className="w-1/2">
+            <Link to="/" className="w-1/2">
               <ButtonUx
                 label="Login"
                 buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3 w-full"
@@ -370,13 +479,13 @@ export const Navbar: React.FC = () => {
               Are you Sure you want to Logout?
             </h4>
             <div className="flex items-center pt-[8px] md:pt-[12px] gap-3 md:gap-6">
-              <div className="w-full" onClick={onLogout}>
+              <div className="w-full" onClick={logout}>
                 <ButtonUx
                   label="Yes, Logout"
                   buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </div>
-              <div className="w-full">
+              <div className="w-full" onClick={onLogout}>
                 <ButtonUx
                   label="No, Stay"
                   buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"

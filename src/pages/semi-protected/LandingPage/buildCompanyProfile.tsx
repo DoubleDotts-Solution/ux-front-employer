@@ -3,6 +3,7 @@ import Img_buildCompanyProfile from "@/assets/images/Img_buildCompanyProfile.png
 import Img_find_talent from "@/assets/images/Img_find_talent.png";
 import Img_success_design from "@/assets/images/Img_success_design.png";
 import ButtonUx from "@/components/common/button";
+import { Link } from "react-router-dom";
 
 const BuildCompanyProfile: React.FC = () => {
   return (
@@ -24,10 +25,12 @@ const BuildCompanyProfile: React.FC = () => {
             and startup-driven focus. Grow your visibility, connect with
             millions of professionals, and build your brand with ease.
           </p>
-          <ButtonUx
-            label="Build Your Company Profile"
-            buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
-          />
+          <Link to={"/profile"}>
+            <ButtonUx
+              label="Build Your Company Profile"
+              buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+            />
+          </Link>
         </div>
       </div>
       <div className="py-[48px] md:py-[72px] big:py-[100px] relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] flex flex-col-reverse md:flex-row gap-[34px] laptop:gap-[68px] desktop:gap-[110px] justify-end items-center">
@@ -40,10 +43,12 @@ const BuildCompanyProfile: React.FC = () => {
             Share detailed job descriptions that include culture, work style,
             and team insights to attract the perfect fit.
           </p>
-          <ButtonUx
-            label="Post a Job for Free"
-            buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
-          />
+          <Link to={"/post-job"}>
+            <ButtonUx
+              label="Post a Job for Free"
+              buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+            />
+          </Link>
         </div>
         <div className="w-full md:w-[30%] lg:w-[27%] flex items-center justify-center">
           <img
@@ -71,10 +76,12 @@ const BuildCompanyProfile: React.FC = () => {
             find top-tier candidates across industries, skill levels, and
             backgrounds—all in seconds.
           </p>
-          <ButtonUx
-            label="Find Talent"
-            buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
-          />
+          <Link to={"/find-talent"}>
+            <ButtonUx
+              label="Find Talent"
+              buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+            />
+          </Link>
         </div>
       </div>
     </>

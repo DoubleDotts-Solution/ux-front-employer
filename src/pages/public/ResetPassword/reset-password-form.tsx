@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,6 +15,9 @@ import { Eye, EyeOff } from "lucide-react";
 import ButtonUx from "@/components/common/button";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
+import { toast } from "react-hot-toast";
+import { useLocation } from "react-router-dom";
+import ApiUtils from "@/api/ApiUtils";
 
 const formSchema = z
   .object({
@@ -43,9 +47,58 @@ const ResetPasswordForm: React.FC = () => {
   });
   const [successfullyRegister, setSuccessfullyRegister] = useState(false);
 
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+
+  useEffect(() => {
+    const verifyEmail = async () => {
+      try {
+        const tokenResponse = await ApiUtils.changePasswordWithTokenKey({
+          token: query.get("token") as string,
+          key: query.get("key") as string,
+        });
+
+        if (tokenResponse.status === 200) {
+          const { accessToken, refreshToken } = tokenResponse.data.message;
+          if (accessToken && refreshToken) {
+            sessionStorage.setItem("__ux_employer_access_", accessToken);
+            localStorage.setItem("__ux_employer_refresh_", refreshToken);
+          }
+        }
+      } catch (error: any) {
+        toast.error(error.data.data.message || "Something went wrong!", {
+          position: "top-right",
+        });
+        console.error("Unexpected error:", error);
+      }
+    };
+    if (query.get("token") && query.get("key")) {
+      verifyEmail();
+    }
+  }, [query]);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    setSuccessfullyRegister(true);
+    try {
+      const response: any = await ApiUtils.resetPassword({
+        password: data.password,
+      });
+      if (response) {
+        toast.success("Reset password SuccessFully.", {
+          position: "top-right",
+        });
+        setSuccessfullyRegister(true);
+      } else {
+        console.error("API error:", response.error);
+        toast.error(response.error, {
+          position: "top-right",
+        });
+      }
+    } catch (error: any) {
+      console.error("Validation error:", error);
+      toast.error("Something Went Wrong!", {
+        position: "top-right",
+      });
+    }
   };
 
   const handleClose = () => {

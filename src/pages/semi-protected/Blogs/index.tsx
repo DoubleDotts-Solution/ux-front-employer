@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-// import Ic_left_arrow from "@/assets/images/Ic_left_arrow.svg";
-// import Ic_right_breadCrumb_arrow from "@/assets/images/Ic_right_breadCrumb_arrow.svg";
 import { Pagination } from "@/components/common/pagination";
+import { useGetBlogsApiQuery } from "@/store/slice/apiSlice/blogApi";
+import { PHOTO_URL } from "@/config/constant";
+import Loading from "@/components/common/loading";
 
 interface Blog {
   id: number;
@@ -20,45 +21,17 @@ interface GetBlogsResponse {
   pagination: Pagination;
 }
 
-const data = {
-  data: [
-    {
-      id: 3,
-      title: "Top UX Interview Questions and How to Ace Them",
-      description:
-        "<p>Welcome to \"Design Insights: Navigating UI/UX,\" where we dive deep into the dynamic world of user interface and user experience design. Whether you're a seasoned designer, a budding enthusiast, or simply curious about how digital experiences come to life, this blog aims to be your compass in the ever-evolving landscape of design.</p><p><br></p><p>User Interface (UI) and User Experience (UX) are integral components of any digital product. UI focuses on the look and feel—how elements are arranged and visually communicated to users. Meanwhile, UX delves into the overall experience—how users interact with the product, their journey, and the emotions evoked throughout.</p><p><br></p><p>In our journey through this blog, we'll explore:</p><p><br></p><p>Fundamentals of UI Design: From typography and color theory to layout and visual hierarchy, we'll uncover the principles that make interfaces not only functional but also aesthetically pleasing.</p><p><br></p><p>Enhancing UX through Research: Understanding user behavior and preferences is key to crafting meaningful experiences. We'll discuss methodologies like user testing, journey mapping, and persona development that shape superior UX.</p><p><br></p><p>Current Trends and Innovations: The design world is in constant motion. We'll keep you updated on the latest trends, emerging technologies, and innovative practices that push the boundaries of UI/UX design.</p>",
-      image: "blog/4e4101ac7c10bc97bf5e910f6adad6b9e87.png",
-      updatedAt: "2024-10-17T06:01:42.171Z",
-    },
-    {
-      id: 2,
-      title: "Navigating the UX Job Market: Stand Out in a Competitive Field",
-      description:
-        "<p>Welcome to \"Design Insights: Navigating UI/UX,\" where we dive deep into the dynamic world of user interface and user experience design. Whether you're a seasoned designer, a budding enthusiast, or simply curious about how digital experiences come to life, this blog aims to be your compass in the ever-evolving landscape of design.</p><p><br></p><p>User Interface (UI) and User Experience (UX) are integral components of any digital product. UI focuses on the look and feel—how elements are arranged and visually communicated to users. Meanwhile, UX delves into the overall experience—how users interact with the product, their journey, and the emotions evoked throughout.</p><p><br></p><p>In our journey through this blog, we'll explore:</p><p><br></p><p>Fundamentals of UI Design: From typography and color theory to layout and visual hierarchy, we'll uncover the principles that make interfaces not only functional but also aesthetically pleasing.</p><p><br></p><p>Enhancing UX through Research: Understanding user behavior and preferences is key to crafting meaningful experiences. We'll discuss methodologies like user testing, journey mapping, and persona development that shape superior UX.</p><p><br></p><p>Current Trends and Innovations: The design world is in constant motion. We'll keep you updated on the latest trends, emerging technologies, and innovative practices that push the boundaries of UI/UX design.</p>",
-      image: "blog/81e54c104ea4f94dd668bf12fdeee1e9.png",
-      updatedAt: "2024-10-17T06:01:21.565Z",
-    },
-    {
-      id: 1,
-      title: "Crafting a Winning UX Portfolio: What Employers Want",
-      description:
-        "<p>Welcome to \"Design Insights: Navigating UI/UX,\" where we dive deep into the dynamic world of user interface and user experience design. Whether you're a seasoned designer, a budding enthusiast, or simply curious about how digital experiences come to life, this blog aims to be your compass in the ever-evolving landscape of design.</p><p><br></p><p>User Interface (UI) and User Experience (UX) are integral components of any digital product. UI focuses on the look and feel—how elements are arranged and visually communicated to users. Meanwhile, UX delves into the overall experience—how users interact with the product, their journey, and the emotions evoked throughout.</p><p><br></p><p>In our journey through this blog, we'll explore:</p><p><br></p><p>Fundamentals of UI Design: From typography and color theory to layout and visual hierarchy, we'll uncover the principles that make interfaces not only functional but also aesthetically pleasing.</p><p><br></p><p>Enhancing UX through Research: Understanding user behavior and preferences is key to crafting meaningful experiences. We'll discuss methodologies like user testing, journey mapping, and persona development that shape superior UX.</p><p><br></p><p>Current Trends and Innovations: The design world is in constant motion. We'll keep you updated on the latest trends, emerging technologies, and innovative practices that push the boundaries of UI/UX design.</p>",
-      image: "blog/03eb6378ebd83cc313f600180438a7a0.png",
-      updatedAt: "2024-10-17T06:00:17.288Z",
-    },
-  ],
-  pagination: {
-    totalCount: 3,
-    currentPage: 1,
-    limit: 9,
-    totalPages: 1,
-  },
-  status: 200,
-};
-
 export const Blogs: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(data.pagination.currentPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 9;
 
+  const params = {
+    page: currentPage,
+    limit: blogsPerPage,
+    value: "",
+  };
+
+  const { data, isLoading } = useGetBlogsApiQuery(params);
   const blogs = (data as GetBlogsResponse)?.data || [];
 
   const handlePageChange = (page: number) => {
@@ -134,24 +107,16 @@ export const Blogs: React.FC = () => {
     resetAnimations();
     startAnimations();
   };
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="relative">
       <div
-        className="bg-lightYellow relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-6 md:py-8"
+        className="bg-lightYellow relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-6 md:py-8 desktop:py-[61px]"
         ref={section5Ref}
         onMouseEnter={handleSection5MouseEnter}
       >
-        {/* <nav className="flex items-center gap-2 mb-5 md:mb-8">
-          <Link to={"/"}>
-            <img src={Ic_left_arrow} alt="arrow" />
-          </Link>
-          <Link to={"/"}>
-            <span className="text-primary text-sm font-semibold">Home</span>
-          </Link>
-          <img src={Ic_right_breadCrumb_arrow} alt="arrow" />
-          <span className="text-gray text-sm">Blogs</span>
-        </nav> */}
         <div className="flex flex-col gap-[4px]">
           <h2 className="text-primary text-xl sm:text-2xl md:text-[2rem] lg:text-[2.5rem] desktop:text-[3rem] desktop:leading-[60px] font-semibold mb-3">
             The Blog{" "}
@@ -243,10 +208,7 @@ export const Blogs: React.FC = () => {
                   key={blog.id}
                   className="w-full border-2 border-primary rounded-[12px] md:rounded-2xl p-3 desktop:p-4 flex flex-col gap-3 lg:gap-4 desktop:gap-6 bg-white hover:shadow-shadow1"
                 >
-                  <img
-                    src={`https://uxjobsite.com/public/${blog.image}`}
-                    alt="blog-image"
-                  />
+                  <img src={`${PHOTO_URL}/${blog.image}`} alt="blog-image" />
                   <p className="text-primary text-base md:text-lg desktop:text-xl">
                     {blog.title}
                   </p>
@@ -260,7 +222,7 @@ export const Blogs: React.FC = () => {
           (data as GetBlogsResponse)?.pagination?.limit ? (
             <div className="flex justify-center mt-7 lg:mt-9">
               <Pagination
-                currentPage={currentPage}
+                currentPage={(data as GetBlogsResponse)?.pagination.currentPage}
                 totalPages={(data as GetBlogsResponse)?.pagination.totalPages}
                 onPageChange={handlePageChange}
               />

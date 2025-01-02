@@ -1428,13 +1428,13 @@ export const PostJob: React.FC = () => {
               </p>
             </div>
             <div className="flex items-center gap-5 relative">
-              <Link to="/login">
+              <Link to="/">
                 <ButtonUx
                   label="Login"
                   buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </Link>
-              <Link to="/register">
+              <Link to="/crate-account">
                 <ButtonUx
                   label="Register"
                   buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"

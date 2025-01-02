@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,42 +13,45 @@ import {
 import { Input } from "../ui/input";
 import ButtonUx from "../common/button";
 import AutocompleteInput from "../ui/inputLocation";
+import Ic_search from "@/assets/images/Ic_search.svg";
 import { TextArea } from "../ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { InputMobile } from "../ui/inputMobile";
+import { PHOTO_URL } from "@/config/constant";
+import { useDispatch, useSelector } from "react-redux";
+import AutocompleteSearchInput from "../ui/inputSearch";
+import {
+  useGetDesignationQuery,
+  useUpdateProfileApiMutation,
+} from "@/store/slice/apiSlice/profileApi";
+import ApiUtils from "@/api/ApiUtils";
+import { setUserDetails } from "@/store/slice/user.slice";
+import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
   company_name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  website_link: z
+  website: z
     .string()
     .min(1, { message: "Profile Link is required." })
     .url({ message: "Please enter a valid URL." }),
-  profile_photo: z
-    .instanceof(File)
-    .nullable()
-    .refine((file) => file === null || file.size <= 100 * 1024 * 1024, {
-      message: "File size must be less than 100MB.",
-    })
-    .optional(),
-  location: z.string().min(1, {
+  logo: z.union([
+    z
+      .instanceof(File)
+      .nullable()
+      .refine((file) => file === null || file.size <= 100 * 1024 * 1024, {
+        message: "File size must be less than 100MB.",
+      })
+      .optional(),
+    z.string().optional(),
+  ]),
+  country: z.string().min(1, {
     message: "Location must be specified.",
   }),
-  about_company: z
-    .string()
-    .max(200, {
-      message: "About Company must be at least 200 characters.",
-    })
-    .optional(),
-  full_name: z.string().min(2, {
+  description: z.string().max(200, {
+    message: "About Company must be at least 200 characters.",
+  }),
+  name: z.string().min(2, {
     message: "Full Name must be at least 2 characters.",
   }),
   email: z
@@ -71,8 +74,107 @@ const ProfileForm: React.FC = () => {
     resolver: zodResolver(formSchema),
     mode: "onChange",
   });
+  const userDetails = useSelector((state: any) => state.user)?.userDetails;
+
+  const dispatch = useDispatch();
+
+  const params: any = {
+    page: 1,
+    limit: 999999999,
+    value: "",
+  };
+
+  const { data } = useGetDesignationQuery(params);
+  const company = (data as any)?.data || [];
+  const designationName =
+    company && company.length > 0
+      ? company.map((company: any) => ({
+          label: company.name,
+        }))
+      : [];
+
+  useEffect(() => {
+    if (!userDetails) return;
+
+    const fieldsToSet = [
+      { key: "company_name", value: userDetails.company_name },
+      { key: "website", value: userDetails.website },
+      { key: "country", value: userDetails.country },
+      { key: "description", value: userDetails.description },
+      { key: "logo", value: userDetails.logo },
+      { key: "designation", value: userDetails.designation?.name },
+      { key: "mobile_no", value: userDetails.mobile_no },
+      { key: "name", value: userDetails.name },
+      { key: "email", value: userDetails.email },
+    ];
+
+    fieldsToSet.forEach(({ key, value }) => {
+      if (value) {
+        form.setValue(key as any, value);
+      }
+    });
+
+    form.trigger();
+  }, [userDetails]);
+
+  const [handleProfile] = useUpdateProfileApiMutation();
+
   const onFormSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    const designationValue = company.find((a: any) => {
+      return a.name === data.designation;
+    })?.id;
+    const formData = new FormData();
+    if (data.email) {
+      formData.append("email", data.email);
+    }
+    if (data.company_name) {
+      formData.append("company_name", data.company_name);
+    }
+    if (data.country) {
+      formData.append("country", data.country);
+    }
+    if (data.description) {
+      formData.append("description", data.description);
+    }
+    if (data.designation) {
+      formData.append("designation", designationValue);
+    }
+    if (data.name) {
+      formData.append("name", data.name);
+    }
+    if (data.mobile_no) {
+      formData.append("mobile_no", data.mobile_no);
+    }
+    if (data.website) {
+      formData.append("website", data.website);
+    }
+    if (data.logo) {
+      formData.append("logo", data.logo);
+    }
+
+    try {
+      const response: any = await handleProfile({
+        data: formData,
+        id: userDetails?.id,
+      });
+
+      if (response && response.data.status === 200) {
+        toast.success("Submit successfully", { position: "top-right" });
+        // form.reset();
+        const userDetail = await ApiUtils.getSingleUser(userDetails?.id);
+        dispatch(setUserDetails(userDetail.data));
+      } else {
+        toast.error(response.error, {
+          position: "top-right",
+        });
+        console.error("API error:", response.error);
+      }
+    } catch (error: any) {
+      console.error("Validation error:", error);
+      toast.error("Something Went Wrong!", {
+        position: "top-right",
+      });
+    }
   };
   const [imageUrl, setImageUrl] = React.useState<any | null>(null);
 
@@ -81,7 +183,7 @@ const ProfileForm: React.FC = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files[0]) {
-      form.setValue("profile_photo", files[0]);
+      form.setValue("logo", files[0]);
       setImageUrl(files[0]);
     }
   };
@@ -139,7 +241,7 @@ const ProfileForm: React.FC = () => {
                 <div>
                   <FormField
                     control={form.control}
-                    name="website_link"
+                    name="website"
                     render={({ field, fieldState }) => (
                       <FormItem>
                         <p
@@ -178,7 +280,18 @@ const ProfileForm: React.FC = () => {
                         className="h-full w-full"
                       />
                     ) : (
-                      "J"
+                      <>
+                        {userDetails?.logo ? (
+                          <img
+                            src={`${PHOTO_URL}/${userDetails?.logo}`}
+                            alt="profile"
+                            className="w-full h-full"
+                          />
+                        ) : (
+                          userDetails &&
+                          userDetails?.company_name.charAt(0).toUpperCase()
+                        )}
+                      </>
                     )}
                   </div>
                   <span
@@ -192,13 +305,13 @@ const ProfileForm: React.FC = () => {
                     ref={fileInputRef}
                     className="hidden"
                     onChange={handleFileChange}
-                    name="profile_photo"
+                    name="logo"
                   />
                 </div>
                 <div>
                   <FormField
                     control={form.control}
-                    name="location"
+                    name="country"
                     render={({ field, fieldState }) => (
                       <FormItem>
                         <p
@@ -218,7 +331,7 @@ const ProfileForm: React.FC = () => {
                                 fieldState.error
                                   ? "border-red"
                                   : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
-                              } text-base text-gray border-2 rounded-[8px]`}
+                              } text-base text-primary border-2 rounded-[8px]`}
                             />
                           </div>
                         </FormControl>
@@ -230,7 +343,7 @@ const ProfileForm: React.FC = () => {
                 <div className="col-span-2">
                   <FormField
                     control={form.control}
-                    name="about_company"
+                    name="description"
                     render={({ field, fieldState }) => (
                       <FormItem>
                         <p
@@ -243,7 +356,7 @@ const ProfileForm: React.FC = () => {
                         <FormControl>
                           <div className="relative">
                             <TextArea
-                              placeholder="Enter About Compony"
+                              placeholder="Enter About Company"
                               {...field}
                               className={`bg-white  
                                   ${
@@ -279,7 +392,7 @@ const ProfileForm: React.FC = () => {
                 <div>
                   <FormField
                     control={form.control}
-                    name="full_name"
+                    name="name"
                     render={({ field, fieldState }) => (
                       <FormItem>
                         <p
@@ -323,35 +436,24 @@ const ProfileForm: React.FC = () => {
                           Designation
                         </p>
                         <FormControl>
-                          <Select
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                            }}
-                            value={field.value}
-                          >
-                            <SelectTrigger
-                              className={`bg-white ${
-                                fieldState.error
-                                  ? "border-red"
-                                  : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
-                              } text-base text-primary border-2 rounded-[8px]`}
-                            >
-                              <SelectValue placeholder="Enter Total Years of Experience" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectGroup>
-                                <SelectItem value="Designation 1">
-                                  Designation 1
-                                </SelectItem>
-                                <SelectItem value="Designation 2">
-                                  Designation 2
-                                </SelectItem>
-                                <SelectItem value="Designation 3">
-                                  Designation 3
-                                </SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
+                          <div className="relative">
+                            <AutocompleteSearchInput
+                              value={field.value || ""}
+                              onChange={(newValue) => {
+                                field.onChange(newValue);
+                              }}
+                              options={designationName}
+                              placeholder="Type to Search"
+                              className={`${
+                                fieldState.error ? "border-red" : ""
+                              } text-base text-primary border-2 rounded-[8px] pl-8 lg:pl-9 bg-white border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7`}
+                            />
+                            <img
+                              src={Ic_search}
+                              alt="search"
+                              className="absolute top-[8px] lg:top-[13px] left-[8px] lg:left-[12px]"
+                            />
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

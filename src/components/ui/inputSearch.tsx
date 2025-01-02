@@ -54,13 +54,15 @@ const renderSuggestion = (
 };
 
 const renderSuggestionsContainer = ({ containerProps, children }: any) => {
+  const { key, ...rest } = containerProps;
+
   if (!children || React.Children.count(children) === 0) {
     return null;
   }
 
   return (
-    <div {...containerProps}>
-      <div className="font-medium text-primary text-base p-2 border-b border-gray5  bg-white">
+    <div key={key} {...rest}>
+      <div className="font-medium text-primary text-base p-2 border-b border-gray5 bg-white">
         Search Suggestions
       </div>
       {children}

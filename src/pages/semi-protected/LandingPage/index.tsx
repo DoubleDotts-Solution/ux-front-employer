@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import MainSection from "./mainSection";
 import TrustedEmployer from "./trustedEmployer";
 import MadeInIndiaImg from "@/assets/images/Img_made_in_india.png";
@@ -5,11 +6,27 @@ import TrustedTopCompany from "./trustedTopCompany";
 import WhyWeBestBet from "./whyWeBestBet";
 import SimplifyHiring from "./simplifyHiring";
 import BuildCompanyProfile from "./buildCompanyProfile";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export const LandingPage = () => {
+  const location = useLocation();
+  const [isUserLogin, setIsUserLogin] = useState(false);
+  const userDetails = useSelector((state: any) => state.user)?.userDetails;
+  const AccessToken = sessionStorage.getItem("__ux_employer_access_");
+
+  useEffect(() => {
+    if (userDetails?.verifyEmail === "yes" && AccessToken) {
+      setIsUserLogin(true);
+    } else {
+      setIsUserLogin(false);
+    }
+  }, [userDetails, AccessToken, location.search]);
+
   return (
     <div className="relative">
-      <MainSection />
+      <MainSection isUserLogin={isUserLogin} />
       <WhyWeBestBet />
       <SimplifyHiring />
       <BuildCompanyProfile />
