@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Ic_filter from "@/assets/images/Ic_filter.svg";
 import Ic_down_arrow from "@/assets/images/Ic_down_arrow.svg";
-import JobPostDiv from "@/components/jobPostDiv";
 import AutocompleteInput from "@/components/ui/inputLocation";
 import ButtonUx from "@/components/common/button";
 import { Pagination } from "@/components/common/pagination";
@@ -16,178 +15,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGetFindTalentApiQuery } from "@/store/slice/apiSlice/findTalentApi";
+import Loading from "@/components/common/loading";
+import JobTagsDisplay from "@/components/jobsTagDisplay";
+import Ic_location from "@/assets/images/Ic_location.svg";
+import Ic_experience from "@/assets/images/Ic_experience.svg";
+import Ic_file from "@/assets/images/Ic_file.svg";
+import Ic_call from "@/assets/images/Ic_call.svg";
+import { useNavigate } from "react-router-dom";
+import { convertJobLocation } from "@/lib/utils";
+import { PHOTO_URL } from "@/config/constant";
+import { useGetCategoryQuery } from "@/store/slice/apiSlice/categoryApi";
+import { useGetJobTypeQuery } from "@/store/slice/apiSlice/jobsApi";
 
-const findNext = [
-  {
-    id: 3,
-    position: "UI Designer",
-    job_experience: "5 year",
-    work_place_type: "hybrid",
-    location: "Bangalore, India",
-    description:
-      "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, w</p>",
-    tags: "UI Designer",
-    minimum_pay: "100",
-    maximum_pay: "200",
-    apply_text: "send cover letter",
-    job_status: "activate",
-    is_approved: "approved",
-    createdAt: "2024-10-25T05:13:55.225Z",
-    updatedAt: "2024-10-25T05:14:11.531Z",
-    category: {
-      id: 4,
-      name: "UI Designer",
-      updatedAt: "2024-10-17T05:50:24.463Z",
-    },
-    job_type: {
-      id: 4,
-      name: "Freelancing",
-      updatedAt: "2024-10-17T05:55:41.647Z",
-    },
-    currency: {
-      id: 3,
-      name: "Dollar",
-      symbol: "$",
-      updatedAt: "2024-10-17T06:41:22.686Z",
-    },
-    employer: {
-      id: 2,
-      company_name: "Doubledotts2",
-      logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-      website: "https://doubledotts.com/",
-      country: "Usa",
-      description:
-        "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-      updatedAt: "2024-10-23T04:33:40.340Z",
-    },
-    pay_type: {
-      id: 2,
-      name: "UPI",
-      updatedAt: "2024-10-17T05:55:10.477Z",
-    },
-    apply_by: {
-      id: 3,
-      name: "Directly Submitting Resume",
-      updatedAt: "2024-10-17T05:57:09.342Z",
-    },
-  },
-  {
-    id: 2,
-    position: "Ux writer",
-    job_experience: "5 year",
-    work_place_type: "hybrid",
-    location: "Surat, India",
-    description:
-      "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-    tags: "UI Designer",
-    minimum_pay: "100",
-    maximum_pay: "200",
-    apply_text: "send cover letter",
-    job_status: "activate",
-    is_approved: "approved",
-    createdAt: "2024-10-23T04:35:29.761Z",
-    updatedAt: "2024-10-23T12:47:53.244Z",
-    category: {
-      id: 5,
-      name: "UX Writer",
-      updatedAt: "2024-10-17T05:50:32.307Z",
-    },
-    job_type: {
-      id: 3,
-      name: "Contract",
-      updatedAt: "2024-10-17T05:55:36.181Z",
-    },
-    currency: {
-      id: 3,
-      name: "Dollar",
-      symbol: "$",
-      updatedAt: "2024-10-17T06:41:22.686Z",
-    },
-    employer: {
-      id: 2,
-      company_name: "Doubledotts2",
-      logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-      website: "https://doubledotts.com/",
-      country: "Usa",
-      description:
-        "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-      updatedAt: "2024-10-23T04:33:40.340Z",
-    },
-    pay_type: {
-      id: 2,
-      name: "UPI",
-      updatedAt: "2024-10-17T05:55:10.477Z",
-    },
-    apply_by: {
-      id: 3,
-      name: "Directly Submitting Resume",
-      updatedAt: "2024-10-17T05:57:09.342Z",
-    },
-  },
-  {
-    id: 1,
-    position: "UI Designer",
-    job_experience: "3 year",
-    work_place_type: "on-site",
-    location: "Surat, India",
-    description:
-      "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.&nbsp;</p>",
-    tags: "UI Designer",
-    minimum_pay: "10000",
-    maximum_pay: "20000",
-    apply_text: "add resume ",
-    job_status: "activate",
-    is_approved: "approved",
-    createdAt: "2024-10-22T05:49:55.734Z",
-    updatedAt: "2024-10-23T12:47:49.353Z",
-    category: {
-      id: 4,
-      name: "UI Designer",
-      updatedAt: "2024-10-17T05:50:24.463Z",
-    },
-    job_type: {
-      id: 2,
-      name: "Full-time",
-      updatedAt: "2024-10-17T05:55:30.382Z",
-    },
-    currency: {
-      id: 1,
-      name: "ruppee",
-      symbol: "₹",
-      updatedAt: "2024-10-17T06:40:49.873Z",
-    },
-    employer: {
-      id: 2,
-      company_name: "Doubledotts2",
-      logo: "company/4e130718c71cdde71ba636c59847a333.jpg",
-      website: "https://doubledotts.com/",
-      country: "Usa",
-      description:
-        "<p>Developing engaging and intuitive mobile App that enhancing user engagement and experience to drive business growth.</p>",
-      updatedAt: "2024-10-23T04:33:40.340Z",
-    },
-    pay_type: {
-      id: 1,
-      name: "Cash",
-      updatedAt: "2024-10-17T05:55:03.136Z",
-    },
-    apply_by: {
-      id: 3,
-      name: "Directly Submitting Resume",
-      updatedAt: "2024-10-17T05:57:09.342Z",
-    },
-  },
-];
-
-const categoryArray = [
-  { name: "All Categories" },
-  { name: "Product Designer" },
-  { name: "UX Researcher" },
-  { name: "UI Designer" },
-  { name: "UX Writer" },
-  { name: "UI Developer" },
-  { name: "Graphic Designer" },
-];
 const ExperienceArray = [
   { name: "Fresher (Less then 1 Year)" },
   { name: "1 year" },
@@ -198,12 +38,6 @@ const ExperienceArray = [
   { name: "6 years" },
   { name: "7 years" },
 ];
-const jobTypeArray = [
-  { name: "Internship" },
-  { name: "Freelancing" },
-  { name: "Part time" },
-  { name: "All Jobs" },
-];
 const WorkPlaceTypeArray = [
   { name: "All" },
   { name: "On Site" },
@@ -212,8 +46,25 @@ const WorkPlaceTypeArray = [
 ];
 
 const MainSection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(null);
+
+  const toggleDropdown = (index: any, e: any) => {
+    e.stopPropagation();
+    setIsDropdownOpen((prevIndex) => (prevIndex === index ? null : index));
+  };
+  function maskPhoneNumber(phoneNumber: any) {
+    const sanitized = phoneNumber.replace(/[^+\d]/g, "");
+    return sanitized.replace(
+      /^(\+\d{2})?(\d{1})\d*(\d{1})$/,
+      (_: any, countryCode: any, firstDigit: any, lastDigit: any) => {
+        return `${countryCode || ""}${firstDigit}********${lastDigit}`;
+      }
+    );
+  }
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState("Relevant");
+  const [sortBy, setSortBy] = useState("relevant");
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -223,6 +74,7 @@ const MainSection: React.FC = () => {
   const [JobType, setJobType] = useState<string[]>([]);
   const [Experience, setExperience] = useState<any | null>(null);
   const [Location, setLocation] = useState<any | null>(null);
+  const [Value, setValue] = useState<any | null>(null);
 
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
@@ -244,74 +96,110 @@ const MainSection: React.FC = () => {
       body?.classList.add("h-screen");
     }
   };
-  console.log(Experience);
 
-  // const GetAllJobParam: any = {
-  //   ...(searchJob && { value: searchJob }),
-  //   ...(Category && { category: Category }),
-  //   ...(JobType && { job_type: JobType }),
-  //   ...(PostedAt && {
-  //     posted_at: PostedAt,
-  //   }),
-  //   ...(Location && { location: Location }),
-  //   ...(WorkPlaceType && {
-  //     work_place_type: WorkPlaceType,
-  //   }),
-  //   ...(minRange && { min_salary_range: minRange }),
-  //   ...(maxRange && { max_salary_range: maxRange }),
-  //   page: currentPage,
-  //   limit: 5,
-  // };
+  const GetAllJobParam: any = {
+    ...(sortBy && { sort_by: sortBy }),
+    ...(Value && { value: Value }),
+    ...(Experience && { job_experience: Experience }),
+    ...(Category &&
+      Category.length > 0 && {
+        category: Category.map((item) => item).join(", "),
+      }),
+    ...(WorkPlaceType &&
+      WorkPlaceType.length > 0 &&
+      WorkPlaceType.some((item) => item !== "All") && {
+        work_place_type: WorkPlaceType.filter((item) => item !== "All")
+          .map((item) => {
+            if (item === "Remote") return "remote";
+            if (item === "On Site") return "on_site";
+            if (item === "Hybrid") return "hybrid";
+            return "";
+          })
+          .filter(Boolean)
+          .join(", "),
+      }),
+    ...(JobType &&
+      JobType.length > 0 && {
+        job_type: JobType.map((item) => item).join(", "),
+      }),
+    ...(Location && { location: Location }),
+    ...(Location && { location: Location }),
+    page: currentPage,
+    limit: 5,
+  };
 
-  // const { data: GetAllJob, isLoading } = useCompanyOpenRolesApiQuery({
-  //   data: GetAllJobParam,
-  // });
-  // const findNext = (GetAllJob as any)?.data || [];
+  const { data: GetAllJob, isLoading } =
+    useGetFindTalentApiQuery(GetAllJobParam);
+  const findNext = (GetAllJob as any)?.data || [];
 
-  // const { data: categoryData, isLoading: categoryDataLoading } =
-  //   useGetCategoryApiQuery(params);
-  // const categoryArray = (categoryData as any)?.data || [];
+  const getFilterDataParam: any = {
+    page: 1,
+    limit: 999999999999999,
+    value: "",
+  };
 
-  // const { data: jobTypeData, isLoading: jobTypeDataLoading } =
-  //   useGetTypeApiQuery(params);
-  // const jobTypeArray = (jobTypeData as any)?.data || [];
+  const { data: categoryData } = useGetCategoryQuery(getFilterDataParam);
+  const categoryArray = (categoryData as any)?.data || [];
 
-  // const jobIdFromPath = location.pathname.match(/\/jobs\/(\d+)/)?.[1];
+  const { data: jobTypeData } = useGetJobTypeQuery(getFilterDataParam);
+  const jobTypeArray = (jobTypeData as any)?.data || [];
 
-  // const matchedCategory = categoryArray.find(
-  //   (category: any) => category.id == jobIdFromPath
-  // );
+  const reverseTransform = (value: string | null): string => {
+    if (!value) return "";
+    return value
+      .split("-")
+      .map((item) => item.replace(/_/g, " "))
+      .join(",");
+  };
+  const formatString = (value: string | null): string => {
+    if (!value) return "";
+    return value
+      .split("-")
+      .map((word) => {
+        if (!isNaN(Number(word))) {
+          return word;
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  };
 
-  // useEffect(() => {
-  //   if (matchedCategory) {
-  //     setCategory(matchedCategory.name);
-  //   } else {
-  //     setCategory(null);
-  //   }
-  // }, [matchedCategory]);
+  const decodeToReadableFormat = (value: string): string => {
+    if (!value) return "";
+    return decodeURIComponent(value);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const queryParams: any = new URLSearchParams(location.search);
 
-  // const reverseTransform = (value: string | undefined) => {
-  //   if (!value) return "";
-  //   return value.replace(/-/g, " ").replace(/\s(?=[^,]*$)/, ", ");
-  // };
-  // const CategoryReverseTransform = (value: string | undefined) => {
-  //   if (!value) return "";
-  //   return value.replace(/-/g, " ").replace(/\s(?=[^,]*$)/, " ");
-  // };
+      if (
+        queryParams.get("search") ||
+        queryParams.get("category") ||
+        queryParams.get("city") ||
+        queryParams.get("remote")
+      ) {
+        const value = reverseTransform(queryParams.get("search"));
+        const experience = formatString(queryParams.get("experience"));
+        const location = decodeToReadableFormat(queryParams.get("city"));
+        const work_place_type = queryParams.get("remote");
 
-  // useEffect(() => {
-  //   const queryParams: any = new URLSearchParams(location.search);
+        if (value) {
+          setValue(value);
+        }
+        if (experience) {
+          setExperience(experience);
+        }
+        if (location) {
+          setLocation(location);
+        }
+        if (work_place_type) {
+          setWorkPlaceType([work_place_type]);
+        }
+      }
+    };
 
-  //   if (queryParams.get("search")) {
-  //     setSearchJob(CategoryReverseTransform(queryParams.get("search")));
-  //   }
-  //   if (queryParams.get("category")) {
-  //     setCategory(CategoryReverseTransform(queryParams.get("category")));
-  //   }
-  //   if (queryParams.get("city")) {
-  //     setLocation(reverseTransform(queryParams.get("city")));
-  //   }
-  // }, [location.search]);
+    fetchData();
+  }, []);
 
   const [openIndex, setOpenIndex] = useState<string | null>(null);
 
@@ -326,6 +214,9 @@ const MainSection: React.FC = () => {
     WorkPlaceType.length === 0 &&
     Experience == null;
 
+  if (isLoading) {
+    <Loading />;
+  }
   return (
     <div className="relative">
       <div className="bg-lightYellow relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[55px] lg:py-[72px] lg:leading-[60px] text-xl sm:text-2xl md:text-[2rem] lg:text-[2.5rem] desktop:text-[3rem] text-primary flex align-center font-semibold">
@@ -336,11 +227,18 @@ const MainSection: React.FC = () => {
       <div className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px]">
         <div className="pt-[24px] pb-[20px] lg:py-[30px] flex flex-col sm:flex-row justify-between gap-3 sm:items-center">
           <p className="text-gray text-base lg:text-lg">
-            {/* {findNext.length} out of{" "}
-            {(GetAllJob as any)?.pagination?.totalCount}
-            100 */}
-            <span className="text-primary font-medium">1-20 of 2000</span>{" "}
-            Search Result
+            {findNext.length > 0
+              ? (GetAllJob as any).pagination.limit *
+                  ((GetAllJob as any).pagination.currentPage - 1) +
+                1
+              : 0}
+            -
+            {Math.min(
+              findNext.length,
+              (GetAllJob as any)?.pagination.limit *
+                (GetAllJob as any)?.pagination.currentPage
+            )}{" "}
+            of {(GetAllJob as any)?.pagination?.totalCount || 0} Search Result
           </p>
           <div className="w-full sm:w-[280px] md:w-[360px]">
             <Select
@@ -354,13 +252,13 @@ const MainSection: React.FC = () => {
               >
                 <SelectValue placeholder="Choose SortOut">
                   <span className="text-gray font-normal">Sort by:</span>{" "}
-                  {sortBy}
+                  {sortBy === "relevant" ? "Relevant" : "Most Recent"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-white p-2">
                 <SelectGroup>
-                  <SelectItem value="Relevant">Relevant</SelectItem>
-                  <SelectItem value="Most Recent">Most Recent</SelectItem>
+                  <SelectItem value="relevant">Relevant</SelectItem>
+                  <SelectItem value="most_recent">Most Recent</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -598,14 +496,140 @@ const MainSection: React.FC = () => {
             {findNext.length > 0 ? (
               <>
                 <p className="text-gray text-base lg:text-lg mb-4">
-                  {/* {findNext.length} out of{" "}
-            {(GetAllJob as any)?.pagination?.totalCount}
-            100 */}
-                  <span className="text-primary font-medium">1-20 of 2000</span>{" "}
-                  Search Result
+                  {findNext.length > 0
+                    ? (GetAllJob as any).pagination.limit *
+                        ((GetAllJob as any).pagination.currentPage - 1) +
+                      1
+                    : 0}
+                  -
+                  {Math.min(
+                    findNext.length,
+                    (GetAllJob as any)?.pagination.limit *
+                      (GetAllJob as any)?.pagination.currentPage
+                  )}{" "}
+                  of {(GetAllJob as any)?.pagination?.totalCount || 0} Search
+                  Result
                 </p>
                 <div className="flex flex-col gap-4 lg:gap-4 laptop:gap-5 desktop:gap-8">
-                  <JobPostDiv findNext={findNext} />
+                  {findNext &&
+                    findNext.map((job: any, index: any) => (
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/find-talent/${job.id}`);
+                        }}
+                        key={job.id}
+                        className="border-2 border-primary rounded-[12px] md:rounded-2xl p-4 lg:p-5 desktop:p-6 flex flex-col gap-5 hover:shadow-shadow1 cursor-pointer"
+                      >
+                        <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
+                          <div className="flex items-center gap-2 md:gap-3 lg:gap-4 desktop:gap-5">
+                            {job && job?.profile_photo && (
+                              <img
+                                src={`${PHOTO_URL}/${job.profile_photo}`}
+                                alt="icon"
+                                className="w-[55px] desktop:w-[80px] h-[55px] desktop:h-[80px] border border-gray5 rounded-[8px]"
+                              />
+                            )}
+                            <div className="flex flex-col gap-2">
+                              <h4
+                                className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3"
+                                style={{
+                                  backdropFilter: "blur(12px)",
+                                  WebkitBackdropFilter: "blur(12px)",
+                                  WebkitFilter: "blur(12px)",
+                                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                                }}
+                              >
+                                {job?.name}
+                              </h4>
+                              <div className="text-gray text-sm md:text-base desktop:text-lg">
+                                {job.job_title}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2 lg:gap-4 desktop:gap-5 items-center">
+                          <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                            <img
+                              src={Ic_location}
+                              alt="location"
+                              className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                            />
+                            <span className="text-gray text-sm md:text-base desktop:text-xl relative">
+                              {convertJobLocation(job.location)[0]}
+                              &nbsp;
+                              {convertJobLocation(job.location).slice(1)
+                                .length > 0 && (
+                                <span
+                                  className="text-primary underline font-semibold"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleDropdown(index, e);
+                                  }}
+                                >
+                                  +
+                                  {
+                                    convertJobLocation(job.location).slice(1)
+                                      .length
+                                  }
+                                </span>
+                              )}
+                              {isDropdownOpen === index && (
+                                <div className="location-dropdown absolute">
+                                  {convertJobLocation(job.location)
+                                    .slice(1)
+                                    .map((location, index) => (
+                                      <div
+                                        key={index}
+                                        className="dropdown-item"
+                                      >
+                                        {location}
+                                      </div>
+                                    ))}
+                                </div>
+                              )}
+                            </span>
+                          </div>
+                          <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
+                          <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                            <img
+                              src={Ic_experience}
+                              alt="experience"
+                              className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                            />
+                            <span className="text-gray text-sm md:text-base desktop:text-xl">
+                              {job?.total_experience} Years
+                            </span>
+                          </div>
+                          <div className="border-l border-primary h-[25px] lg:h-[30px] hidden sm:block"></div>
+                          <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                            <img
+                              src={Ic_call}
+                              alt="time"
+                              className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                            />
+                            <span className="text-gray text-sm md:text-base desktop:text-xl">
+                              {maskPhoneNumber(job?.mobile_no)}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          <img src={Ic_file} alt="icon" />
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: job.bio,
+                            }}
+                            className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
+                          />
+                        </div>
+                        <div className="border-t w-full border-gray5"></div>
+                        <div className="flex flex-col gap-4 lg:gap-2 lg:flex-row justify-between lg:items-center">
+                          <div className="flex flex-wrap items-center gap-3 md:gap-4 desktop:gap-5">
+                            <JobTagsDisplay tags={job.skills} />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </>
             ) : (
@@ -615,7 +639,7 @@ const MainSection: React.FC = () => {
                   alt="img"
                   className="mb-2.5 md:mb-4 desktop:mb-6"
                 />
-                <h4 className="text-lg sm:text-xl md:text-[20px] desktop:text-[24px] text-primary font-semibold mb-1 md:mb-2 desktop:mb-3">
+                <h4 className="text-lg sm:text-xl md:text-[20px] desktop:text-[24px] text-primary font-semibold mb-1 md:mb-2 desktop:mb-3 text-center">
                   No Research Results Found
                 </h4>
                 <p className="text-gray text-sm md:text-base desktop:text-lg">
@@ -624,16 +648,12 @@ const MainSection: React.FC = () => {
               </div>
             )}
 
-            {findNext.length > 5 ? (
+            {(GetAllJob as any)?.pagination?.totalCount >
+            (GetAllJob as any)?.pagination?.limit ? (
               <div className="flex justify-center mt-7 lg:mt-9">
-                {/* <Pagination
+                <Pagination
                   currentPage={(GetAllJob as any)?.pagination.currentPage}
                   totalPages={(GetAllJob as any)?.pagination.totalPages}
-                  onPageChange={handlePageChange}
-                /> */}
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={10}
                   onPageChange={handlePageChange}
                 />
               </div>

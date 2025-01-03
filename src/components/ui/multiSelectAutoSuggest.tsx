@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Autosuggest, {
   SuggestionsFetchRequestedParams,
 } from "react-autosuggest";
 import Ic_close_black from "../../assets/images/Ic_close_black.svg";
+import ApiUtils from "@/api/ApiUtils";
 
 interface Option {
   label: string;
@@ -24,22 +25,23 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
   className,
 }) => {
   const [suggestions, setSuggestions] = useState<any[]>([]);
-  //   const [countries, setCountries] = useState<any[]>([]);
+  const [countries, setCountries] = useState<any[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  //   const fetchCountries = async (inputValue: string) => {
-  //     try {
-  //       const response: any = await ApiUtils.getLocation(inputValue);
-  //       const countriesWithStates = response?.data?.data?.map((country: any) => ({
-  //         city: country.city,
-  //         states: country.state,
-  //       }));
-  //       setCountries(countriesWithStates);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
+  const fetchCountries = async (inputValue: string) => {
+    try {
+      const response: any = await ApiUtils.getLocation(inputValue);
+      const countriesWithStates = response?.data?.data?.map((country: any) => ({
+        city: country.city,
+        states: country.state,
+      }));
+      setCountries(countriesWithStates);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const renderSuggestion = (
     suggestion: { name: string },
@@ -67,19 +69,6 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
     );
   };
 
-  const countries = [
-    { city: "New York", states: "New York" },
-    { city: "Los Angeles", states: "California" },
-    { city: "Chicago", states: "Illinois" },
-    { city: "Houston", states: "Texas" },
-    { city: "Phoenix", states: "Arizona" },
-    { city: "Philadelphia", states: "Pennsylvania" },
-    { city: "San Antonio", states: "Texas" },
-    { city: "San Diego", states: "California" },
-    { city: "Dallas", states: "Texas" },
-    { city: "San Jose", states: "California" },
-  ];
-
   useEffect(() => {
     if (Array.isArray(value) && value.length > 0) {
       const initialSelectedOptions = value.map((val: string) => ({
@@ -90,15 +79,16 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
     }
   }, [value]);
 
-  //   useEffect(() => {
-  //     if (inputValue) {
-  //       fetchCountries(inputValue);
-  //     }
-  //   }, [inputValue]);
+  useEffect(() => {
+    if (inputValue) {
+      fetchCountries(inputValue);
+    }
+  }, [inputValue]);
 
   const getSuggestions = (inputValue: string) => {
     const input = inputValue.trim().toLowerCase();
     if (input.length === 0) return [];
+
     return countries
       .filter(
         (location) =>
@@ -148,17 +138,19 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
       setInputValue(newValue);
     },
     className: `focus:border-none focus:outline-none flex items-center h-full placeholder:text-[#767676] placeholder:text-lg`,
+    ref: inputRef,
   };
 
-  useEffect(() => {
-    onChange(selectedOptions);
-  }, [selectedOptions, onChange]);
+  // useEffect(() => {
+  //   onChange(selectedOptions);
+  // }, [selectedOptions, onChange]);
 
   return (
     <div
       className={`flex flex-wrap gap-2 min-h-10 lg:min-h-12 max-h-auto w-full rounded-[8px] px-3 py-2 ${
         className || ""
       }`}
+      onClick={() => inputRef.current?.focus()}
     >
       {selectedOptions.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-2">
@@ -186,11 +178,6 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
         onSuggestionsClearRequested={onSuggestionsClearRequested}
         getSuggestionValue={(suggestion: any) => suggestion.name}
-        // renderSuggestion={(suggestion) => (
-        //   <div className="px-2 py-1.5 text-primary bg-white">
-        //     {suggestion.name}
-        //   </div>
-        // )}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
         onSuggestionSelected={(_, { suggestion }) =>

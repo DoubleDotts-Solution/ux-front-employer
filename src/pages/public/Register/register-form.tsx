@@ -18,6 +18,7 @@ import Ic_close_black from "@/assets/images/Ic_close_black.svg";
 import { Eye, EyeOff } from "lucide-react";
 import ButtonUx from "@/components/common/button";
 import { InputMobile } from "@/components/ui/inputMobile";
+import { useGoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
@@ -26,6 +27,7 @@ import { setCredentials } from "@/store/slice/auth.slice";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "@/store/slice/user.slice";
 import { toast } from "react-hot-toast";
+import { GOOGLE_CLIENT_ID } from "@/config/constant";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -75,7 +77,6 @@ const RegisterForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
     // setSuccessfullyRegister(true);
 
     try {
@@ -113,7 +114,44 @@ const RegisterForm: React.FC = () => {
   const handleClose = () => {
     setSuccessfullyRegister(false);
   };
+  const handleGoogleLoginSuccess = async (response: any) => {
+    try {
+      const data: any = await ApiUtils.authGoogleResponse({
+        token: response.access_token,
+      });
 
+      if (data?.status === 200 || data?.status === 201) {
+        form.setValue("email", data?.data?.user?.email);
+        form.setValue("name", data?.data?.user?.fullName);
+      } else {
+        toast.error("Something went Wrong!", {
+          position: "top-right",
+        });
+      }
+    } catch (error) {
+      console.error("Validation error:", error);
+      toast.error("User not found, please resister your Account", {
+        position: "top-right",
+      });
+      return;
+    }
+  };
+
+  const handleGoogleLoginError = (error: any) => {
+    console.error("Google login error", error);
+    toast.error("Google login failed. Please try again.", {
+      position: "top-right",
+    });
+  };
+
+  const googleLoginOptions: any = {
+    clientId: GOOGLE_CLIENT_ID,
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginError,
+    redirectUri: "http://localhost:5173",
+  };
+
+  const googleLogin = useGoogleLogin(googleLoginOptions);
   return (
     <>
       <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8">
@@ -463,7 +501,10 @@ const RegisterForm: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="flex justify-center items-center gap-[10px] md:gap-[20px] rounded-[8px] border border-gray5 p-3 bg-lightChiku2 cursor-pointer">
+        <div
+          className="flex justify-center items-center gap-[10px] md:gap-[20px] rounded-[8px] border border-gray5 p-3 bg-lightChiku2 cursor-pointer"
+          onClick={() => googleLogin()}
+        >
           <img
             src={google}
             alt="google"

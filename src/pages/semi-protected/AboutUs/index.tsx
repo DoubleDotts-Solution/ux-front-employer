@@ -9,7 +9,7 @@ export const AboutUs: React.FC = () => {
     <div className="relative">
       <div className="bg-lightYellow relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-6 md:py-[61px]">
         {/* <nav className="flex items-center gap-2 mb-5 md:mb-8">
-          <Link to={"/"}>
+          <Link to={"/companies"}>
             <img src={Ic_left_arrow} alt="arrow" />
           </Link>
           <Link to={"/"}>

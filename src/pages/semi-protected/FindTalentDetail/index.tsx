@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Ic_left_arrow from "@/assets/images/Ic_left_arrow.svg";
 import Ic_right_breadCrumb_arrow from "@/assets/images/Ic_right_breadCrumb_arrow.svg";
-import Img_john from "@/assets/images/Img_john.png";
 import { Link } from "react-router-dom";
 import JobsOpportunity from "@/components/jobsOpportunity";
 import Ic_profile_location from "@/assets/images/Ic_profile_location.svg";
@@ -9,8 +9,81 @@ import Ic_profile_experience from "@/assets/images/Ic_profile_experience.svg";
 import Ic_profile_link from "@/assets/images/Ic_profile_link.svg";
 import Ic_profile_salary from "@/assets/images/Ic_profile_salary.svg";
 import Img_profile_no_data from "@/assets/images/Img_profile_no_data.png";
+import { useGetSingleFindTalentQuery } from "@/store/slice/apiSlice/findTalentApi";
+import Loading from "@/components/common/loading";
+import { PHOTO_URL } from "@/config/constant";
+import Img_company from "@/assets/images/Img_company.svg";
+import Ic_education from "@/assets/images/Ic_education.svg";
 
 export const FindTalentDetail: React.FC = () => {
+  const { data, isLoading } = useGetSingleFindTalentQuery(
+    location.pathname.match(/\/find-talent\/(\d+)/)?.[1]
+  );
+
+  const userDetails = (data as any)?.data || [];
+  console.log(userDetails);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  const transformToArray = (value: any) =>
+    value
+      ? value.split(",").map((item: any) => item.trim().replace(/^'|'$/g, ""))
+      : [];
+
+  const openForRoleArray = transformToArray(
+    typeof userDetails?.open_for_role === "string"
+      ? userDetails?.open_for_role
+      : ""
+  );
+
+  const preferJobTypeArray = transformToArray(
+    typeof userDetails?.preferred_job_type === "string"
+      ? userDetails?.preferred_job_type
+      : ""
+  );
+  const preferWorkPlaceArray = transformToArray(
+    typeof userDetails?.preferred_wrok_place === "string"
+      ? userDetails?.preferred_wrok_place
+      : ""
+  );
+
+  const relocateLocationArray =
+    userDetails?.readyToRelocate === "yes" &&
+    userDetails?.relocate_preferred_location
+      .split("','")
+      .map((loc: string) => loc.replace(/^'|'$/g, ""));
+
+  const formatDate = (date: string) => {
+    const formattedDate = new Date(date);
+    const options: any = { year: "numeric", month: "long" };
+    return formattedDate.toLocaleDateString("en-US", options);
+  };
+
+  const calculateDateDifference = (startDate: string) => {
+    const start = new Date(startDate);
+    const today = new Date();
+
+    const yearsDifference = today.getFullYear() - start.getFullYear();
+    let monthsDifference = today.getMonth() - start.getMonth();
+
+    if (monthsDifference < 0) {
+      monthsDifference += 12;
+    }
+
+    const years =
+      monthsDifference === 12 ? yearsDifference + 1 : yearsDifference;
+
+    const result = [];
+    if (years > 0) {
+      result.push(`${years} Years`);
+    }
+    if (monthsDifference > 0) {
+      result.push(`${monthsDifference} Months`);
+    }
+
+    return result.length ? result.join(" ") : "Less than a month";
+  };
   return (
     <div className="relative">
       <div className="bg-lightYellow  relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] pt-5 md:pt-6 pb-6 md:pb-10">
@@ -28,38 +101,56 @@ export const FindTalentDetail: React.FC = () => {
             </span>
           </Link>
           <img src={Ic_right_breadCrumb_arrow} alt="arrow" />
-          <span className="text-gray text-sm">John Doe</span>
+          <span className="text-gray text-sm">{userDetails?.name}</span>
         </nav>
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="w-[80px] h-[80px] md:w-[130px] md:h-[130px] lg:w-[180px] lg:h-[180px] desktop:w-[206px] desktop:h-[206px] border-2 border-primary bg-[#D2EBFF] rounded-[8px] flex items-center justify-center text-primary font-semibold text-2xl md:text-3xl desktop:text-[48px]">
-            <img src={Img_john} alt="image" />
+            {userDetails?.profile_photo ? (
+              <img
+                src={`${PHOTO_URL}/${userDetails?.profile_photo}`}
+                alt="profile"
+                className="w-full h-full"
+              />
+            ) : (
+              userDetails &&
+              userDetails?.name &&
+              userDetails?.name.charAt(0).toUpperCase()
+            )}
           </div>
           <div className="flex flex-col gap-4 flex-1 w-full">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 w-full">
               <div className="flex flex-col gap-1">
                 <div className="flex gap-3 items-center">
                   <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
-                    Karthikeyan R
+                    {userDetails?.name}
                   </h3>
-                  <div className="bg-lightChiku2 py-1 px-2 text-sm text-gray rounded-[8px]">
-                    He/Him
-                  </div>
-                  <div className="bg-lightChiku2 py-1 px-2 text-sm text-gray rounded-[8px]">
-                    Male
-                  </div>
+                  {userDetails && userDetails?.pronouns && (
+                    <div className="bg-lightChiku2 py-1 px-2 text-sm text-gray rounded-[8px]">
+                      {userDetails && userDetails?.pronouns}
+                    </div>
+                  )}
+                  {userDetails && userDetails?.gender && (
+                    <div className="bg-lightChiku2 py-1 px-2 text-sm text-gray rounded-[8px]">
+                      {userDetails?.gender}
+                    </div>
+                  )}
                 </div>
                 <div className="text-sm md:text-base desktop:text-lg text-gray font-medium">
-                  Graphic Designer
+                  {userDetails && userDetails?.job_title}
                 </div>
                 <p className="text-primary text-sm lg:text-base">
-                  at Lollipop Design Studio
+                  {userDetails &&
+                  userDetails?.current_company &&
+                  userDetails?.current_company.name
+                    ? userDetails?.current_company.name
+                    : "-"}
                 </p>
               </div>
-              <div className="flex flex-col gap-4 items-start sm:items-end">
+              {/* <div className="flex flex-col gap-4 items-start sm:items-end">
                 <div className="bg-lightGreen py-1 px-2 text-primary rounded-[8px] text-sm">
                   Actively Looking
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="w-full bg-gray5 h-[1px]"></div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-[48px] md:gap-[68px] desktop:gap-[80px]">
@@ -67,24 +158,42 @@ export const FindTalentDetail: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_location} alt="location" />
                   <span className="text-sm text-gray">
-                    Bangalore, Karnataka
+                    {userDetails && userDetails?.location}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_experience} alt="experience" />
-                  <span className="text-sm text-gray">4 Years</span>
+                  <span className="text-sm text-gray">
+                    {userDetails && userDetails?.total_experience
+                      ? `${userDetails?.total_experience} Years`
+                      : "-"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_salary} alt="salary" />
-                  <span className="text-sm text-gray">₹6,00,000</span>
+                  <span className="text-sm text-gray">
+                    {userDetails && userDetails?.current_salary_currency
+                      ? userDetails?.current_salary_currency.slice(
+                          userDetails?.current_salary_currency.indexOf("(") + 1,
+                          userDetails?.current_salary_currency.indexOf(")")
+                        )
+                      : "-"}{" "}
+                    {userDetails && userDetails?.current_salary_fixed_amount
+                      ? userDetails?.current_salary_fixed_amount
+                      : "-"}
+                  </span>
                 </div>
               </div>
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_link} alt="link" />
-                  <Link to={""} className="text-sm text-primary font-semibold">
+                  <a
+                    href={userDetails?.portfolio_link}
+                    target="__blank"
+                    className="text-sm text-primary font-semibold"
+                  >
                     Portfolio
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -98,15 +207,7 @@ export const FindTalentDetail: React.FC = () => {
             About
           </h4>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            {userDetails && userDetails?.bio ? userDetails?.bio : "-"}
           </p>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
@@ -114,18 +215,18 @@ export const FindTalentDetail: React.FC = () => {
             Open for Roles
           </h4>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              UI UX Designer
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Product Designer
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Product Manager
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              UX Designer
-            </div>
+            {openForRoleArray && openForRoleArray.length > 0
+              ? openForRoleArray.map((role: string, index: number) => {
+                  return (
+                    <div
+                      className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg"
+                      key={index}
+                    >
+                      {role}
+                    </div>
+                  );
+                })
+              : "-"}
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
@@ -138,7 +239,9 @@ export const FindTalentDetail: React.FC = () => {
                 Total Experience
               </span>
               <span className="text-gray text-sm md:text-base desktop:text-lg">
-                -
+                {userDetails && userDetails?.total_experience
+                  ? `${userDetails?.total_experience} Years`
+                  : "-"}
               </span>
             </div>
             <div className="flex-col flex gap-2">
@@ -146,7 +249,9 @@ export const FindTalentDetail: React.FC = () => {
                 Relevant Experience
               </span>
               <span className="text-gray text-sm md:text-base desktop:text-lg">
-                -
+                {userDetails && userDetails?.relevant_experience
+                  ? `${userDetails?.relevant_experience} Years`
+                  : "-"}
               </span>
             </div>
           </div>
@@ -155,64 +260,117 @@ export const FindTalentDetail: React.FC = () => {
           <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Current Job Details
           </h4>
-          <div className="flex gap-3 items-center">
-            <img
-              src={Img_profile_no_data}
-              alt="image"
-              className="w-[48px] h-[48px]"
-            />
-            <p className="text-gray text-sm md:text-base desktop:text-lg">
-              No Experience Added
-            </p>
-          </div>
+          {userDetails && userDetails?.current_company?.name ? (
+            <div className="flex gap-3 items-center">
+              <div className="w-[48px] h-[48px] sm:w-[58px] md:w-[74px] sm:h-[58px] md:h-[74px]">
+                {userDetails?.current_company?.logo ? (
+                  <img
+                    src={`${PHOTO_URL}/${userDetails?.current_company?.logo}`}
+                    alt="company"
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <img
+                    src={Img_company}
+                    alt="company"
+                    className="w-full h-full"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col gap-1">
+                <h3 className="text-sm md:text-base desktop:text-lg font-medium text-primary">
+                  {userDetails?.current_company?.name}
+                </h3>
+                <p className="text-xs md:text-sm text-primary">
+                  {userDetails?.current_job_title}
+                </p>
+                <div className="flex items-center gap-2 text-xs md:text-sm text-gray">
+                  {formatDate(userDetails?.current_job_start_date)} to Present
+                  <div className="h-[12px] w-[1px] bg-gray5"></div>
+                  {calculateDateDifference(userDetails?.current_job_start_date)}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex gap-3 items-center">
+              <img
+                src={Img_profile_no_data}
+                alt="image"
+                className="w-[48px] h-[48px]"
+              />
+              <p className="text-gray text-sm md:text-base desktop:text-lg">
+                No Experience Added
+              </p>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
           <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Highest Education Qualification
           </h4>
-          <div className="flex gap-3 items-center">
-            <img
-              src={Img_profile_no_data}
-              alt="image"
-              className="w-[48px] h-[48px]"
-            />
-            <p className="text-gray text-sm md:text-base desktop:text-lg">
-              No Highest Education
-            </p>
-          </div>
+          {userDetails && userDetails?.education_institute?.name ? (
+            <div className="flex gap-3 items-center">
+              <div className="w-[48px] h-[48px] sm:w-[58px] md:w-[74px] sm:h-[58px] md:h-[74px]">
+                {userDetails?.education_institute?.logo ? (
+                  <img
+                    src={`${PHOTO_URL}/${userDetails?.education_institute?.logo}`}
+                    alt="company"
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <img
+                    src={Ic_education}
+                    alt="education"
+                    className="w-full h-full"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col gap-1">
+                <h3 className="text-sm md:text-base desktop:text-lg font-medium text-primary">
+                  {userDetails?.education_institute?.name}
+                </h3>
+                <p className="text-xs md:text-sm text-primary">
+                  {userDetails?.degree?.name}
+                </p>
+                <div className="flex items-center gap-2 text-xs md:text-sm text-gray">
+                  {userDetails?.gpa} GPA
+                  <div className="h-[12px] w-[1px] bg-gray5"></div>
+                  {userDetails?.graduation_year}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex gap-3 items-center">
+              <img
+                src={Img_profile_no_data}
+                alt="image"
+                className="w-[48px] h-[48px]"
+              />
+              <p className="text-gray text-sm md:text-base desktop:text-lg text-center">
+                No Highest Education
+              </p>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
           <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Skills
           </h4>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              User Experience Design
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Information Architecture
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Wire framing
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              UI UX Design
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              User Research
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Personas
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Prototyping
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              UI Design
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Heuristic Evaluation
-            </div>
+            {userDetails &&
+            userDetails?.skills &&
+            userDetails?.skills?.length > 0
+              ? userDetails?.skills?.map((skill: any, index: number) => {
+                  return (
+                    <div
+                      className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg"
+                      key={index}
+                    >
+                      {skill.name}
+                    </div>
+                  );
+                })
+              : "-"}
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
@@ -220,15 +378,18 @@ export const FindTalentDetail: React.FC = () => {
             Preferred Job Type
           </h4>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Full-time
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Contract
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Freelancing
-            </div>
+            {preferJobTypeArray && preferJobTypeArray.length > 0
+              ? preferJobTypeArray.map((item: string, index: number) => {
+                  return (
+                    <div
+                      className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg"
+                      key={index}
+                    >
+                      {item}
+                    </div>
+                  );
+                })
+              : "-"}
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
@@ -236,12 +397,18 @@ export const FindTalentDetail: React.FC = () => {
             Preferred Job Type Workplace
           </h4>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Remote
-            </div>
-            <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-              Hybrid
-            </div>
+            {preferWorkPlaceArray && preferWorkPlaceArray.length > 0
+              ? preferWorkPlaceArray.map((item: string, index: number) => {
+                  return (
+                    <div
+                      className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg"
+                      key={index}
+                    >
+                      {item}
+                    </div>
+                  );
+                })
+              : "-"}
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
@@ -249,24 +416,29 @@ export const FindTalentDetail: React.FC = () => {
             Open to Relocate
           </h4>
           <h6 className="text-primary font-semibold text-sm md:text-base desktop:text-lg">
-            Yes
+            {userDetails?.readyToRelocate === "yes" ? "Yes" : "No"}
           </h6>
-          <div>
-            <div className="mb-2 text-xs lg:text-sm text-gray">
-              Desire Locations
+          {userDetails?.readyToRelocate === "yes" && (
+            <div>
+              <div className="mb-2 text-xs lg:text-sm text-gray">
+                Desire Locations
+              </div>
+              <div className="flex gap-2 md:gap-3 items-center flex-wrap">
+                {relocateLocationArray && relocateLocationArray.length > 0
+                  ? relocateLocationArray.map((item: string, index: number) => {
+                      return (
+                        <div
+                          className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg"
+                          key={index}
+                        >
+                          {item}
+                        </div>
+                      );
+                    })
+                  : "-"}
+              </div>
             </div>
-            <div className="flex gap-2 md:gap-3 items-center flex-wrap">
-              <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-                Ahmedabad, Gujarat
-              </div>
-              <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-                Bangalore, Karnataka
-              </div>
-              <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
-                Pune, Maharashtra
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
       <JobsOpportunity />

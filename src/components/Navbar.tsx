@@ -162,9 +162,7 @@ export const Navbar: React.FC = () => {
             <Link
               to={"/find-talent"}
               className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
-                currentPath === "/find-talent" ||
-                currentPath.startsWith("/find-talent/") ||
-                currentPath.startsWith("/find-talent/")
+                currentPath === "/find-talent"
                   ? "nav_active"
                   : "border-transparent"
               }`}
@@ -459,7 +457,7 @@ export const Navbar: React.FC = () => {
                 />
                 <span className="text-primary">jobsite</span>
               </div>
-              <SearchJob />
+              <SearchJob onClose={toggleSearchDiv} />
             </div>
           </div>
         </>

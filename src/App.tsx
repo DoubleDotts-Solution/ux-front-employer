@@ -4,6 +4,8 @@ import { RouterProvider } from "react-router-dom";
 import { Spinner } from "@/components";
 import { routes } from "@/routes";
 import { useLoadingWithRefresh } from "@/hooks/useLoadingWithRefresh";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GOOGLE_CLIENT_ID } from "./config/constant";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,8 +25,10 @@ export const AppLoader = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <RouterProvider router={routes} />
+      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        <Toaster />
+        <RouterProvider router={routes} />
+      </GoogleOAuthProvider>
     </QueryClientProvider>
   );
 };

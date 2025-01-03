@@ -43,7 +43,7 @@ import {
 import { useSelector } from "react-redux";
 import Loading from "@/components/common/loading";
 import { PHOTO_URL } from "@/config/constant";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useCreateJobApiMutation } from "@/store/slice/apiSlice/jobsApi";
 
 const changeStatusFormSchema = z.object({

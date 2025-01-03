@@ -1,7 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-// import { Link } from "react-router-dom";
-// import Ic_left_arrow from "@/assets/images/Ic_left_arrow.svg";
-// import Ic_right_breadCrumb_arrow from "@/assets/images/Ic_right_breadCrumb_arrow.svg";
 import Ic_email from "@/assets/images/Ic_email_black.svg";
 import Ic_call from "@/assets/images/Ic_call_black.png";
 import { useForm } from "react-hook-form";
@@ -16,9 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TextArea } from "@/components/ui/textarea";
-// import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import ButtonUx from "@/components/common/button";
 import { InputMobile } from "@/components/ui/inputMobile";
+import Loading from "@/components/common/loading";
+import { useCreateContactApiMutation } from "@/store/slice/apiSlice/contactApi";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -46,48 +46,36 @@ export const ContactUs: React.FC = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const [handleContact, { isLoading }] = useCreateContactApiMutation();
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    // form.reset();
+    try {
+      const response: any = await handleContact(data);
 
-    // try {
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //   const response: any = await handleContact(data);
-
-    //   if (response && response.data.status === 200) {
-    //     toast.success("Submit successfully", { position: "top-right" });
-    //     form.reset();
-    //   } else {
-    //     toast.error(response.error || "Registration failed", {
-    //       position: "top-right",
-    //     });
-    //     console.error("API error:", response.error);
-    //   }
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // } catch (error: any) {
-    //   toast.error("Something Went Wrong!", {
-    //     position: "top-right",
-    //   });
-    //   console.error("Validation error:", error);
-    // }
+      if (response && response.data.status === 200) {
+        toast.success("Submit successfully", { position: "top-right" });
+        form.reset();
+      } else {
+        toast.error(response.error || "Registration failed", {
+          position: "top-right",
+        });
+        console.error("API error:", response.error);
+      }
+    } catch (error: any) {
+      toast.error("Something Went Wrong!", {
+        position: "top-right",
+      });
+      console.error("Validation error:", error);
+    }
   };
 
   const validForm = form.formState.isValid;
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="relative">
       <div className="bg-lightYellow  relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-6 md:py-[61px]">
-        {/* <nav className="flex items-center gap-2 mb-5 md:mb-8">
-          <Link to={"/"}>
-            <img src={Ic_left_arrow} alt="arrow" />
-          </Link>
-          <Link to={"/"}>
-            <span className="text-primary text-sm font-semibold">Home</span>
-          </Link>
-          <img src={Ic_right_breadCrumb_arrow} alt="arrow" />
-          <span className="text-gray text-sm">Contact Us</span>
-        </nav> */}
         <div className="flex flex-col gap-[12px]">
           <h2 className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl font-semibold desktop:leading-[54px]">
             Contact Us
@@ -125,7 +113,7 @@ export const ContactUs: React.FC = () => {
                               <Input
                                 placeholder="Enter your Name"
                                 {...field}
-                                className={`bg-white border-2
+                                className={`bg-white border-2 text-primary
                                   ${
                                     fieldState?.error
                                       ? "border-red"
@@ -158,7 +146,7 @@ export const ContactUs: React.FC = () => {
                               <Input
                                 placeholder="Enter your email ID"
                                 {...field}
-                                className={`bg-white border-2
+                                className={`bg-white text-primary border-2
                                   ${
                                     fieldState?.error
                                       ? "border-red"
@@ -191,7 +179,7 @@ export const ContactUs: React.FC = () => {
                               <InputMobile
                                 placeholder="Enter your Mobile Number"
                                 {...field}
-                                className={`bg-white border-2
+                                className={`bg-white text-primary border-2
                                   ${
                                     fieldState?.error
                                       ? "border-red"
@@ -224,7 +212,7 @@ export const ContactUs: React.FC = () => {
                               <Input
                                 placeholder="Enter your purpose"
                                 {...field}
-                                className={`bg-white border-2
+                                className={`bg-white text-primary border-2
                                   ${
                                     fieldState?.error
                                       ? "border-red"
@@ -257,7 +245,7 @@ export const ContactUs: React.FC = () => {
                               <TextArea
                                 placeholder="Enter the message"
                                 {...field}
-                                className={`bg-white  
+                                className={`bg-white text-primary
                                   ${
                                     fieldState?.error
                                       ? "border-red"

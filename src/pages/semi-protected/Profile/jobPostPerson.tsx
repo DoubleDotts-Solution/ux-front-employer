@@ -64,8 +64,6 @@ const JobPostedPerson: React.FC = () => {
   }, [AppliedJobDataArray, personId]);
 
   const downloadResume = async (resume: any, e: any) => {
-    console.log(resume);
-
     e.stopPropagation();
     if (resume) {
       try {
@@ -75,7 +73,6 @@ const JobPostedPerson: React.FC = () => {
         const url = window.URL.createObjectURL(blob);
         const tempLink = document.createElement("a");
         tempLink.href = url;
-        console.log(url);
 
         tempLink.setAttribute(
           "download",

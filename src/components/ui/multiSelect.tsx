@@ -4,7 +4,7 @@ import Ic_close_black from "@/assets/images/Ic_close_black.svg";
 import Ic_down_arrow from "@/assets/images/Ic_down_arrow.svg";
 
 interface Option {
-  value: string;
+  value: string | number;
   label: string;
 }
 
@@ -103,7 +103,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         </div>
         {isOpen && (
           <div className="absolute z-10 top-[40px] lg:top-[48px] left-0 w-full mt-1 bg-white border rounded-[8px] shadow-lg max-h-60 overflow-auto">
-            {options.map((option) => (
+            {options?.map((option) => (
               <div
                 key={option.value}
                 className={`p-2 cursor-pointer hover:bg-gray-100 ${
@@ -121,7 +121,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       </div>
       {selectedOptions?.length > 0 && (
         <div className="flex flex-wrap gap-2 items-center py-2">
-          {selectedOptions.map((option) => (
+          {selectedOptions?.map((option) => (
             <div
               key={option.value}
               className="flex items-center bg-lightChiku2 text-gray rounded-[8px] px-2 py-[3.5px] gap-[4px]"

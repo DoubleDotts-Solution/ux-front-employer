@@ -10,7 +10,25 @@ const jobApi = mainApi.injectEndpoints({
         body: data,
       }),
     }),
+    updateJobApi: builder.mutation<any, { data: any; id: number }>({
+      query: ({ data, id }) => ({
+        url: `jobs/update/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    getJobType: builder.query<unknown, { data: any }>({
+      query: (data: any) => ({
+        url: `job-type`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useCreateJobApiMutation } = jobApi;
+export const {
+  useCreateJobApiMutation,
+  useGetJobTypeQuery,
+  useUpdateJobApiMutation,
+} = jobApi;

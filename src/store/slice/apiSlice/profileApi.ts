@@ -63,6 +63,13 @@ const profileApi = mainApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getSkills: builder.query<unknown, { data: any }>({
+      query: (data: any) => ({
+        url: `skills`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -76,4 +83,5 @@ export const {
   useJobChangeStatusMutation,
   useDeleteJobMutation,
   useListOfJobSeekerQuery,
+  useGetSkillsQuery,
 } = profileApi;

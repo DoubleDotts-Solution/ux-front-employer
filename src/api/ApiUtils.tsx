@@ -125,7 +125,10 @@ const ApiUtils = {
   },
   authGoogleLogin: async function (data: any) {
     try {
-      const response = await api.post(`${BASE_URL}employer/google/login`, data);
+      const response = await api.post(
+        `${BASE_URL}job-seeker/google/login`,
+        data
+      );
       return response;
     } catch (error: any) {
       throw error.response;
@@ -134,7 +137,7 @@ const ApiUtils = {
   authGoogleResponse: async function (data: any) {
     try {
       const response = await api.post(
-        `${BASE_URL}employer/google/response`,
+        `${BASE_URL}job-seeker/google/response`,
         data
       );
       return response;

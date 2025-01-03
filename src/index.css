@@ -714,7 +714,8 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 12px;
   left: 0;
   width: 100%;
-  top: 46px;
+  z-index: -1 !important;
+  top: auto;
 }
 .react-autosuggest__suggestions-container--open {
   z-index: 9999999 !important;

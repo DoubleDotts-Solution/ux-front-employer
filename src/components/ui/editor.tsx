@@ -2,7 +2,6 @@
 import { Component } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { RangeStatic } from "quill";
 
 interface QuillRichEditorProps {
   initialValue?: string;
@@ -128,7 +127,7 @@ class QuillRichEditor extends Component<
           if (range && quill) {
             const url = reader.result as string;
             quill.insertEmbed(range.index, "image", url);
-            const newRange: RangeStatic = {
+            const newRange: any = {
               index: range.index + 1,
               length: 0,
             };

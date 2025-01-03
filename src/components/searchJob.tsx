@@ -23,6 +23,7 @@ import {
 import AutocompleteInput from "@/components/ui/inputLocation";
 import ButtonUx from "./common/button";
 import AutocompleteInputMultiple from "./ui/autoSelectMultiple";
+import { useNavigate } from "react-router-dom";
 
 const experienceArray = [
   { name: "Fresher (Less then 1 Year)" },
@@ -36,12 +37,6 @@ const experienceArray = [
 ];
 
 const formSchema = z.object({
-  // search: z
-  //   .string()
-  //   .min(1, {
-  //     message: "Username must be at least 1 character.",
-  //   })
-  //   .optional(),
   search: z
     .array(
       z.string().min(1, {
@@ -63,30 +58,49 @@ const formSchema = z.object({
     .optional(),
 });
 
-const SearchJob: React.FC = () => {
-  // const navigate = useNavigate();
+const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
+  const navigate = useNavigate();
+  const [remoteJobsOnly, setRemoteJobsOnly] = useState(false);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    const formattedSearch = data.search ? data.search.join(", ") : "";
 
-    // const queryParams: string[] = [];
-    // if (data.search !== undefined) {
-    //   const formattedSearch = data.search.trim().replace(/[\s,]+/g, "-");
-    //   queryParams.push(`search=${encodeURIComponent(formattedSearch)}`);
-    // }
-    // if (data.experience !== undefined) {
-    //   const formattedexperience = data.experience.trim().replace(/[\s,]+/g, "-");
-    //   queryParams.push(`experience=${encodeURIComponent(formattedexperience)}`);
-    // }
-    // if (data.city !== undefined) {
-    //   const formattedCity = data.city.trim().replace(/[\s,]+/g, "-");
-    //   queryParams.push(`city=${encodeURIComponent(formattedCity)}`);
-    // }
+    const queryParams: string[] = [];
+    const formatValue = (value: string): string => {
+      return value
+        .split(", ")
+        .map((item) => item.trim().replace(/\s+/g, "_"))
+        .join("-");
+    };
 
-    // if (queryParams.length > 0) {
-    //   const queryString = queryParams.join("&");
-    //   navigate(`/jobs?${queryString}`);
-    // }
+    if (data.search !== undefined) {
+      queryParams.push(`search=${formatValue(formattedSearch)}`);
+    }
+    if (data.experience !== undefined) {
+      const formattedexperience = data.experience
+        .trim()
+        .replace(/[\s,]+/g, "-");
+      queryParams.push(`experience=${encodeURIComponent(formattedexperience)}`);
+    }
+    if (data.city !== undefined) {
+      queryParams.push(`city=${data.city}`);
+    }
+    if (remoteJobsOnly === true) {
+      queryParams.push(`remote=remote`);
+    }
+
+    if (queryParams.length > 0) {
+      const queryString = queryParams.join("&");
+      if (location.pathname === "/find-talent") {
+        navigate(`/find-talent?${queryString}`);
+        window.location.reload();
+      } else {
+        navigate(`/find-talent?${queryString}`);
+      }
+      if (onClose) {
+        onClose();
+      }
+    }
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -197,7 +211,11 @@ const SearchJob: React.FC = () => {
                 />
                 <label className="container text-white text-sm mt-2 mb-3">
                   Remote Jobs Only
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={remoteJobsOnly}
+                    onChange={() => setRemoteJobsOnly((prev) => !prev)}
+                  />
                   <span className="checkmark"></span>
                 </label>
               </div>
