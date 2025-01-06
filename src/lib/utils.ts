@@ -35,10 +35,17 @@ export function convertJobLocation(jobLocationString: string): string[] {
   const jobLocationArray: string[] = [];
 
   for (let i = 0; i < locations?.length; i += 2) {
-    if (i + 1 < locations?.length) {
-      jobLocationArray.push(
-        `${locations[i].trim()}, ${locations[i + 1].trim()}`
-      );
+    if (i + 1 < locations.length) {
+      const firstLocation = locations[i]
+        .trim()
+        .replace(/^['"]/, "")
+        .replace(/['"]$/, "");
+      const secondLocation = locations[i + 1]
+        .trim()
+        .replace(/^['"]/, "")
+        .replace(/['"]$/, "");
+
+      jobLocationArray.push(`${firstLocation}, ${secondLocation}`);
     }
   }
 
