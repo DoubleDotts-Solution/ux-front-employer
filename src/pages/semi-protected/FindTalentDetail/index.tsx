@@ -21,7 +21,6 @@ export const FindTalentDetail: React.FC = () => {
   );
 
   const userDetails = (data as any)?.data || [];
-  console.log(userDetails);
 
   if (isLoading) {
     return <Loading />;

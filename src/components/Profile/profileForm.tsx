@@ -14,6 +14,7 @@ import { Input } from "../ui/input";
 import ButtonUx from "../common/button";
 import AutocompleteInput from "../ui/inputLocation";
 import Ic_search from "@/assets/images/Ic_search.svg";
+import Ic_check_circle from "@/assets/images/Ic_check_circle.svg";
 import { TextArea } from "../ui/textarea";
 import { InputMobile } from "../ui/inputMobile";
 import { PHOTO_URL } from "@/config/constant";
@@ -26,6 +27,7 @@ import {
 import ApiUtils from "@/api/ApiUtils";
 import { setUserDetails } from "@/store/slice/user.slice";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   company_name: z.string().min(2, {
@@ -486,6 +488,11 @@ const ProfileForm: React.FC = () => {
                                 } `}
                               type="email"
                             />
+                            <img
+                              src={Ic_check_circle}
+                              alt="icon"
+                              className="absolute top-[8px] lg:top-[12px] right-[8px] lg:right-[12px]"
+                            />
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -519,6 +526,26 @@ const ProfileForm: React.FC = () => {
                                       } border-2 rounded-[8px]`}
                               type="tel"
                             />
+                            {userDetails?.verifyOtp === "yes" ? (
+                              <img
+                                src={Ic_check_circle}
+                                alt="icon"
+                                className="absolute top-[8px] lg:top-[12px] right-[8px] lg:right-[12px]"
+                              />
+                            ) : (
+                              <Link
+                                to={"/verify-otp"}
+                                className="text-primary text-sm font-semibold absolute top-[10px] lg:top-[14px] right-[8px] lg:right-[12px]"
+                                onClick={() => {
+                                  localStorage.setItem(
+                                    "triggerResendOTP",
+                                    "true"
+                                  );
+                                }}
+                              >
+                                Verify
+                              </Link>
+                            )}
                           </div>
                         </FormControl>
                         <FormMessage />

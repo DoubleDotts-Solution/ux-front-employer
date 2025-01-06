@@ -6,7 +6,7 @@ import Ic_menu from "@/assets/images/Ic_menu.svg";
 import Ic_down_arrow from "@/assets/images/Ic_down_arrow.svg";
 import ButtonUx from "./common/button";
 import Ic_profile from "@/assets/images/Ic_profile.svg";
-import Ic_saved_jobs from "@/assets/images/Ic_saved_jobs.svg";
+// import Ic_saved_jobs from "@/assets/images/Ic_saved_jobs.svg";
 import Ic_logout from "@/assets/images/Ic_logout.svg";
 import Ic_job_applied from "@/assets/images/Ic_job_applied.svg";
 import Ic_search from "@/assets/images/Ic_search.svg";
@@ -261,7 +261,7 @@ export const Navbar: React.FC = () => {
                   <img src={Ic_job_applied} alt="profile" />
                   <span className="text-primary text-base">Jobs Posted</span>
                 </div>
-                <div
+                {/* <div
                   onClick={() => {
                     navigate("/profile?saved-candidates");
                     setIsDropdownOpen(false);
@@ -272,7 +272,7 @@ export const Navbar: React.FC = () => {
                   <span className="text-primary text-base">
                     Saved Candidates
                   </span>
-                </div>
+                </div> */}
                 <div
                   onClick={onLogout}
                   className="flex gap-3 items-center py-2 px-3 rounded-[8px] hover:bg-lightChiku cursor-pointer"
@@ -348,7 +348,7 @@ export const Navbar: React.FC = () => {
               <img src={Ic_job_applied} alt="profile" />
               <span className="text-primary text-base">Jobs Posted</span>
             </div>
-            <div
+            {/* <div
               onClick={() => {
                 navigate("/profile?saved-candidates");
                 setIsDropdownOpen(false);
@@ -357,7 +357,7 @@ export const Navbar: React.FC = () => {
             >
               <img src={Ic_saved_jobs} alt="profile" />
               <span className="text-primary text-base">Saved Candidates</span>
-            </div>
+            </div> */}
             <div
               onClick={onLogout}
               className="flex gap-3 items-center py-2 px-3 rounded-[8px] hover:bg-lightChiku cursor-pointer"

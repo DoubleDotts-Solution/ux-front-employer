@@ -21,6 +21,8 @@ import { useDispatch } from "react-redux";
 import ApiUtils from "@/api/ApiUtils";
 import { setCredentials } from "@/store/slice/auth.slice";
 import { setUserDetails } from "@/store/slice/user.slice";
+import { useGoogleLogin } from "@react-oauth/google";
+import { GOOGLE_CLIENT_ID } from "@/config/constant";
 
 const formSchema = z.object({
   email: z
@@ -127,6 +129,67 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  const handleGoogleLoginSuccess = async (response: any) => {
+    try {
+      const data: any = await ApiUtils.authGoogleLogin({
+        token: response.access_token,
+      });
+
+      if (data?.status === 200) {
+        const { accessToken, refreshToken, user } = data.data;
+        dispatch(
+          setCredentials({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            user,
+          })
+        );
+        localStorage.setItem("employer_email", user.email);
+        if (searchParams.has("applied-job-post")) {
+          const appliedJobPostId = searchParams.get("applied-job-post");
+          navigate(`/job-details/${appliedJobPostId}`);
+        } else {
+          navigate("/");
+        }
+
+        const userDetails = await ApiUtils.getSingleUser(user.id);
+
+        dispatch(setUserDetails(userDetails?.data));
+        toast.success("Login successfully", { position: "top-right" });
+      } else {
+        toast.error(data.data.message || "Something went Wrong!", {
+          position: "top-right",
+        });
+      }
+    } catch (error: any) {
+      console.error("Validation error:", error);
+      toast.error(error.data.message, {
+        position: "top-right",
+      });
+      if (error.data.message === "User not found. Please register first.") {
+        setTimeout(() => {
+          navigate("/create-account");
+        }, 2000);
+      }
+      return;
+    }
+  };
+
+  const handleGoogleLoginError = (error: any) => {
+    console.error("Google login error", error);
+    toast.error("Google login failed. Please try again.", {
+      position: "top-right",
+    });
+  };
+
+  const googleLoginOptions: any = {
+    clientId: GOOGLE_CLIENT_ID,
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginError,
+    redirectUri: "http://localhost:5173",
+  };
+
+  const googleLogin = useGoogleLogin(googleLoginOptions);
   return (
     <>
       <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8">
@@ -289,7 +352,10 @@ const LoginForm: React.FC = () => {
             }}
           ></span>
         </div>
-        <div className="flex justify-center items-center gap-[10px] md:gap-[20px] rounded-[8px] border border-gray5 p-3 bg-lightChiku2 cursor-pointer">
+        <div
+          className="flex justify-center items-center gap-[10px] md:gap-[20px] rounded-[8px] border border-gray5 p-3 bg-lightChiku2 cursor-pointer"
+          onClick={() => googleLogin()}
+        >
           <img
             src={google}
             alt="google"

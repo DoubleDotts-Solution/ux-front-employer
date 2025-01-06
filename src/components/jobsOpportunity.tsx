@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from "react";
 import Ic_sparkle from "@/assets/images/Ic_sparkle.svg";
 import Img__dream_job from "@/assets/images/Img__dream_job.png";
@@ -13,8 +14,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
-// import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import ButtonUx from "./common/button";
+import { useCreateSubscribeApiMutation } from "@/store/slice/apiSlice/subscribeApi";
 
 const JobsOpportunity: React.FC = () => {
   const subScribeFormSchema = z.object({
@@ -36,27 +38,28 @@ const JobsOpportunity: React.FC = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const popup = useRef<HTMLDivElement>(null);
   const body = document.querySelector("body");
+  const [createSubscribe] = useCreateSubscribeApiMutation();
 
-  //   const handleTogglePopup = () => {
-  //     if (isPopupVisible) {
-  //       setTimeout(() => {
-  //         setPopupVisible(false);
-  //         body?.classList.remove("overflow-hidden");
-  //         body?.classList.remove("h-screen");
-  //       }, 300);
-  //     } else {
-  //       setPopupVisible(true);
-  //       body?.classList.add("overflow-hidden");
-  //       body?.classList.add("h-screen");
+  const handleTogglePopup = () => {
+    if (isPopupVisible) {
+      setTimeout(() => {
+        setPopupVisible(false);
+        body?.classList.remove("overflow-hidden");
+        body?.classList.remove("h-screen");
+      }, 300);
+    } else {
+      setPopupVisible(true);
+      body?.classList.add("overflow-hidden");
+      body?.classList.add("h-screen");
 
-  //       // Automatically close popup after 2 seconds
-  //       setTimeout(() => {
-  //         setPopupVisible(false);
-  //         body?.classList.remove("overflow-hidden");
-  //         body?.classList.remove("h-screen");
-  //       }, 2000);
-  //     }
-  //   };
+      // Automatically close popup after 2 seconds
+      setTimeout(() => {
+        setPopupVisible(false);
+        body?.classList.remove("overflow-hidden");
+        body?.classList.remove("h-screen");
+      }, 2000);
+    }
+  };
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (popup.current && !popup.current.contains(event.target as Node)) {
@@ -72,34 +75,29 @@ const JobsOpportunity: React.FC = () => {
     };
   }, []);
 
-  //   const [createSubscribe] = useCreateSubscribeApiMutation();
-
   const onSubScribeFormSubmit = async (data: unknown) => {
-    console.log(data);
+    try {
+      const response = await createSubscribe({ data: data }).unwrap();
 
-    // try {
-    //   const response = await createSubscribe({ data: data }).unwrap();
-
-    //   if (response.status === 200) {
-    //     handleTogglePopup();
-    //     toast.success("Subscribe successfully", { position: "top-right" });
-    //     subScribeForm.reset();
-    //   } else {
-    //     toast.error(response.error || "Registration failed", {
-    //       position: "top-right",
-    //     });
-    //     console.error("API error:", response.error);
-    //   }
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // } catch (error: any) {
-    //   toast.error(
-    //     "This email address is already subscribed to our newsletter.",
-    //     {
-    //       position: "top-right",
-    //     }
-    //   );
-    //   console.error("Validation error:", error);
-    // }
+      if (response.status === 200) {
+        handleTogglePopup();
+        toast.success("Subscribe successfully", { position: "top-right" });
+        subScribeForm.reset();
+      } else {
+        toast.error(response.error || "Registration failed", {
+          position: "top-right",
+        });
+        console.error("API error:", response.error);
+      }
+    } catch (error: any) {
+      toast.error(
+        "This email address is already subscribed to our newsletter.",
+        {
+          position: "top-right",
+        }
+      );
+      console.error("Validation error:", error);
+    }
   };
 
   const validSubScribeForm = subScribeForm.formState.isValid;
@@ -110,13 +108,13 @@ const JobsOpportunity: React.FC = () => {
         <span className="relative inline-block w-full">
           <div className="relative bg-black3 p-4 desktop:p-10 text-7xl rounded-[20px] z-50 flex flex-col lg:flex-row items-center gap-6 lg:gap-8 desktop:gap-14 w-full">
             <div className="bg-purple2 pl-[20px] py-[12px] sm:py-[20px] sm:pl-[28px] md:pl-[36px] desktop:pl-8 big:pl-10 desktop:pr-[50px] w-full rounded-[8px] md:rounded-2xl flex justify-between xBig:gap-6 items-center">
-              <h2 className="text-white text-[2rem] leading-[35.2px] sm:leading-[40px] md:leading-[48px] md:text-[2.5rem] desktop:text-6xl desktop:leading-[72px]">
+              <h2 className="text-primary font-semibold text-[2rem] leading-[35.2px] sm:leading-[40px] md:leading-[48px] md:text-[2.5rem] desktop:text-[48px] desktop:leading-[60px]">
                 Land on your dream job
               </h2>
               <img
                 src={Img__dream_job}
                 alt="icon"
-                className="w-[135px] sm:w-[200px] md:w-[336px] lg:w-[70px] big:w-[53%] xBig:w-auto"
+                className="w-[135px] sm:w-[200px] lg:w-[336px] big:w-[53%] xBig:w-auto"
               />
             </div>
             <div className="w-full">

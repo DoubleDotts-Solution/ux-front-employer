@@ -7,26 +7,38 @@ import { Form } from "@/components/ui/form";
 import Ic_edit from "@/assets/images/Ic_edit.svg";
 import Ic_check_circle_black from "@/assets/images/Ic_check_circle_black.svg";
 import ButtonUx from "@/components/common/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { toast } from "react-hot-toast";
+import { auth } from "@/config/firebaseConfig";
+import { useVerifyMobileMutation } from "@/store/slice/apiSlice/profileApi";
+import ApiUtils from "@/api/ApiUtils";
+import { setUserDetails } from "@/store/slice/user.slice";
 
 const formSchema = z.object({
   otp: z
     .string()
-    .regex(/^\d{4}$/, { message: "OTP must be a 4-digit number." }),
+    .regex(/^\d{6}$/, { message: "OTP must be a 6-digit number." }),
 });
 
 const VerifyOtpForm: React.FC = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const [otp, setOTP] = useState(["", "", "", ""]);
+  const userDetails = useSelector((state: any) => state.user)?.userDetails;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [otp, setOTP] = useState(["", "", "", "", "", ""]);
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    form.reset();
-    setOTP(["", "", "", ""]);
-  };
+  useEffect(() => {
+    const triggerResendOTP = localStorage.getItem("triggerResendOTP");
 
+    if (triggerResendOTP === "true") {
+      handleResendOTP();
+      localStorage.removeItem("triggerResendOTP");
+    }
+  }, []);
   const inputRefs = useRef<any>([]);
   const [timer, setTimer] = useState(0);
   const [resendClicked, setResendClicked] = useState(false);
@@ -54,10 +66,47 @@ const VerifyOtpForm: React.FC = () => {
     return () => clearInterval(countdown);
   }, [resendClicked]);
 
+  const [user, setUser] = useState<any>(null);
+
   const handleResendOTP = async () => {
-    if (!resendClicked || timer === 0) {
-      setTimer(30);
-      setResendClicked(true);
+    try {
+      const recaptcha = new RecaptchaVerifier(auth, "recaptcha", {});
+      const confirmation = await signInWithPhoneNumber(
+        auth,
+        userDetails?.mobile_no,
+        recaptcha
+      );
+      setUser(confirmation);
+      if (!resendClicked || timer === 0) {
+        setTimer(30);
+        setResendClicked(true);
+      }
+    } catch (error) {
+      console.log("error----------------", error);
+    }
+  };
+  const [mobileVerify] = useVerifyMobileMutation();
+
+  const verifyOtp = async () => {
+    try {
+      await user.confirm(otp.join(""));
+      const response: any = await mobileVerify(userDetails?.id);
+
+      if (response.data.status === 200) {
+        toast.success("Otp Verify Sucessfully.", {
+          position: "top-right",
+        });
+        const userDetail = await ApiUtils.getSingleUser(userDetails?.id);
+        dispatch(setUserDetails(userDetail.data));
+        navigate("/profile?update-profile");
+      } else {
+        toast.error(response.error || "Registration failed", {
+          position: "top-right",
+        });
+        console.error("API error:", response.error);
+      }
+    } catch (error) {
+      console.log("error----------------", error);
     }
   };
 
@@ -93,15 +142,15 @@ const VerifyOtpForm: React.FC = () => {
           <p className="text-sm md:text-base desktop:text-lg text-gray flex flex-wrap">
             We have sent 4 Digit code on &nbsp;
             <span className="flex items-center gap-3 text-primary font-medium">
-              +91 8988737722
-              <Link to={""}>
+              {userDetails?.mobile_no}
+              <Link to={"/profile?update-profile"}>
                 <img src={Ic_edit} alt="edit" className="w-[20px] h-[20px]" />
               </Link>
             </span>
           </p>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(verifyOtp)}>
             <div className="flex flex-col gap-3 lg:gap-4">
               <div className="w-full flex gap-[23px]">
                 {otp.map((digit, index) => (
@@ -109,7 +158,7 @@ const VerifyOtpForm: React.FC = () => {
                     key={index}
                     type="text"
                     maxLength={1}
-                    className="input border border-lightGray2 rounded-lg w-[49px] h-[40px] text-center text-base bg-transparent outline-none font-semibold"
+                    className="input border border-lightGray2 rounded-[8px] w-[49px] h-[40px] text-center text-base bg-transparent outline-none font-semibold"
                     inputMode="numeric"
                     value={digit}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -119,6 +168,7 @@ const VerifyOtpForm: React.FC = () => {
                   />
                 ))}
               </div>
+
               <div className="text-sm text-gray">
                 If you didn’t receive a code!{" "}
                 <span
@@ -135,6 +185,7 @@ const VerifyOtpForm: React.FC = () => {
                   </span>
                 )}
               </div>
+              <div id="recaptcha"></div>
             </div>
             <div className="mt-[24px] md:mt-[32px] md:flex md:justify-center w-full relative">
               <ButtonUx

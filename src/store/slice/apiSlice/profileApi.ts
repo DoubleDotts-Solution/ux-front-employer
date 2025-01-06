@@ -70,6 +70,12 @@ const profileApi = mainApi.injectEndpoints({
         body: data,
       }),
     }),
+    verifyMobile: builder.mutation<unknown, { id: number }>({
+      query: (id) => ({
+        url: `employer/verify-mobile/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -84,4 +90,5 @@ export const {
   useDeleteJobMutation,
   useListOfJobSeekerQuery,
   useGetSkillsQuery,
+  useVerifyMobileMutation,
 } = profileApi;

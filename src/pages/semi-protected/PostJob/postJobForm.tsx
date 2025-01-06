@@ -227,39 +227,70 @@ export const PostJobForm: React.FC = () => {
 
       if (response && response.data.status === 200) {
         const data = response.data.data;
-        form.setValue("job_title", data?.job_title);
-        form.setValue("category", data?.category.id);
+
+        if (!form.getValues("job_title")) {
+          form.setValue("job_title", data?.job_title);
+        }
+        if (!form.getValues("category")) {
+          form.setValue("category", data?.category?.id);
+        }
+
         if (data?.location) {
           const str = data?.location;
           const locations = str
             .split("', '")
             .map((item: any) => item.replace(/'/g, ""));
-          if (locations.length > 0) {
+          if (locations.length > 0 && !form.getValues("location")) {
             form.setValue("location", locations);
           }
         }
-        form.setValue("job_experience", data?.job_experience);
-        form.setValue("job_type", data?.job_type?.id);
-        form.setValue("work_place_type", data?.work_place_type);
-        form.setValue("description", data?.description);
-        const skillIds = data?.skills.map((skill: any) => Number(skill.id));
 
-        form.setValue("skills", skillIds);
-        form.setValue("currency", data?.currency?.id);
-        form.setValue("pay_type", data?.pay_type?.id);
-        form.setValue("apply_by", data?.apply_by?.id);
-        setSelectedApplyBy(response.data.data.apply_by.name);
-        form.setValue("minimum_pay", Number(data?.minimum_pay));
-        form.setValue("maximum_pay", Number(data?.maximum_pay));
-        form.setValue("apply_text", data?.apply_text);
+        if (!form.getValues("job_experience")) {
+          form.setValue("job_experience", data?.job_experience);
+        }
+        if (!form.getValues("job_type")) {
+          form.setValue("job_type", data?.job_type?.id);
+        }
+        if (!form.getValues("work_place_type")) {
+          form.setValue("work_place_type", data?.work_place_type);
+        }
+        if (!form.getValues("description")) {
+          form.setValue("description", data?.description);
+        }
+
+        const skillIds = data?.skills.map((skill: any) => Number(skill.id));
+        if (!form.getValues("skills")) {
+          form.setValue("skills", skillIds);
+        }
+        if (!form.getValues("currency")) {
+          form.setValue("currency", data?.currency?.id);
+        }
+        if (!form.getValues("pay_type")) {
+          form.setValue("pay_type", data?.pay_type?.id);
+        }
+        if (!form.getValues("apply_by")) {
+          form.setValue("apply_by", data?.apply_by?.id);
+          setSelectedApplyBy(data?.apply_by?.name);
+        }
+        if (!form.getValues("minimum_pay")) {
+          form.setValue("minimum_pay", Number(data?.minimum_pay));
+        }
+        if (!form.getValues("maximum_pay")) {
+          form.setValue("maximum_pay", Number(data?.maximum_pay));
+        }
+        if (!form.getValues("apply_text")) {
+          form.setValue("apply_text", data?.apply_text);
+        }
+
         form.clearErrors();
         form.trigger();
       } else {
         console.error("API error:", response.error);
       }
     };
+
     if (id) fetchData();
-  }, [id, singleJobData]);
+  }, [id, singleJobData, form]);
 
   const [createJob] = useCreateJobApiMutation();
   const [updateJob] = useUpdateJobApiMutation();
