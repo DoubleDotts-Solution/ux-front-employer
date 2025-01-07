@@ -262,7 +262,8 @@ export const FindTalentDetail: React.FC = () => {
           {userDetails && userDetails?.current_company?.name ? (
             <div className="flex gap-3 items-center">
               <div className="w-[48px] h-[48px] sm:w-[58px] md:w-[74px] sm:h-[58px] md:h-[74px]">
-                {userDetails?.current_company?.logo ? (
+                {userDetails?.current_company?.logo &&
+                userDetails?.current_company?.logo !== "null" ? (
                   <img
                     src={`${PHOTO_URL}/${userDetails?.current_company?.logo}`}
                     alt="company"
@@ -310,7 +311,8 @@ export const FindTalentDetail: React.FC = () => {
           {userDetails && userDetails?.education_institute?.name ? (
             <div className="flex gap-3 items-center">
               <div className="w-[48px] h-[48px] sm:w-[58px] md:w-[74px] sm:h-[58px] md:h-[74px]">
-                {userDetails?.education_institute?.logo ? (
+                {userDetails?.education_institute?.logo &&
+                userDetails?.education_institute?.logo !== "null" ? (
                   <img
                     src={`${PHOTO_URL}/${userDetails?.education_institute?.logo}`}
                     alt="company"

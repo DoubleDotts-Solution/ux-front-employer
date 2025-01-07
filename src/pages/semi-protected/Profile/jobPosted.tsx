@@ -752,8 +752,37 @@ const JobPosted: React.FC = () => {
                         alt="location"
                         className="w-[20px] h-[20px] md:w-auto md:h-auto"
                       />
-                      <span className="text-primary text-sm md:text-base desktop:text-xl relative">
-                        {jobPostedData?.location}
+                      <span className="text-gray text-sm md:text-base desktop:text-xl relative">
+                        {convertJobLocation(jobPostedData?.location)[0]}
+                        &nbsp;
+                        {convertJobLocation(jobPostedData?.location).slice(1)
+                          .length > 0 && (
+                          <span
+                            className="text-primary underline font-semibold cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleDropdown(jobPostedData?.id, e);
+                            }}
+                          >
+                            +
+                            {
+                              convertJobLocation(jobPostedData?.location).slice(
+                                1
+                              ).length
+                            }
+                          </span>
+                        )}
+                        {isDropdownOpen === jobPostedData?.id && (
+                          <div className="location-dropdown absolute">
+                            {convertJobLocation(jobPostedData?.location)
+                              .slice(1)
+                              .map((location, index) => (
+                                <div key={index} className="dropdown-item">
+                                  {location}
+                                </div>
+                              ))}
+                          </div>
+                        )}
                       </span>
                     </div>
                     <div className="border-l border-gray5 h-[18px]"></div>

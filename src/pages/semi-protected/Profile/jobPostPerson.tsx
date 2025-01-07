@@ -260,15 +260,17 @@ const JobPostedPerson: React.FC = () => {
                       </h4>
                       <div className="text-gray text-sm md:text-base desktop:text-lg flex gap-2">
                         {job?.job_seeker?.job_title}
-                        <span
-                          className="text-primary font-semibold text-sm md:text-base desktop:text-lg cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            downloadResume(job?.job_seeker?.resume, e);
-                          }}
-                        >
-                          Download Resume
-                        </span>
+                        {job?.job_seeker?.resume && (
+                          <span
+                            className="text-primary font-semibold text-sm md:text-base desktop:text-lg cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              downloadResume(job?.job_seeker?.resume, e);
+                            }}
+                          >
+                            Download Resume
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

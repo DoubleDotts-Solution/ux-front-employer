@@ -219,11 +219,101 @@ export const PostJobForm: React.FC = () => {
     mode: "onChange",
   });
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response: any = await singleJobData({
+  //       id: id,
+  //     });
+
+  //     if (response && response.data.status === 200) {
+  //       const data = response.data.data;
+
+  //       if (!form.getValues("job_title")) {
+  //         form.setValue("job_title", data?.job_title);
+  //       }
+  //       if (!form.getValues("category")) {
+  //         form.setValue("category", data?.category?.id);
+  //       }
+
+  //       if (data?.location) {
+  //         const str = data?.location;
+  //         const locations = str
+  //           .split("', '")
+  //           .map((item: any) => item.replace(/'/g, ""));
+  //         if (locations.length > 0 && !form.getValues("location")) {
+  //           form.setValue("location", locations);
+  //         }
+  //       }
+
+  //       if (!form.getValues("job_experience")) {
+  //         form.setValue("job_experience", data?.job_experience);
+  //       }
+  //       if (!form.getValues("job_type")) {
+  //         form.setValue("job_type", data?.job_type?.id);
+  //       }
+  //       if (!form.getValues("work_place_type")) {
+  //         form.setValue("work_place_type", data?.work_place_type);
+  //       }
+  //       if (!form.getValues("description")) {
+  //         form.setValue("description", data?.description);
+  //       }
+
+  //       const skillIds = data?.skills.map((skill: any) => Number(skill.id));
+  //       if (!form.getValues("skills")) {
+  //         form.setValue("skills", skillIds);
+  //       }
+  //       if (!form.getValues("currency")) {
+  //         form.setValue("currency", data?.currency?.id);
+  //       }
+  //       if (!form.getValues("pay_type")) {
+  //         form.setValue("pay_type", data?.pay_type?.id);
+  //       }
+  //       if (!form.getValues("apply_by")) {
+  //         form.setValue("apply_by", data?.apply_by?.id);
+  //         setSelectedApplyBy(data?.apply_by?.name);
+  //       }
+  //       if (!form.getValues("minimum_pay")) {
+  //         form.setValue("minimum_pay", Number(data?.minimum_pay));
+  //       }
+  //       if (!form.getValues("maximum_pay")) {
+  //         form.setValue("maximum_pay", Number(data?.maximum_pay));
+  //       }
+  //       if (!form.getValues("apply_text")) {
+  //         form.setValue("apply_text", data?.apply_text);
+  //       }
+
+  //       form.clearErrors();
+  //       form.trigger();
+  //     } else {
+  //       console.error("API error:", response.error);
+  //     }
+  //   };
+
+  //   if (
+  //     id
+  //     &&
+  //     jobTypeArray.length &&
+  //     categoryArray.length &&
+  //     applyByArray.length &&
+  //     SalaryCurrencyArray.length &&
+  //     payTypeArray.length
+  //   )
+  //     fetchData();
+  // }, [
+  //   id,
+  //   singleJobData,
+  //   jobTypeArray,
+  //   categoryArray,
+  //   applyByArray,
+  //   SalaryCurrencyArray,
+  //   payTypeArray,
+  // ]);
+
+  const [isDataFetched, setIsDataFetched] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
-      const response: any = await singleJobData({
-        id: id,
-      });
+      const response: any = await singleJobData({ id: id });
 
       if (response && response.data.status === 200) {
         const data = response.data.data;
@@ -234,7 +324,6 @@ export const PostJobForm: React.FC = () => {
         if (!form.getValues("category")) {
           form.setValue("category", data?.category?.id);
         }
-
         if (data?.location) {
           const str = data?.location;
           const locations = str
@@ -244,7 +333,6 @@ export const PostJobForm: React.FC = () => {
             form.setValue("location", locations);
           }
         }
-
         if (!form.getValues("job_experience")) {
           form.setValue("job_experience", data?.job_experience);
         }
@@ -257,7 +345,6 @@ export const PostJobForm: React.FC = () => {
         if (!form.getValues("description")) {
           form.setValue("description", data?.description);
         }
-
         const skillIds = data?.skills.map((skill: any) => Number(skill.id));
         if (!form.getValues("skills")) {
           form.setValue("skills", skillIds);
@@ -284,13 +371,35 @@ export const PostJobForm: React.FC = () => {
 
         form.clearErrors();
         form.trigger();
+
+        setIsDataFetched(true);
       } else {
         console.error("API error:", response.error);
       }
     };
 
-    if (id) fetchData();
-  }, [id, singleJobData, form]);
+    if (
+      id &&
+      jobTypeArray.length &&
+      categoryArray.length &&
+      applyByArray.length &&
+      SalaryCurrencyArray.length &&
+      payTypeArray.length &&
+      !isDataFetched
+    ) {
+      fetchData();
+    }
+  }, [
+    id,
+    jobTypeArray.length,
+    categoryArray.length,
+    applyByArray.length,
+    SalaryCurrencyArray.length,
+    payTypeArray.length,
+    isDataFetched,
+    singleJobData,
+    form,
+  ]);
 
   const [createJob] = useCreateJobApiMutation();
   const [updateJob] = useUpdateJobApiMutation();
@@ -664,6 +773,7 @@ export const PostJobForm: React.FC = () => {
                                 onValueChange={(value: any) => {
                                   field.onChange(value);
                                 }}
+                                value={field.value}
                               >
                                 <SelectTrigger
                                   className={`bg-white ${

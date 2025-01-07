@@ -590,17 +590,21 @@ const MainSection: React.FC = () => {
                               )}
                             </span>
                           </div>
-                          <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
-                          <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                            <img
-                              src={Ic_experience}
-                              alt="experience"
-                              className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                            />
-                            <span className="text-gray text-sm md:text-base desktop:text-xl">
-                              {job?.total_experience} Years
-                            </span>
-                          </div>
+                          {job?.total_experience && (
+                            <>
+                              <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
+                              <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                                <img
+                                  src={Ic_experience}
+                                  alt="experience"
+                                  className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                                />
+                                <span className="text-gray text-sm md:text-base desktop:text-xl">
+                                  {job?.total_experience} Years
+                                </span>
+                              </div>
+                            </>
+                          )}
                           <div className="border-l border-primary h-[25px] lg:h-[30px] hidden sm:block"></div>
                           <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
                             <img
@@ -613,21 +617,27 @@ const MainSection: React.FC = () => {
                             </span>
                           </div>
                         </div>
-                        <div className="flex gap-2 items-center">
-                          <img src={Ic_file} alt="icon" />
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: job.bio,
-                            }}
-                            className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
-                          />
-                        </div>
-                        <div className="border-t w-full border-gray5"></div>
-                        <div className="flex flex-col gap-4 lg:gap-2 lg:flex-row justify-between lg:items-center">
-                          <div className="flex flex-wrap items-center gap-3 md:gap-4 desktop:gap-5">
-                            <JobTagsDisplay tags={job.skills} />
+                        {job.bio && (
+                          <div className="flex gap-2 items-center">
+                            <img src={Ic_file} alt="icon" />
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: job.bio,
+                              }}
+                              className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
+                            />
                           </div>
-                        </div>
+                        )}
+                        {job.skills && job.skills.length > 0 && (
+                          <>
+                            <div className="border-t w-full border-gray5"></div>
+                            <div className="flex flex-col gap-4 lg:gap-2 lg:flex-row justify-between lg:items-center">
+                              <div className="flex flex-wrap items-center gap-3 md:gap-4 desktop:gap-5">
+                                <JobTagsDisplay tags={job.skills} />
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     ))}
                 </div>

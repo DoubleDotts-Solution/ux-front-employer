@@ -31,7 +31,7 @@ export const LandingPage = () => {
       <SimplifyHiring />
       <BuildCompanyProfile />
       <TrustedEmployer />
-      <TrustedTopCompany />
+      <TrustedTopCompany isUserLogin={isUserLogin} />
 
       <img
         src={MadeInIndiaImg}
