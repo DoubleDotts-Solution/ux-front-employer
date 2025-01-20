@@ -23,7 +23,6 @@ import { Link } from "react-router-dom";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
 import ApiUtils from "@/api/ApiUtils";
-import { setCredentials } from "@/store/slice/auth.slice";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "@/store/slice/user.slice";
 import { toast } from "react-hot-toast";
@@ -36,7 +35,10 @@ const formSchema = z.object({
   website: z
     .string()
     .min(1, { message: "Website Link is required." })
-    .url({ message: "Please enter a valid URL." }),
+    .regex(
+      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/,
+      { message: "Please enter a valid URL." }
+    ),
   email: z
     .string()
     .email({ message: "Please enter a valid email address." })
@@ -78,19 +80,16 @@ const RegisterForm: React.FC = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // setSuccessfullyRegister(true);
+    if (data.website && !/^https?:\/\//i.test(data.website)) {
+      data.website = `https://${data.website}`;
+    }
 
     try {
       const response: any = await ApiUtils.authRegister(data);
 
       if (response) {
-        const { accessToken, refreshToken, user } = response.data;
-        dispatch(
-          setCredentials({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-            user,
-          })
-        );
+        const { user } = response.data;
+
         localStorage.setItem("employer_email", response.data.user.email);
         const userDetails = await ApiUtils.getSingleUser(user.id);
 
@@ -98,7 +97,7 @@ const RegisterForm: React.FC = () => {
         setVerifyMailBox(true);
         toast.success("Register successfully", { position: "top-right" });
       } else {
-        toast.error(response.error || "Registration failed", {
+        toast.error(`${response.error}` || "Registration failed", {
           position: "top-right",
         });
         console.error("API error:", response.error);
@@ -154,7 +153,7 @@ const RegisterForm: React.FC = () => {
   const googleLogin = useGoogleLogin(googleLoginOptions);
   return (
     <>
-      <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8">
+      <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8 relative">
         <div className="flex flex-col gap-1 desktop:gap-3">
           <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
             Create your UX Jobsite Profile
@@ -188,7 +187,7 @@ const RegisterForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="text"
                           />
@@ -221,7 +220,7 @@ const RegisterForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="email"
                           />
@@ -267,7 +266,7 @@ const RegisterForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="text"
                           />
@@ -300,7 +299,7 @@ const RegisterForm: React.FC = () => {
                                           ${
                                             fieldState?.error
                                               ? "border-red"
-                                              : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                              : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                             type="text"
                           />
@@ -333,7 +332,7 @@ const RegisterForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="tel"
                           />
@@ -375,7 +374,7 @@ const RegisterForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                               type={isPasswordVisible ? "text" : "password"}
                             />
@@ -467,8 +466,21 @@ const RegisterForm: React.FC = () => {
               width: "100%",
             }}
           ></span>
-          {verifyMailBox && (
-            <div className="absolute top-6 z-50 flex-col sm:flex-row w-max lg:right-0 desktop:right-[-3rem] big:right-[-6rem] border border-primary rounded-[8px] bg-lightPurple py-2 px-2 desktop:px-4 flex gap-2 lg:gap-4 items-start">
+        </div>
+        <div
+          className="flex justify-center items-center gap-[10px] md:gap-[20px] rounded-[8px] border border-gray5 p-3 bg-lightChiku2 cursor-pointer"
+          onClick={() => googleLogin()}
+        >
+          <img
+            src={google}
+            alt="google"
+            className="w-[20px] h-[20px] md:w-auto md:h-auto"
+          />
+          <span className="text-primary font-medium">Continue with Google</span>
+        </div>
+        {verifyMailBox && (
+          <div className="sticky bottom-6 z-50 w-full justify-end flex">
+            <div className="flex-col sm:flex-row w-max border border-primary rounded-[8px] bg-lightPurple py-2 px-2 desktop:px-4 flex gap-2 lg:gap-4 items-start">
               <div className="flex items-start gap-3">
                 <img src={Ic_info} alt="info" />
                 <div>
@@ -489,7 +501,6 @@ const RegisterForm: React.FC = () => {
               >
                 Go to Mail
               </div>
-
               <img
                 src={Ic_close_black}
                 alt="close"
@@ -499,19 +510,8 @@ const RegisterForm: React.FC = () => {
                 }}
               />
             </div>
-          )}
-        </div>
-        <div
-          className="flex justify-center items-center gap-[10px] md:gap-[20px] rounded-[8px] border border-gray5 p-3 bg-lightChiku2 cursor-pointer"
-          onClick={() => googleLogin()}
-        >
-          <img
-            src={google}
-            alt="google"
-            className="w-[20px] h-[20px] md:w-auto md:h-auto"
-          />
-          <span className="text-primary font-medium">Continue with Google</span>
-        </div>
+          </div>
+        )}
       </div>
       {successfullyRegister && (
         <Modal onClose={handleClose} isOpen={true}>

@@ -85,8 +85,9 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     <div className="relative" ref={dropdownRef}>
       <div className="relative">
         <div
-          className={`flex gap-2 justify-between items-center py-2 px-3 focus:border-[3px] focus:border-gray7 border-2 rounded-[8px] min-h-[40px] lg:min-h-[48px] h-auto ${className} ${
-            isOpen && "border-[3px] border-gray7 bg-lightYellow2"
+          className={`flex gap-2 justify-between items-center py-2 px-3 focus:border-[2px] focus:border-primary border-2 rounded-[8px] min-h-[40px] lg:min-h-[48px] h-auto ${className} ${
+            isOpen &&
+            "border-[2px] border-primary bg-lightYellow2 shadow-shadow1"
           } ${
             disabled
               ? "cursor-not-allowed bg-[#F5F5F5] text-[#767676] hover:border-gray7"

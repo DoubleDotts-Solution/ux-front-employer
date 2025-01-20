@@ -37,7 +37,7 @@ const renderSuggestion = (
   const matchEnd = matchStart + inputValue.query.length;
 
   return (
-    <div className="px-2 py-1.5 text-primary bg-white cursor-pointer">
+    <div className="px-2 py-1.5 text-primary bg-white cursor-pointer rounded-b-[8px]">
       {matchStart >= 0 ? (
         <>
           {suggestion.name.slice(0, matchStart)}
@@ -61,8 +61,8 @@ const renderSuggestionsContainer = ({ containerProps, children }: any) => {
   }
 
   return (
-    <div key={key} {...rest}>
-      <div className="font-medium text-primary text-base p-2 border-b border-gray5 bg-white">
+    <div key={key} {...rest} className="border border-gray5 rounded-[8px]">
+      <div className="font-medium text-primary text-base p-2 border-b border-gray5 bg-white rounded-t-[8px]">
         Search Suggestions
       </div>
       {children}
@@ -111,7 +111,7 @@ const AutocompleteSearchInput: React.FC<AutocompleteInputProps> = ({
         onChange(newValue);
       }
     },
-    className: `flex h-10 lg:h-12 w-full focus:bg-lightYellow2 focus:outline-none focus:border-gray7 focus:border-[3px] rounded-[8px] px-3 py-2 placeholder:text-[#767676] placeholder:text-lg ${
+    className: `flex h-10 lg:h-12 w-full focus:bg-lightYellow2 focus:outline-none focus:border-primary focus:border-[2px] rounded-[8px] px-3 py-2 placeholder:text-[#767676] placeholder:text-lg focus:shadow-shadow1 ${
       className && className
     }`,
   };

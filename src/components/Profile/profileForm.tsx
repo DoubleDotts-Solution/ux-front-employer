@@ -36,7 +36,10 @@ const formSchema = z.object({
   website: z
     .string()
     .min(1, { message: "Profile Link is required." })
-    .url({ message: "Please enter a valid URL." }),
+    .regex(
+      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/,
+      { message: "Please enter a valid URL." }
+    ),
   logo: z.union([
     z
       .instanceof(File)
@@ -122,6 +125,10 @@ const ProfileForm: React.FC = () => {
   const [handleProfile] = useUpdateProfileApiMutation();
 
   const onFormSubmit = async (data: z.infer<typeof formSchema>) => {
+    if (data.website && !/^https?:\/\//i.test(data.website)) {
+      data.website = `https://${data.website}`;
+    }
+
     const designationValue = company.find((a: any) => {
       return a.name === data.designation;
     })?.id;
@@ -229,7 +236,7 @@ const ProfileForm: React.FC = () => {
                                           ${
                                             fieldState?.error
                                               ? "border-red"
-                                              : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                              : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                               type="text"
                             />
@@ -262,7 +269,7 @@ const ProfileForm: React.FC = () => {
                                           ${
                                             fieldState?.error
                                               ? "border-red"
-                                              : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                              : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                               type="text"
                             />
@@ -332,7 +339,7 @@ const ProfileForm: React.FC = () => {
                               className={`bg-white ${
                                 fieldState.error
                                   ? "border-red"
-                                  : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                  : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                               } text-base text-primary border-2 rounded-[8px]`}
                             />
                           </div>
@@ -364,7 +371,7 @@ const ProfileForm: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                      : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } border-2 rounded-[8px] lg:h-[100px]`}
                               onChange={(e) => {
                                 if (e.target.value.length <= maxChars) {
@@ -413,7 +420,7 @@ const ProfileForm: React.FC = () => {
                                           ${
                                             fieldState?.error
                                               ? "border-red"
-                                              : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                              : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                               type="text"
                             />
@@ -448,7 +455,7 @@ const ProfileForm: React.FC = () => {
                               placeholder="Type to Search"
                               className={`${
                                 fieldState.error ? "border-red" : ""
-                              } text-base text-primary border-2 rounded-[8px] pl-8 lg:pl-9 bg-white border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7`}
+                              } text-base text-primary border-2 rounded-[8px] pl-8 lg:pl-9 bg-white border-gray7 hover:border-primary focus:border-[2px] focus:border-primary`}
                             />
                             <img
                               src={Ic_search}
@@ -484,7 +491,7 @@ const ProfileForm: React.FC = () => {
                                 ${
                                   fieldState?.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } `}
                               type="email"
                             />
@@ -522,7 +529,7 @@ const ProfileForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                               type="tel"
                             />

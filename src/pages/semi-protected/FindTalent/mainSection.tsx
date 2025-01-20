@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Ic_filter from "@/assets/images/Ic_filter.svg";
 import Ic_down_arrow from "@/assets/images/Ic_down_arrow.svg";
-import AutocompleteInput from "@/components/ui/inputLocation";
 import ButtonUx from "@/components/common/button";
 import { Pagination } from "@/components/common/pagination";
 import JobsOpportunity from "@/components/jobsOpportunity";
@@ -27,6 +26,7 @@ import { convertJobLocation } from "@/lib/utils";
 import { PHOTO_URL } from "@/config/constant";
 import { useGetCategoryQuery } from "@/store/slice/apiSlice/categoryApi";
 import { useGetJobTypeQuery } from "@/store/slice/apiSlice/jobsApi";
+import AutocompleteInputMultipleLocationHome from "@/components/ui/autoSelectMultipleLocationHome";
 
 const ExperienceArray = [
   { name: "Fresher (Less then 1 Year)" },
@@ -39,7 +39,6 @@ const ExperienceArray = [
   { name: "7 years" },
 ];
 const WorkPlaceTypeArray = [
-  { name: "All" },
   { name: "On Site" },
   { name: "Hybrid" },
   { name: "Remote" },
@@ -73,7 +72,7 @@ const MainSection: React.FC = () => {
   const [Category, setCategory] = useState<string[]>([]);
   const [JobType, setJobType] = useState<string[]>([]);
   const [Experience, setExperience] = useState<any | null>(null);
-  const [Location, setLocation] = useState<any | null>(null);
+  const [Location, setLocation] = useState<string[]>([]);
   const [Value, setValue] = useState<any | null>(null);
 
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -122,8 +121,10 @@ const MainSection: React.FC = () => {
       JobType.length > 0 && {
         job_type: JobType.map((item) => item).join(", "),
       }),
-    ...(Location && { location: Location }),
-    ...(Location && { location: Location }),
+    ...(Location &&
+      Location.length > 0 && {
+        location: Location.map((item) => item).join(", "),
+      }),
     page: currentPage,
     limit: 5,
   };
@@ -164,10 +165,24 @@ const MainSection: React.FC = () => {
       .join(" ");
   };
 
-  const decodeToReadableFormat = (value: string): string => {
+  const decodeToReadableFormat = (value: string) => {
     if (!value) return "";
-    return decodeURIComponent(value);
+
+    const decodedValue = decodeURIComponent(value);
+
+    const locations = decodedValue
+      .split(",")
+      .reduce((acc: any, part: any, index: any, array: any) => {
+        if (index % 2 === 0 && array[index + 1]) {
+          acc.push(`${part},${array[index + 1]}`);
+          array[index + 1] = "";
+        }
+        return acc;
+      }, []);
+
+    return locations;
   };
+
   useEffect(() => {
     const fetchData = async () => {
       const queryParams: any = new URLSearchParams(location.search);
@@ -189,6 +204,7 @@ const MainSection: React.FC = () => {
         if (experience) {
           setExperience(experience);
         }
+
         if (location) {
           setLocation(location);
         }
@@ -210,7 +226,7 @@ const MainSection: React.FC = () => {
   const validFilter: any =
     Category.length === 0 &&
     JobType.length === 0 &&
-    Location == null &&
+    Location.length === 0 &&
     WorkPlaceType.length === 0 &&
     Experience == null;
 
@@ -280,7 +296,7 @@ const MainSection: React.FC = () => {
                       if (!validFilter) {
                         setCategory([]);
                         setJobType([]);
-                        setLocation(null);
+                        setLocation([]);
                         setWorkPlaceType([]);
                       }
                     }}
@@ -288,204 +304,273 @@ const MainSection: React.FC = () => {
                     Reset Filter
                   </span>
                 </div>
-                <div>
-                  <div className="flex flex-col gap-4">
-                    <div className="w-full">
-                      <p
-                        className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                        onClick={() => handleToggleAccordion("Category")}
-                      >
-                        Category
-                        <img
-                          src={Ic_down_arrow}
-                          alt="arrow"
-                          className={
-                            openIndex === "Category" ? "rotate-180" : ""
-                          }
-                        />
-                      </p>
+                <div className="flex flex-col gap-4">
+                  <div className="w-full">
+                    <p
+                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                      onClick={() => handleToggleAccordion("Category")}
+                    >
+                      Category
+                      <img
+                        src={Ic_down_arrow}
+                        alt="arrow"
+                        className={openIndex === "Category" ? "rotate-180" : ""}
+                      />
+                    </p>
 
-                      {openIndex === "Category" && (
-                        <div className="bg-white mt-2">
-                          {categoryArray.map((data: any) => (
-                            <label
-                              className="py-2 container text-base text-gray"
-                              htmlFor={data.name}
-                            >
-                              {data.name}
-                              <input
-                                type="checkbox"
-                                id={data.name}
-                                value={data.name}
-                                checked={Category.includes(data.name)}
-                                onChange={() =>
-                                  setCategory((prevState: any[]) =>
-                                    prevState.includes(data.name)
-                                      ? prevState.filter(
-                                          (item) => item !== data.name
-                                        )
-                                      : [...prevState, data.name]
-                                  )
+                    {openIndex === "Category" && (
+                      <div className="bg-white mt-2">
+                        {categoryArray.length > 1 && (
+                          <label
+                            className="py-2 container text-base text-gray"
+                            htmlFor="allCategory"
+                          >
+                            All Categories
+                            <input
+                              type="checkbox"
+                              id="allCategory"
+                              checked={Category.length === categoryArray.length}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setCategory(
+                                    categoryArray.map((data: any) => data.name)
+                                  );
+                                } else {
+                                  setCategory([]);
                                 }
-                                className="mr-2"
-                              />
-                              <span className="checkmark checkmark_black"></span>
-                            </label>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="border-t border-gray5 w-full"></div>
-                    <div className="w-full">
-                      <p
-                        className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                        onClick={() => handleToggleAccordion("JobType")}
-                      >
-                        Job Type
-                        <img
-                          src={Ic_down_arrow}
-                          alt="arrow"
-                          className={
-                            openIndex === "JobType" ? "rotate-180" : ""
-                          }
-                        />
-                      </p>
-                      {openIndex === "JobType" && (
-                        <div className="bg-white mt-2">
-                          {jobTypeArray.map((data: any) => (
-                            <label
-                              className="py-2 container text-base text-gray"
-                              htmlFor={data.name}
-                            >
-                              {data.name}
-                              <input
-                                type="checkbox"
-                                id={data.name}
-                                value={data.name}
-                                checked={JobType.includes(data.name)}
-                                onChange={() =>
-                                  setJobType((prevState: any[]) =>
-                                    prevState.includes(data.name)
-                                      ? prevState.filter(
-                                          (item) => item !== data.name
-                                        )
-                                      : [...prevState, data.name]
-                                  )
+                              }}
+                              className="mr-2"
+                            />
+                            <span className="checkmark checkmark_black"></span>
+                          </label>
+                        )}
+                        {categoryArray.map((data: any) => (
+                          <label
+                            className="py-2 container text-base text-gray"
+                            htmlFor={data.name}
+                          >
+                            {data.name}
+                            <input
+                              type="checkbox"
+                              id={data.name}
+                              value={data.name}
+                              checked={Category.includes(data.name)}
+                              onChange={() =>
+                                setCategory((prevState: any[]) =>
+                                  prevState.includes(data.name)
+                                    ? prevState.filter(
+                                        (item) => item !== data.name
+                                      )
+                                    : [...prevState, data.name]
+                                )
+                              }
+                              className="mr-2"
+                            />
+                            <span className="checkmark checkmark_black"></span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="border-t border-gray5 w-full"></div>
+                  <div className="w-full">
+                    <p
+                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                      onClick={() => handleToggleAccordion("JobType")}
+                    >
+                      Job Type
+                      <img
+                        src={Ic_down_arrow}
+                        alt="arrow"
+                        className={openIndex === "JobType" ? "rotate-180" : ""}
+                      />
+                    </p>
+                    {openIndex === "JobType" && (
+                      <div className="bg-white mt-2">
+                        {jobTypeArray.length > 1 && (
+                          <label
+                            className="py-2 container text-base text-gray"
+                            htmlFor="allJobs"
+                          >
+                            All Jobs
+                            <input
+                              type="checkbox"
+                              id="allJobs"
+                              checked={JobType.length === jobTypeArray.length}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setJobType(
+                                    jobTypeArray.map((data: any) => data.name)
+                                  );
+                                } else {
+                                  setJobType([]);
                                 }
-                                className="mr-2"
-                              />
-                              <span className="checkmark checkmark_black"></span>
-                            </label>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="border-t border-gray5 w-full"></div>
-                    <div className="w-full">
-                      <p
-                        className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                        onClick={() => handleToggleAccordion("Location")}
-                      >
-                        Location
-                        <img
-                          src={Ic_down_arrow}
-                          alt="arrow"
-                          className={
-                            openIndex === "Location" ? "rotate-180" : ""
-                          }
+                              }}
+                              className="mr-2"
+                            />
+                            <span className="checkmark checkmark_black"></span>
+                          </label>
+                        )}
+                        {jobTypeArray.map((data: any) => (
+                          <label
+                            className="py-2 container text-base text-gray"
+                            htmlFor={data.name}
+                          >
+                            {data.name}
+                            <input
+                              type="checkbox"
+                              id={data.name}
+                              value={data.name}
+                              checked={JobType.includes(data.name)}
+                              onChange={() =>
+                                setJobType((prevState: any[]) =>
+                                  prevState.includes(data.name)
+                                    ? prevState.filter(
+                                        (item) => item !== data.name
+                                      )
+                                    : [...prevState, data.name]
+                                )
+                              }
+                              className="mr-2"
+                            />
+                            <span className="checkmark checkmark_black"></span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="border-t border-gray5 w-full"></div>
+                  <div className="w-full">
+                    <p
+                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                      onClick={() => handleToggleAccordion("Location")}
+                    >
+                      Location
+                      <img
+                        src={Ic_down_arrow}
+                        alt="arrow"
+                        className={openIndex === "Location" ? "rotate-180" : ""}
+                      />
+                    </p>
+                    {openIndex === "Location" && (
+                      <div className="bg-white mt-2">
+                        <AutocompleteInputMultipleLocationHome
+                          value={Location || []}
+                          onChange={(newItems) => {
+                            setLocation(newItems);
+                          }}
+                          placeholder="Enter location"
+                          className="h-10 lg:h-12"
                         />
-                      </p>
-                      {openIndex === "Location" && (
-                        <div className="bg-white mt-2">
-                          <AutocompleteInput
-                            onChange={(value) => {
-                              setLocation(value);
-                            }}
-                            value={Location || ""}
-                            placeholder="Choose Location"
-                            className={`bg-white text-base font-medium text-gray border-2 rounded-[8px]`}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="border-t border-gray5 w-full"></div>
-                    <div className="w-full">
-                      <p
-                        className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                        onClick={() => handleToggleAccordion("Experience")}
-                      >
-                        Experience
-                        <img
-                          src={Ic_down_arrow}
-                          alt="arrow"
-                          className={
-                            openIndex === "Experience" ? "rotate-180" : ""
-                          }
-                        />
-                      </p>
-                      {openIndex === "Experience" && (
-                        <div className="bg-white mt-2 h-auto max-h-[130px] big:max-h-[280px] overflow-y-auto overflowYScroll">
-                          {ExperienceArray.map((exp, index) => (
-                            <div
-                              className={`p-2 cursor-pointer text-primary ${
-                                Experience === exp.name
-                                  ? "bg-[#EFECE5] font-medium"
-                                  : ""
-                              }`}
-                              onClick={() => setExperience(exp.name)}
-                              key={index}
-                            >
-                              {exp.name}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="border-t border-gray5 w-full"></div>
-                    <div className="w-full">
-                      <p
-                        className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                        onClick={() => handleToggleAccordion("WorkPlace")}
-                      >
-                        WorkPlace Type
-                        <img
-                          src={Ic_down_arrow}
-                          alt="arrow"
-                          className={
-                            openIndex === "WorkPlace" ? "rotate-180" : ""
-                          }
-                        />
-                      </p>
-                      {openIndex === "WorkPlace" && (
-                        <div className="bg-white mt-2">
-                          {WorkPlaceTypeArray.map((data: any) => (
-                            <label
-                              className="py-2 container text-base text-gray"
-                              htmlFor={data.name}
-                            >
-                              {data.name}
-                              <input
-                                type="checkbox"
-                                id={data.name}
-                                value={data.name}
-                                checked={WorkPlaceType.includes(data.name)}
-                                onChange={() =>
-                                  setWorkPlaceType((prevState: any[]) =>
-                                    prevState.includes(data.name)
-                                      ? prevState.filter(
-                                          (item) => item !== data.name
-                                        )
-                                      : [...prevState, data.name]
-                                  )
+                      </div>
+                    )}
+                  </div>
+                  <div className="border-t border-gray5 w-full"></div>
+                  <div className="w-full">
+                    <p
+                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                      onClick={() => handleToggleAccordion("Experience")}
+                    >
+                      Experience
+                      <img
+                        src={Ic_down_arrow}
+                        alt="arrow"
+                        className={
+                          openIndex === "Experience" ? "rotate-180" : ""
+                        }
+                      />
+                    </p>
+                    {openIndex === "Experience" && (
+                      <div className="bg-white mt-2 h-auto max-h-[130px] big:max-h-[280px] overflow-y-auto overflowYScroll">
+                        {ExperienceArray.map((exp, index) => (
+                          <div
+                            className={`p-2 cursor-pointer text-primary ${
+                              Experience === exp.name
+                                ? "bg-[#EFECE5] font-medium"
+                                : ""
+                            }`}
+                            onClick={() => setExperience(exp.name)}
+                            key={index}
+                          >
+                            {exp.name}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="border-t border-gray5 w-full"></div>
+                  <div className="w-full">
+                    <p
+                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                      onClick={() => handleToggleAccordion("WorkPlace")}
+                    >
+                      WorkPlace Type
+                      <img
+                        src={Ic_down_arrow}
+                        alt="arrow"
+                        className={
+                          openIndex === "WorkPlace" ? "rotate-180" : ""
+                        }
+                      />
+                    </p>
+                    {openIndex === "WorkPlace" && (
+                      <div className="bg-white mt-2">
+                        {WorkPlaceTypeArray.length > 1 && (
+                          <label
+                            className="py-2 container text-base text-gray"
+                            htmlFor="all"
+                          >
+                            All
+                            <input
+                              type="checkbox"
+                              id="all"
+                              checked={
+                                WorkPlaceType.length ===
+                                WorkPlaceTypeArray.length
+                              }
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setWorkPlaceType(
+                                    WorkPlaceTypeArray.map(
+                                      (data: any) => data.name
+                                    )
+                                  );
+                                } else {
+                                  setWorkPlaceType([]);
                                 }
-                                className="mr-2"
-                              />
-                              <span className="checkmark checkmark_black"></span>
-                            </label>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                              }}
+                              className="mr-2"
+                            />
+                            <span className="checkmark checkmark_black"></span>
+                          </label>
+                        )}
+                        {WorkPlaceTypeArray.map((data: any) => (
+                          <label
+                            className="py-2 container text-base text-gray"
+                            htmlFor={data.name}
+                          >
+                            {data.name}
+                            <input
+                              type="checkbox"
+                              id={data.name}
+                              value={data.name}
+                              checked={WorkPlaceType.includes(data.name)}
+                              onChange={() =>
+                                setWorkPlaceType((prevState: any[]) =>
+                                  prevState.includes(data.name)
+                                    ? prevState.filter(
+                                        (item) => item !== data.name
+                                      )
+                                    : [...prevState, data.name]
+                                )
+                              }
+                              className="mr-2"
+                            />
+                            <span className="checkmark checkmark_black"></span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -705,7 +790,7 @@ const MainSection: React.FC = () => {
                       handleTogglePopup();
                       setCategory([]);
                       setJobType([]);
-                      setLocation(null);
+                      setLocation([]);
                       setWorkPlaceType([]);
                     }
                   }}
@@ -713,198 +798,268 @@ const MainSection: React.FC = () => {
                   Reset Filter
                 </span>
               </div>
-              <div>
-                <div className="flex flex-col gap-4">
-                  <div className="w-full">
-                    <p
-                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                      onClick={() => handleToggleAccordion("Category")}
-                    >
-                      Category
-                      <img
-                        src={Ic_down_arrow}
-                        alt="arrow"
-                        className={openIndex === "Category" ? "rotate-180" : ""}
-                      />
-                    </p>
+              <div className="flex flex-col gap-4">
+                <div className="w-full">
+                  <p
+                    className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                    onClick={() => handleToggleAccordion("Category")}
+                  >
+                    Category
+                    <img
+                      src={Ic_down_arrow}
+                      alt="arrow"
+                      className={openIndex === "Category" ? "rotate-180" : ""}
+                    />
+                  </p>
 
-                    {openIndex === "Category" && (
-                      <div className="bg-white mt-2">
-                        {categoryArray.map((data: any) => (
-                          <label
-                            className="py-2 container text-base text-gray"
-                            htmlFor={data.name}
-                          >
-                            {data.name}
-                            <input
-                              type="checkbox"
-                              id={data.name}
-                              value={data.name}
-                              checked={Category.includes(data.name)}
-                              onChange={() =>
-                                setCategory((prevState: any[]) =>
-                                  prevState.includes(data.name)
-                                    ? prevState.filter(
-                                        (item) => item !== data.name
-                                      )
-                                    : [...prevState, data.name]
-                                )
+                  {openIndex === "Category" && (
+                    <div className="bg-white mt-2">
+                      {categoryArray.length > 1 && (
+                        <label
+                          className="py-2 container text-base text-gray"
+                          htmlFor="allCategory"
+                        >
+                          All Categories
+                          <input
+                            type="checkbox"
+                            id="allCategory"
+                            checked={Category.length === categoryArray.length}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setCategory(
+                                  categoryArray.map((data: any) => data.name)
+                                );
+                              } else {
+                                setCategory([]);
                               }
-                              className="mr-2"
-                            />
-                            <span className="checkmark checkmark_black"></span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="border-t border-gray5 w-full"></div>
-                  <div className="w-full">
-                    <p
-                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                      onClick={() => handleToggleAccordion("JobType")}
-                    >
-                      Job Type
-                      <img
-                        src={Ic_down_arrow}
-                        alt="arrow"
-                        className={openIndex === "JobType" ? "rotate-180" : ""}
-                      />
-                    </p>
-                    {openIndex === "JobType" && (
-                      <div className="bg-white mt-2">
-                        {jobTypeArray.map((data: any) => (
-                          <label
-                            className="py-2 container text-base text-gray"
-                            htmlFor={data.name}
-                          >
-                            {data.name}
-                            <input
-                              type="checkbox"
-                              id={data.name}
-                              value={data.name}
-                              checked={JobType.includes(data.name)}
-                              onChange={() =>
-                                setJobType((prevState: any[]) =>
-                                  prevState.includes(data.name)
-                                    ? prevState.filter(
-                                        (item) => item !== data.name
-                                      )
-                                    : [...prevState, data.name]
-                                )
+                            }}
+                            className="mr-2"
+                          />
+                          <span className="checkmark checkmark_black"></span>
+                        </label>
+                      )}
+                      {categoryArray.map((data: any) => (
+                        <label
+                          className="py-2 container text-base text-gray"
+                          htmlFor={data.name}
+                        >
+                          {data.name}
+                          <input
+                            type="checkbox"
+                            id={data.name}
+                            value={data.name}
+                            checked={Category.includes(data.name)}
+                            onChange={() =>
+                              setCategory((prevState: any[]) =>
+                                prevState.includes(data.name)
+                                  ? prevState.filter(
+                                      (item) => item !== data.name
+                                    )
+                                  : [...prevState, data.name]
+                              )
+                            }
+                            className="mr-2"
+                          />
+                          <span className="checkmark checkmark_black"></span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="border-t border-gray5 w-full"></div>
+                <div className="w-full">
+                  <p
+                    className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                    onClick={() => handleToggleAccordion("JobType")}
+                  >
+                    Job Type
+                    <img
+                      src={Ic_down_arrow}
+                      alt="arrow"
+                      className={openIndex === "JobType" ? "rotate-180" : ""}
+                    />
+                  </p>
+                  {openIndex === "JobType" && (
+                    <div className="bg-white mt-2">
+                      {jobTypeArray.length > 1 && (
+                        <label
+                          className="py-2 container text-base text-gray"
+                          htmlFor="allJobs"
+                        >
+                          All Jobs
+                          <input
+                            type="checkbox"
+                            id="allJobs"
+                            checked={JobType.length === jobTypeArray.length}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setJobType(
+                                  jobTypeArray.map((data: any) => data.name)
+                                );
+                              } else {
+                                setJobType([]);
                               }
-                              className="mr-2"
-                            />
-                            <span className="checkmark checkmark_black"></span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="border-t border-gray5 w-full"></div>
-                  <div className="w-full">
-                    <p
-                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                      onClick={() => handleToggleAccordion("Location")}
-                    >
-                      Location
-                      <img
-                        src={Ic_down_arrow}
-                        alt="arrow"
-                        className={openIndex === "Location" ? "rotate-180" : ""}
+                            }}
+                            className="mr-2"
+                          />
+                          <span className="checkmark checkmark_black"></span>
+                        </label>
+                      )}
+                      {jobTypeArray.map((data: any) => (
+                        <label
+                          className="py-2 container text-base text-gray"
+                          htmlFor={data.name}
+                        >
+                          {data.name}
+                          <input
+                            type="checkbox"
+                            id={data.name}
+                            value={data.name}
+                            checked={JobType.includes(data.name)}
+                            onChange={() =>
+                              setJobType((prevState: any[]) =>
+                                prevState.includes(data.name)
+                                  ? prevState.filter(
+                                      (item) => item !== data.name
+                                    )
+                                  : [...prevState, data.name]
+                              )
+                            }
+                            className="mr-2"
+                          />
+                          <span className="checkmark checkmark_black"></span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="border-t border-gray5 w-full"></div>
+                <div className="w-full">
+                  <p
+                    className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                    onClick={() => handleToggleAccordion("Location")}
+                  >
+                    Location
+                    <img
+                      src={Ic_down_arrow}
+                      alt="arrow"
+                      className={openIndex === "Location" ? "rotate-180" : ""}
+                    />
+                  </p>
+                  {openIndex === "Location" && (
+                    <div className="bg-white mt-2">
+                      <AutocompleteInputMultipleLocationHome
+                        value={Location || []}
+                        onChange={(newItems) => {
+                          setLocation(newItems);
+                        }}
+                        placeholder="Enter location"
+                        className="h-10 lg:h-12"
                       />
-                    </p>
-                    {openIndex === "Location" && (
-                      <div className="bg-white mt-2">
-                        <AutocompleteInput
-                          onChange={(value) => {
-                            setLocation(value);
-                          }}
-                          value={Location || ""}
-                          placeholder="Choose Location"
-                          className={`bg-white text-base font-medium text-gray border-2 rounded-[8px]`}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="border-t border-gray5 w-full"></div>
-                  <div className="w-full">
-                    <p
-                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                      onClick={() => handleToggleAccordion("Experience")}
-                    >
-                      Experience
-                      <img
-                        src={Ic_down_arrow}
-                        alt="arrow"
-                        className={
-                          openIndex === "Experience" ? "rotate-180" : ""
-                        }
-                      />
-                    </p>
-                    {openIndex === "Experience" && (
-                      <div className="bg-white mt-2 h-auto max-h-[130px] big:max-h-[280px] overflow-y-auto overflowYScroll">
-                        {ExperienceArray.map((exp, index) => (
-                          <div
-                            className={`p-2 cursor-pointer text-primary ${
-                              Experience === exp.name
-                                ? "bg-[#EFECE5] font-medium"
-                                : ""
-                            }`}
-                            onClick={() => setExperience(exp.name)}
-                            key={index}
-                          >
-                            {exp.name}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="border-t border-gray5 w-full"></div>
-                  <div className="w-full">
-                    <p
-                      className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
-                      onClick={() => handleToggleAccordion("WorkPlace")}
-                    >
-                      WorkPlace Type
-                      <img
-                        src={Ic_down_arrow}
-                        alt="arrow"
-                        className={
-                          openIndex === "WorkPlace" ? "rotate-180" : ""
-                        }
-                      />
-                    </p>
-                    {openIndex === "WorkPlace" && (
-                      <div className="bg-white mt-2">
-                        {WorkPlaceTypeArray.map((data: any) => (
-                          <label
-                            className="py-2 container text-base text-gray"
-                            htmlFor={data.name}
-                          >
-                            {data.name}
-                            <input
-                              type="checkbox"
-                              id={data.name}
-                              value={data.name}
-                              checked={WorkPlaceType.includes(data.name)}
-                              onChange={() =>
-                                setWorkPlaceType((prevState: any[]) =>
-                                  prevState.includes(data.name)
-                                    ? prevState.filter(
-                                        (item) => item !== data.name
-                                      )
-                                    : [...prevState, data.name]
-                                )
+                    </div>
+                  )}
+                </div>
+                <div className="border-t border-gray5 w-full"></div>
+                <div className="w-full">
+                  <p
+                    className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                    onClick={() => handleToggleAccordion("Experience")}
+                  >
+                    Experience
+                    <img
+                      src={Ic_down_arrow}
+                      alt="arrow"
+                      className={openIndex === "Experience" ? "rotate-180" : ""}
+                    />
+                  </p>
+                  {openIndex === "Experience" && (
+                    <div className="bg-white mt-2 h-auto max-h-[130px] big:max-h-[280px] overflow-y-auto overflowYScroll">
+                      {ExperienceArray.map((exp, index) => (
+                        <div
+                          className={`p-2 cursor-pointer text-primary ${
+                            Experience === exp.name
+                              ? "bg-[#EFECE5] font-medium"
+                              : ""
+                          }`}
+                          onClick={() => setExperience(exp.name)}
+                          key={index}
+                        >
+                          {exp.name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="border-t border-gray5 w-full"></div>
+                <div className="w-full">
+                  <p
+                    className={`text-primary font-medium flex items-center justify-between cursor-pointer`}
+                    onClick={() => handleToggleAccordion("WorkPlace")}
+                  >
+                    WorkPlace Type
+                    <img
+                      src={Ic_down_arrow}
+                      alt="arrow"
+                      className={openIndex === "WorkPlace" ? "rotate-180" : ""}
+                    />
+                  </p>
+                  {openIndex === "WorkPlace" && (
+                    <div className="bg-white mt-2">
+                      {WorkPlaceTypeArray.length > 1 && (
+                        <label
+                          className="py-2 container text-base text-gray"
+                          htmlFor="all"
+                        >
+                          All
+                          <input
+                            type="checkbox"
+                            id="all"
+                            checked={
+                              WorkPlaceType.length === WorkPlaceTypeArray.length
+                            }
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setWorkPlaceType(
+                                  WorkPlaceTypeArray.map(
+                                    (data: any) => data.name
+                                  )
+                                );
+                              } else {
+                                setWorkPlaceType([]);
                               }
-                              className="mr-2"
-                            />
-                            <span className="checkmark checkmark_black"></span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                            }}
+                            className="mr-2"
+                          />
+                          <span className="checkmark checkmark_black"></span>
+                        </label>
+                      )}
+                      {WorkPlaceTypeArray.map((data: any) => (
+                        <label
+                          className="py-2 container text-base text-gray"
+                          htmlFor={data.name}
+                        >
+                          {data.name}
+                          <input
+                            type="checkbox"
+                            id={data.name}
+                            value={data.name}
+                            checked={WorkPlaceType.includes(data.name)}
+                            onChange={() =>
+                              setWorkPlaceType((prevState: any[]) =>
+                                prevState.includes(data.name)
+                                  ? prevState.filter(
+                                      (item) => item !== data.name
+                                    )
+                                  : [...prevState, data.name]
+                              )
+                            }
+                            className="mr-2"
+                          />
+                          <span className="checkmark checkmark_black"></span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -918,7 +1073,7 @@ const MainSection: React.FC = () => {
                   handleTogglePopup();
                   setCategory([]);
                   setJobType([]);
-                  setLocation(null);
+                  setLocation([]);
                   setWorkPlaceType([]);
                 }}
               >

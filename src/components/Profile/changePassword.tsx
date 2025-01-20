@@ -132,7 +132,7 @@ const ChangePassword: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                       } `}
                             type={isPasswordVisible ? "text" : "password"}
                           />
@@ -183,7 +183,7 @@ const ChangePassword: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                       } `}
                           type="password"
                         />
@@ -225,7 +225,7 @@ const ChangePassword: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                       } `}
                             type={isPasswordVisible ? "text" : "password"}
                           />

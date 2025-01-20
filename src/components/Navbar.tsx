@@ -158,39 +158,41 @@ export const Navbar: React.FC = () => {
             </div>
           </Link>
           {/* Nav items */}
-          <div className="hidden laptop:flex items-center gap-3 big:gap-12 font-semibold text-lg laptop:text-xl">
-            <Link
-              to={"/find-talent"}
-              className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
-                currentPath === "/find-talent"
-                  ? "nav_active"
-                  : "border-transparent"
-              }`}
-            >
-              Find Talent
-            </Link>
-            <Link
-              to={"/post-job"}
-              className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
-                currentPath === "/post-job"
-                  ? "nav_active"
-                  : "border-transparent"
-              }`}
-            >
-              Post a Job
-            </Link>
-            <Link
-              to={"/blogs"}
-              className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
-                currentPath === "/blogs" ||
-                currentPath.startsWith("/blog-details/")
-                  ? "nav_active"
-                  : "border-transparent"
-              }`}
-            >
-              Blogs
-            </Link>
-          </div>
+          {currentPath !== "/create-account" && (
+            <div className="hidden laptop:flex items-center gap-3 big:gap-12 font-semibold text-lg laptop:text-xl">
+              <Link
+                to={"/find-talent"}
+                className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
+                  currentPath === "/find-talent"
+                    ? "nav_active"
+                    : "border-transparent"
+                }`}
+              >
+                Find Talent
+              </Link>
+              <Link
+                to={"/post-job"}
+                className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
+                  currentPath === "/post-job"
+                    ? "nav_active"
+                    : "border-transparent"
+                }`}
+              >
+                Post a Job
+              </Link>
+              <Link
+                to={"/blogs"}
+                className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
+                  currentPath === "/blogs" ||
+                  currentPath.startsWith("/blog-details/")
+                    ? "nav_active"
+                    : "border-transparent"
+                }`}
+              >
+                Blogs
+              </Link>
+            </div>
+          )}
         </div>
         {/* Buttons */}
         {isUserLogin ? (
@@ -305,22 +307,42 @@ export const Navbar: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="hidden laptop:flex items-center gap-4 relative">
-            <Link to="/">
-              <ButtonUx
-                label="Login"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
-              />
-            </Link>
-            <Link to={"/create-account"}>
-              <ButtonUx
-                label="Register"
-                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px]"
-              />
-            </Link>
-            <div className="border-l border-gray5 h-[18px] w-1"></div>
-            <p className="text-primary text-lg font-medium">For Job Seekers</p>
-          </div>
+          <>
+            {currentPath === "/create-account" ? (
+              <>
+                <div className="text-sm md:text-base desktop:text-lg flex gap-2 items-center">
+                  <span className="text-gray hidden sm:block">
+                    Already Registered?
+                  </span>
+                  <Link
+                    to={"/"}
+                    className="text-primary font-semibold flex items-center"
+                  >
+                    Login <span className="hidden sm:block">&nbsp;Here</span>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <div className="hidden laptop:flex items-center gap-4 relative">
+                <Link to="/">
+                  <ButtonUx
+                    label="Login"
+                    buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                  />
+                </Link>
+                <Link to={"/create-account"}>
+                  <ButtonUx
+                    label="Register"
+                    buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px]"
+                  />
+                </Link>
+                <div className="border-l border-gray5 h-[18px] w-1"></div>
+                <p className="text-primary text-lg font-medium">
+                  For Job Seekers
+                </p>
+              </div>
+            )}
+          </>
         )}
 
         {isDropdownOpen && (

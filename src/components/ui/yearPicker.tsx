@@ -89,7 +89,7 @@ const YearPicker: React.FC<DatePickerProps> = ({
   return (
     <div
       className={cn(
-        "bg-white text-base font-medium border-2 rounded-[8px] flex h-10 lg:h-12 w-full border-input text-primary",
+        "bg-white text-base font-medium border-2 rounded-[8px] flex h-10 lg:h-12 w-full border-input text-primary focus:bg-lightYellow2 focus:shadow-shadow1",
         className
       )}
     >

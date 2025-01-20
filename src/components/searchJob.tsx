@@ -19,11 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { useNavigate } from "react-router-dom";
-import AutocompleteInput from "@/components/ui/inputLocation";
 import ButtonUx from "./common/button";
 import AutocompleteInputMultiple from "./ui/autoSelectMultiple";
 import { useNavigate } from "react-router-dom";
+import AutocompleteInputMultipleLocationHome from "./ui/autoSelectMultipleLocationHome";
 
 const experienceArray = [
   { name: "Fresher (Less then 1 Year)" },
@@ -51,10 +50,11 @@ const formSchema = z.object({
     })
     .optional(),
   city: z
-    .string()
-    .min(1, {
-      message: "City must be specified.",
-    })
+    .array(
+      z.string().min(1, {
+        message: "Each item must be at least 1 character.",
+      })
+    )
     .optional(),
 });
 
@@ -82,8 +82,11 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
         .replace(/[\s,]+/g, "-");
       queryParams.push(`experience=${encodeURIComponent(formattedexperience)}`);
     }
+    const city: any = data.city;
+    const encodedCities = encodeURIComponent(city.join(","));
+
     if (data.city !== undefined) {
-      queryParams.push(`city=${data.city}`);
+      queryParams.push(`city=${encodedCities}`);
     }
     if (remoteJobsOnly === true) {
       queryParams.push(`remote=remote`);
@@ -102,7 +105,6 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
       }
     }
   };
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -116,6 +118,12 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
     }
   }, []);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const formValue: any = form.getValues();
+
+  const isValid =
+    (formValue.experience?.trim() || "") !== "" ||
+    formValue.search?.length > 0 ||
+    formValue.city?.length > 0;
 
   return (
     <>
@@ -163,10 +171,10 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
                           }}
                         >
                           <SelectTrigger
-                            className={`h-10 lg:h-12 bg-white text-lg ${
+                            className={`h-10 lg:h-[50px] bg-white text-lg border-2 ${
                               fieldState.error
                                 ? "border-red"
-                                : "border-gray6 hover:border-primary"
+                                : "border-primary hover:border-primary"
                             } rounded-[8px]`}
                           >
                             <SelectValue placeholder="Select experience" />
@@ -196,9 +204,11 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
                   render={({ field, fieldState }) => (
                     <FormItem>
                       <FormControl>
-                        <AutocompleteInput
-                          value={field.value || ""}
-                          onChange={(newValue) => field.onChange(newValue)}
+                        <AutocompleteInputMultipleLocationHome
+                          value={field.value || []}
+                          onChange={(newItems) => {
+                            field.onChange(newItems);
+                          }}
                           placeholder="Enter location"
                           className="h-10 lg:h-12"
                         />
@@ -222,8 +232,13 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
               <div className="w-full md:w-[15%]">
                 <ButtonUx
                   label="Find Jobs"
-                  buttonClassName="text-lg px-8 py-2 w-full h-10 lg:h-12 font-semibold text-primary bg-yellow border-primary rounded-[8px] hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2"
+                  buttonClassName={`text-lg px-8 py-2 w-full h-10 lg:h-12 font-semibold border-2 rounded-[8px] ${
+                    isValid
+                      ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
+                      : "border-gray7 bg-[#D8D8D8] text-[#767676]"
+                  }`}
                   type="submit"
+                  disabled={!isValid}
                 />
               </div>
             </form>

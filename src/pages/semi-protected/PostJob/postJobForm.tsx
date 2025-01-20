@@ -558,7 +558,7 @@ export const PostJobForm: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                      : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } `}
                                 value={field.value}
                               />
@@ -597,7 +597,7 @@ export const PostJobForm: React.FC = () => {
                                 className={`bg-white ${
                                   fieldState.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } text-base text-primary border-2 rounded-[8px]`}
                               >
                                 <SelectValue placeholder="Select Category">
@@ -653,7 +653,7 @@ export const PostJobForm: React.FC = () => {
                                 className={`bg-white ${
                                   fieldState.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } text-base text-primary border-2 rounded-[8px]`}
                                 value={field.value}
                               />
@@ -689,7 +689,7 @@ export const PostJobForm: React.FC = () => {
                                   className={`bg-white ${
                                     fieldState.error
                                       ? "border-red"
-                                      : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                      : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } text-base text-primary border-2 rounded-[8px]`}
                                 >
                                   <SelectValue placeholder="Select Experience Level" />
@@ -741,7 +741,7 @@ export const PostJobForm: React.FC = () => {
                                 className={`bg-white ${
                                   fieldState.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } text-base text-primary border-2 rounded-[8px]`}
                               >
                                 <SelectValue placeholder="Select Job Type">
@@ -915,7 +915,7 @@ export const PostJobForm: React.FC = () => {
                                 className={`pl-8 lg:pl-9 ${
                                   fieldState?.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } `}
                                 value={field.value || []}
                               />
@@ -965,7 +965,7 @@ export const PostJobForm: React.FC = () => {
                                 className={`bg-white ${
                                   fieldState.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } text-base text-primary border-2 rounded-[8px]`}
                               >
                                 <SelectValue placeholder="Choose Currency">
@@ -1025,7 +1025,7 @@ export const PostJobForm: React.FC = () => {
                                           ${
                                             fieldState?.error
                                               ? "border-red"
-                                              : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                              : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                                 type="number"
                                 onChange={(e: any) => {
@@ -1083,7 +1083,7 @@ export const PostJobForm: React.FC = () => {
                                           ${
                                             fieldState?.error
                                               ? "border-red"
-                                              : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                              : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                                 type="number"
                                 onChange={(e: any) => {
@@ -1143,7 +1143,7 @@ export const PostJobForm: React.FC = () => {
                                 className={`bg-white ${
                                   fieldState.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } text-base text-primary border-2 rounded-[8px]`}
                               >
                                 <SelectValue placeholder="Choose Payment Type">
@@ -1211,7 +1211,7 @@ export const PostJobForm: React.FC = () => {
                                 className={`bg-white ${
                                   fieldState.error
                                     ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } text-base text-primary border-2 rounded-[8px]`}
                               >
                                 <SelectValue placeholder="Choose One">
@@ -1272,7 +1272,7 @@ export const PostJobForm: React.FC = () => {
                                   className={`bg-white rounded-[8px] border-2 ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-[#777777]"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   }`}
                                   type="text"
                                 />
@@ -1311,7 +1311,7 @@ export const PostJobForm: React.FC = () => {
                                   className={`bg-white rounded-[8px] border-2 ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-[#777777]"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   }`}
                                   type="email"
                                 />
@@ -1351,7 +1351,7 @@ export const PostJobForm: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-[#777777]"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } border-2 rounded-[8px] lg:h-[100px]`}
                                   onChange={(e) => {
                                     if (e.target.value.length <= maxChars) {

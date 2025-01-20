@@ -50,7 +50,7 @@ export const BlogsDetails: React.FC = () => {
           <img
             src={`${PHOTO_URL}/${blog.image}`}
             alt="blog-image"
-            className="w-full sm:w-[240px] md:w-[300px] lg:w-auto"
+            className="w-full sm:w-[240px] md:w-[300px] lg:w-[356px] rounded-[12px]"
           />
 
           <div>

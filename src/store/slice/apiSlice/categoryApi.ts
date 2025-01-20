@@ -20,7 +20,18 @@ const categoryApi = mainApi.injectEndpoints({
         body: params,
       }),
     }),
+    getCurrentCompany: builder.query<unknown, { data: any }>({
+      query: (data: any) => ({
+        url: `current-company`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetCategoryQuery, useGetAllCompanyQuery } = categoryApi;
+export const {
+  useGetCategoryQuery,
+  useGetAllCompanyQuery,
+  useGetCurrentCompanyQuery,
+} = categoryApi;

@@ -5,6 +5,22 @@
 body {
   font-family: "IBM Plex Sans", sans-serif;
 }
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  box-shadow: 0 0 0px 1000px white inset;
+}
+
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #fffadf inset;
+  box-shadow: 0 0 0px 1000px #fffadf inset;
+
+  -webkit-box-shadow: 4px 4px 0px 0px #070707, 0 0 0px 1000px #fffadf inset;
+  box-shadow: 4px 4px 0px 0px #070707, 0 0 0px 1000px #fffadf inset;
+}
 
 /* ---- */
 .ql-editor::-webkit-scrollbar,

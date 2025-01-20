@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useGetCurrentCompanyQuery } from "@/store/slice/apiSlice/categoryApi";
-import { useGetSkillsQuery } from "@/store/slice/apiSlice/profileApi";
+import ApiUtils from "@/api/ApiUtils";
 import React, { useEffect, useRef, useState } from "react";
 import Autosuggest, {
   SuggestionsFetchRequestedParams,
@@ -19,20 +18,32 @@ const getSuggestions = (
     return [];
   }
 
-  return categories.filter(
-    (location: any) =>
-      location.category.toLowerCase().includes(inputValue) &&
-      !selectedValues.includes(location.category)
-  );
+  const matches = categories.filter((location: any) => {
+    const cityMatch = location.city.toLowerCase().includes(inputValue);
+    const stateMatch = location.states.toLowerCase().includes(inputValue);
+    return cityMatch || stateMatch;
+  });
+
+  const suggestions = matches.map((location: any) => ({
+    name: `${location.city}, ${location.states}`,
+  }));
+
+  const filteredSuggestions = suggestions.filter((sug) => {
+    return !selectedValues.some((selectedValue) =>
+      sug.name.includes(selectedValue)
+    );
+  });
+
+  return filteredSuggestions;
 };
 
-const getSuggestionValue = (suggestion: any): string => suggestion.category;
+const getSuggestionValue = (suggestion: any): string => suggestion.name;
 
 const renderSuggestion = (
-  suggestion: { category: string },
+  suggestion: { name: string },
   inputValue: { query: string }
 ) => {
-  const matchStart = suggestion.category
+  const matchStart = suggestion.name
     .toLowerCase()
     .indexOf(inputValue.query.toLowerCase());
   const matchEnd = matchStart + inputValue.query.length;
@@ -41,14 +52,14 @@ const renderSuggestion = (
     <div className="px-2 py-1.5 text-primary bg-white cursor-pointer">
       {matchStart >= 0 ? (
         <>
-          {suggestion.category.slice(0, matchStart)}
+          {suggestion.name.slice(0, matchStart)}
           <span className="font-semibold">
-            {suggestion.category.slice(matchStart, matchEnd)}
+            {suggestion.name.slice(matchStart, matchEnd)}
           </span>
-          {suggestion.category.slice(matchEnd)}
+          {suggestion.name.slice(matchEnd)}
         </>
       ) : (
-        suggestion.category
+        suggestion.name
       )}
     </div>
   );
@@ -77,36 +88,39 @@ interface AutocompleteInputProps {
   placeholder: string;
   className?: string;
 }
-const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
-  value,
-  onChange,
-  placeholder,
-  className,
-}) => {
+const AutocompleteInputMultipleLocationHome: React.FC<
+  AutocompleteInputProps
+> = ({ value, onChange, placeholder, className }) => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<any[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const locationContainerRef = useRef<HTMLDivElement>(null);
 
-  const params: any = {
-    page: 1,
-    limit: 99999999999,
-    value: "",
+  const [countries, setCountries] = useState<any[]>([]);
+
+  const fetchCountries = async (inputValue: string) => {
+    try {
+      const response: any = await ApiUtils.getLocation(inputValue);
+
+      const countriesWithStates = response?.data?.data?.map((country: any) => {
+        return {
+          city: country.city,
+          states: country.state,
+        };
+      });
+
+      setCountries(countriesWithStates);
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
-  const { data: skills } = useGetSkillsQuery(params);
-  const skillsName = (skills as any)?.data || [];
-  const { data } = useGetCurrentCompanyQuery(params);
-  const AllCompanies = (data as any)?.data || [];
+  useEffect(() => {
+    if (inputValue) {
+      fetchCountries(inputValue);
+    }
+  }, [inputValue]);
 
-  const skillCategories = skillsName.map((skill: any) => ({
-    category: skill.name,
-  }));
-
-  const companyCategories = AllCompanies.map((company: any) => ({
-    category: company.name,
-  }));
-
-  const categories = [...skillCategories, ...companyCategories];
+  const categories = [...countries];
 
   const handleAdd = (newValue: string) => {
     if (newValue && !value.includes(newValue)) {
@@ -115,8 +129,9 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
     }
   };
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollLeft = containerRef.current.scrollWidth;
+    if (locationContainerRef.current) {
+      locationContainerRef.current.scrollLeft =
+        locationContainerRef.current.scrollWidth;
     }
   }, [value]);
 
@@ -158,13 +173,16 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
     },
     className:
       "h-10 lg:h-12 w-full focus:outline-none flex rounded-[8px] pr-3 py-2 placeholder:text-[#767676] placeholder:text-lg min-w-[50px]",
+    id: "autocomplete-input-multi-location",
   };
 
   return (
-    <div className={`relative ${className}`} ref={containerRef}>
+    <div className={`relative ${className}`} ref={locationContainerRef}>
       <div
         className="flex flex-nowrap items-center gap-2 border border-gray-300 bg-white overflow-x-auto overflow-y-hidden overFlowScrollHidden h-10 lg:h-12 w-full rounded-[8px] py-2 pl-3"
-        onClick={() => document.querySelector("input")?.focus()}
+        onClick={() =>
+          document.getElementById("autocomplete-input-multi-location")?.focus()
+        }
       >
         {value.map((item, index) => (
           <span
@@ -184,7 +202,7 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
           renderSuggestionsContainer={renderSuggestionsContainer}
           inputProps={inputProps}
           onSuggestionSelected={(_, { suggestion }) =>
-            handleAdd(suggestion.category)
+            handleAdd(suggestion.name)
           }
         />
       </div>
@@ -192,4 +210,4 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
   );
 };
 
-export default AutocompleteInputMultiple;
+export default AutocompleteInputMultipleLocationHome;

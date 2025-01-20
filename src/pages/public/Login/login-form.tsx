@@ -226,7 +226,7 @@ const LoginForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="email"
                           />
@@ -282,7 +282,7 @@ const LoginForm: React.FC = () => {
                                       ${
                                         fieldState?.error
                                           ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[3px] focus:border-gray7"
+                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                                 type={isPasswordVisible ? "text" : "password"}
                               />

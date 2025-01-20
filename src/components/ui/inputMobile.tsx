@@ -44,6 +44,7 @@ const InputMobile = React.forwardRef<HTMLInputElement, InputProps>(
           value={phoneValue}
           onChange={handleChange}
           {...props}
+          autoComplete="off"
         />
       </div>
     );

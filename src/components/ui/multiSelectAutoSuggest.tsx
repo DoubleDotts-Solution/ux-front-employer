@@ -53,7 +53,7 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
     const matchEnd = matchStart + inputValue.query.length;
 
     return (
-      <div className="px-2 py-1.5 text-primary bg-white cursor-pointer">
+      <div className="px-2 py-1.5 text-primary bg-white cursor-pointer rounded-b-[8px]">
         {matchStart >= 0 ? (
           <>
             {suggestion.name.slice(0, matchStart)}

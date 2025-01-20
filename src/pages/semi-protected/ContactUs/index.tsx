@@ -117,7 +117,7 @@ export const ContactUs: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } `}
                                 type="text"
                               />
@@ -150,7 +150,7 @@ export const ContactUs: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } `}
                                 type="email"
                               />
@@ -183,7 +183,7 @@ export const ContactUs: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7 focus:bg-lightYellow2 disabled:cursor-not-allowed disabled:opacity-50 focus:shadow-none focus-visible:shadow-none placeholder:text-[#767676] placeholder:text-lg"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary focus:bg-lightYellow2 disabled:cursor-not-allowed disabled:opacity-50 focus:shadow-none focus-visible:shadow-none placeholder:text-[#767676] placeholder:text-lg"
                                   } `}
                                 type="text"
                               />
@@ -216,7 +216,7 @@ export const ContactUs: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } `}
                                 type="text"
                               />
@@ -249,7 +249,7 @@ export const ContactUs: React.FC = () => {
                                   ${
                                     fieldState?.error
                                       ? "border-red"
-                                      : "border-gray6 hover:border-primary focus:border-[3px] focus:border-gray7"
+                                      : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } border-2 lg:h-[100px]`}
                               />
                             </div>

@@ -208,7 +208,11 @@ export const Blogs: React.FC = () => {
                   key={blog.id}
                   className="w-full border-2 border-primary rounded-[12px] md:rounded-2xl p-3 desktop:p-4 flex flex-col gap-3 lg:gap-4 desktop:gap-6 bg-white hover:shadow-shadow1"
                 >
-                  <img src={`${PHOTO_URL}/${blog.image}`} alt="blog-image" />
+                  <img
+                    src={`${PHOTO_URL}/${blog.image}`}
+                    alt="blog-image"
+                    className="w-full h-[265px] rounded-[12px]"
+                  />
                   <p className="text-primary text-base md:text-lg desktop:text-xl">
                     {blog.title}
                   </p>
