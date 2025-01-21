@@ -725,7 +725,8 @@ input[type="range"]::-moz-range-thumb {
 }
 .react-autosuggest__suggestions-container {
   position: absolute;
-  height: 254px;
+  max-height: 254px;
+  height: auto;
   overflow-y: auto;
   border-radius: 8px;
   left: 0;

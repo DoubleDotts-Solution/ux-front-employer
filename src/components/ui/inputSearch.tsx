@@ -61,7 +61,7 @@ const renderSuggestionsContainer = ({ containerProps, children }: any) => {
   }
 
   return (
-    <div key={key} {...rest} className="border border-gray5 rounded-[8px]">
+    <div key={key} {...rest}>
       <div className="font-medium text-primary text-base p-2 border-b border-gray5 bg-white rounded-t-[8px]">
         Search Suggestions
       </div>
