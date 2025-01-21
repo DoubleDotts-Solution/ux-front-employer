@@ -727,13 +727,14 @@ input[type="range"]::-moz-range-thumb {
   position: absolute;
   height: 254px;
   overflow-y: auto;
-  border-radius: 12px;
+  border-radius: 8px;
   left: 0;
   width: 100%;
   z-index: -1 !important;
   top: auto;
 }
 .react-autosuggest__suggestions-container--open {
+  border: 1px solid #c8c8c8;
   z-index: 9999999 !important;
 }
 .ql-toolbar.ql-snow .ql-formats {
