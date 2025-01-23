@@ -136,15 +136,12 @@ const JobPostedPerson: React.FC = () => {
               {formatTimeAgo(jobPostedData?.updatedAt)}
             </p>
             <div className="bg-[#EFECE5] h-[8px] w-[8px] rounded-full"></div>
-            <Link
-              to={`/profile?job-posted&&person-id=${jobPostedData?.id}`}
-              className="flex items-center gap-1 cursor-pointer"
-            >
+            <div className="flex items-center gap-1">
               <img src={Ic_person} alt="person" />
               <span className="text-primary font-semibold text-base lg:text-lg">
                 {jobPostedData?.appliedJobsCount}
               </span>
-            </Link>
+            </div>
           </div>
         </div>
         <div className="flex items-center justify-between gap-2">

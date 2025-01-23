@@ -39,10 +39,30 @@ const ExperienceArray = [
   { name: "7 years" },
 ];
 const WorkPlaceTypeArray = [
-  { name: "On Site" },
-  { name: "Hybrid" },
-  { name: "Remote" },
+  { name: "On Site", id: "on-site" },
+  { name: "Hybrid", id: "hybrid" },
+  { name: "Remote", id: "remote" },
 ];
+
+interface Filters {
+  Category: string[];
+  JobType: string[];
+  Location: string[];
+  Experience: string | null;
+  WorkPlaceType: string[];
+}
+
+interface JobParams {
+  sort_by?: string;
+  category?: string;
+  value?: string;
+  job_experience?: string;
+  work_place_type?: string;
+  job_type?: string;
+  location?: string;
+  page: number;
+  limit: number;
+}
 
 const MainSection: React.FC = () => {
   const navigate = useNavigate();
@@ -68,11 +88,26 @@ const MainSection: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  const [WorkPlaceType, setWorkPlaceType] = useState<string[]>([]);
-  const [Category, setCategory] = useState<string[]>([]);
-  const [JobType, setJobType] = useState<string[]>([]);
-  const [Experience, setExperience] = useState<any | null>(null);
-  const [Location, setLocation] = useState<string[]>([]);
+
+  let localStorageFilterData: any = {};
+  const storedData = localStorage.getItem("employer_filter");
+
+  if (storedData) {
+    try {
+      localStorageFilterData = JSON.parse(storedData);
+    } catch (error) {
+      console.error("Error parsing filter data from localStorage:", error);
+      localStorageFilterData = {};
+    }
+  }
+  const [filters, setFilters] = useState<Filters>({
+    Category: localStorageFilterData?.category?.split(",") || [],
+    JobType: localStorageFilterData?.job_type?.split(",") || [],
+    Location: localStorageFilterData?.location?.split(",") || [],
+    Experience: localStorageFilterData?.job_experience || null,
+    WorkPlaceType: localStorageFilterData?.work_place_type?.split(",") || [],
+  });
+
   const [Value, setValue] = useState<any | null>(null);
 
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -96,34 +131,28 @@ const MainSection: React.FC = () => {
     }
   };
 
-  const GetAllJobParam: any = {
+  const GetAllJobParam: JobParams = {
     ...(sortBy && { sort_by: sortBy }),
     ...(Value && { value: Value }),
-    ...(Experience && { job_experience: Experience }),
-    ...(Category &&
-      Category.length > 0 && {
-        category: Category.map((item) => item).join(", "),
+    ...(filters.Experience && { job_experience: filters.Experience }),
+    ...(Array.isArray(filters.Category) &&
+      filters.Category.length > 0 && {
+        category: filters.Category.map((item) => item).join(","),
       }),
-    ...(WorkPlaceType &&
-      WorkPlaceType.length > 0 &&
-      WorkPlaceType.some((item) => item !== "All") && {
-        work_place_type: WorkPlaceType.filter((item) => item !== "All")
-          .map((item) => {
-            if (item === "Remote") return "remote";
-            if (item === "On Site") return "on_site";
-            if (item === "Hybrid") return "hybrid";
-            return "";
-          })
-          .filter(Boolean)
-          .join(", "),
+    ...(Array.isArray(filters.WorkPlaceType) &&
+      filters.WorkPlaceType.length > 0 &&
+      filters.WorkPlaceType.some((item) => item !== "All") && {
+        work_place_type: filters.WorkPlaceType.filter(
+          (item) => item !== "All"
+        ).join(","),
       }),
-    ...(JobType &&
-      JobType.length > 0 && {
-        job_type: JobType.map((item) => item).join(", "),
+    ...(Array.isArray(filters.JobType) &&
+      filters.JobType.length > 0 && {
+        job_type: filters.JobType.map((item) => item).join(","),
       }),
-    ...(Location &&
-      Location.length > 0 && {
-        location: Location.map((item) => item).join(", "),
+    ...(Array.isArray(filters.Location) &&
+      filters.Location.length > 0 && {
+        location: filters.Location.map((item) => item).join(","),
       }),
     page: currentPage,
     limit: 5,
@@ -138,6 +167,7 @@ const MainSection: React.FC = () => {
     limit: 999999999999999,
     value: "",
   };
+  localStorage.setItem("employer_filter", JSON.stringify(GetAllJobParam));
 
   const { data: categoryData } = useGetCategoryQuery(getFilterDataParam);
   const categoryArray = (categoryData as any)?.data || [];
@@ -189,7 +219,7 @@ const MainSection: React.FC = () => {
 
       if (
         queryParams.get("search") ||
-        queryParams.get("category") ||
+        queryParams.get("experience") ||
         queryParams.get("city") ||
         queryParams.get("remote")
       ) {
@@ -202,14 +232,14 @@ const MainSection: React.FC = () => {
           setValue(value);
         }
         if (experience) {
-          setExperience(experience);
+          handleFilterChange("Experience", experience);
         }
 
         if (location) {
-          setLocation(location);
+          handleFilterChange("Location", location);
         }
         if (work_place_type) {
-          setWorkPlaceType([work_place_type]);
+          handleFilterChange("WorkPlaceType", [work_place_type]);
         }
       }
     };
@@ -222,17 +252,52 @@ const MainSection: React.FC = () => {
   const handleToggleAccordion = (type: string) => {
     setOpenIndex(openIndex === type ? null : type);
   };
-
+  const handleFilterChange = (filterKey: string, value: any) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterKey]: value,
+    }));
+  };
   const validFilter: any =
-    Category.length === 0 &&
-    JobType.length === 0 &&
-    Location.length === 0 &&
-    WorkPlaceType.length === 0 &&
-    Experience == null;
+    filters.Category.length === 0 &&
+    filters.JobType.length === 0 &&
+    filters.Location.length === 0 &&
+    filters.WorkPlaceType.length === 0 &&
+    filters.Experience == null;
 
   if (isLoading) {
     <Loading />;
   }
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        WorkPlaceType: WorkPlaceTypeArray.map((data) => data.id),
+      }));
+    } else {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        WorkPlaceType: [],
+      }));
+    }
+  };
+
+  const handleIndividualChange = (id: string) => {
+    setFilters((prevFilters) => {
+      const { WorkPlaceType } = prevFilters;
+
+      const updatedWorkPlaceType = WorkPlaceType.includes(id)
+        ? WorkPlaceType.filter((item) => item !== id)
+        : [...WorkPlaceType, id];
+
+      return {
+        ...prevFilters,
+        WorkPlaceType: updatedWorkPlaceType,
+      };
+    });
+  };
+
   return (
     <div className="relative">
       <div className="bg-lightYellow relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[55px] lg:py-[72px] lg:leading-[60px] text-xl sm:text-2xl md:text-[2rem] lg:text-[2.5rem] desktop:text-[3rem] text-primary flex align-center font-semibold">
@@ -294,10 +359,13 @@ const MainSection: React.FC = () => {
                     }`}
                     onClick={() => {
                       if (!validFilter) {
-                        setCategory([]);
-                        setJobType([]);
-                        setLocation([]);
-                        setWorkPlaceType([]);
+                        setFilters({
+                          Category: [],
+                          JobType: [],
+                          Location: [],
+                          Experience: null,
+                          WorkPlaceType: [],
+                        });
                       }
                     }}
                   >
@@ -329,14 +397,17 @@ const MainSection: React.FC = () => {
                             <input
                               type="checkbox"
                               id="allCategory"
-                              checked={Category.length === categoryArray.length}
+                              checked={
+                                filters.Category.length === categoryArray.length
+                              }
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setCategory(
+                                  handleFilterChange(
+                                    "Category",
                                     categoryArray.map((data: any) => data.name)
                                   );
                                 } else {
-                                  setCategory([]);
+                                  handleFilterChange("Category", []);
                                 }
                               }}
                               className="mr-2"
@@ -344,28 +415,45 @@ const MainSection: React.FC = () => {
                             <span className="checkmark checkmark_black"></span>
                           </label>
                         )}
-                        {categoryArray.map((data: any) => (
+
+                        {categoryArray.map((data: any, index: number) => (
                           <label
                             className="py-2 container text-base text-gray"
                             htmlFor={data.name}
+                            key={index}
                           >
                             {data.name}
                             <input
                               type="checkbox"
                               id={data.name}
                               value={data.name}
-                              checked={Category.includes(data.name)}
-                              onChange={() =>
-                                setCategory((prevState: any[]) =>
-                                  prevState.includes(data.name)
-                                    ? prevState.filter(
-                                        (item) => item !== data.name
-                                      )
-                                    : [...prevState, data.name]
-                                )
+                              checked={
+                                Array.isArray(filters.Category) &&
+                                filters.Category.includes(data.name)
                               }
+                              onChange={() => {
+                                setFilters((prevFilters) => {
+                                  const categoryArray = Array.isArray(
+                                    prevFilters.Category
+                                  )
+                                    ? prevFilters.Category
+                                    : [];
+                                  const updatedCategory =
+                                    categoryArray.includes(data.name)
+                                      ? categoryArray.filter(
+                                          (item) => item !== data.name
+                                        )
+                                      : [...categoryArray, data.name];
+
+                                  return {
+                                    ...prevFilters,
+                                    Category: updatedCategory,
+                                  };
+                                });
+                              }}
                               className="mr-2"
                             />
+
                             <span className="checkmark checkmark_black"></span>
                           </label>
                         ))}
@@ -396,14 +484,17 @@ const MainSection: React.FC = () => {
                             <input
                               type="checkbox"
                               id="allJobs"
-                              checked={JobType.length === jobTypeArray.length}
+                              checked={
+                                filters.JobType.length === jobTypeArray.length
+                              }
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setJobType(
+                                  handleFilterChange(
+                                    "JobType",
                                     jobTypeArray.map((data: any) => data.name)
                                   );
                                 } else {
-                                  setJobType([]);
+                                  handleFilterChange("JobType", []);
                                 }
                               }}
                               className="mr-2"
@@ -411,25 +502,38 @@ const MainSection: React.FC = () => {
                             <span className="checkmark checkmark_black"></span>
                           </label>
                         )}
-                        {jobTypeArray.map((data: any) => (
+                        {jobTypeArray.map((data: any, index: number) => (
                           <label
                             className="py-2 container text-base text-gray"
                             htmlFor={data.name}
+                            key={index}
                           >
                             {data.name}
                             <input
                               type="checkbox"
                               id={data.name}
                               value={data.name}
-                              checked={JobType.includes(data.name)}
+                              checked={filters.JobType.includes(data.name)}
                               onChange={() =>
-                                setJobType((prevState: any[]) =>
-                                  prevState.includes(data.name)
-                                    ? prevState.filter(
+                                setFilters((prevFilters) => {
+                                  const jobType_Array = Array.isArray(
+                                    prevFilters.JobType
+                                  )
+                                    ? prevFilters.JobType
+                                    : [];
+                                  const updatedJobType = jobType_Array.includes(
+                                    data.name
+                                  )
+                                    ? jobType_Array.filter(
                                         (item) => item !== data.name
                                       )
-                                    : [...prevState, data.name]
-                                )
+                                    : [...jobType_Array, data.name];
+
+                                  return {
+                                    ...prevFilters,
+                                    JobType: updatedJobType,
+                                  };
+                                })
                               }
                               className="mr-2"
                             />
@@ -455,9 +559,9 @@ const MainSection: React.FC = () => {
                     {openIndex === "Location" && (
                       <div className="bg-white mt-2">
                         <AutocompleteInputMultipleLocationHome
-                          value={Location || []}
+                          value={filters.Location || []}
                           onChange={(newItems) => {
-                            setLocation(newItems);
+                            handleFilterChange("Location", newItems);
                           }}
                           placeholder="Enter location"
                           className="h-10 lg:h-12"
@@ -485,11 +589,13 @@ const MainSection: React.FC = () => {
                         {ExperienceArray.map((exp, index) => (
                           <div
                             className={`p-2 cursor-pointer text-primary ${
-                              Experience === exp.name
+                              filters.Experience === exp.name
                                 ? "bg-[#EFECE5] font-medium"
                                 : ""
                             }`}
-                            onClick={() => setExperience(exp.name)}
+                            onClick={() =>
+                              handleFilterChange("Experience", exp.name)
+                            }
                             key={index}
                           >
                             {exp.name}
@@ -525,45 +631,29 @@ const MainSection: React.FC = () => {
                               type="checkbox"
                               id="all"
                               checked={
-                                WorkPlaceType.length ===
+                                filters.WorkPlaceType.length ===
                                 WorkPlaceTypeArray.length
                               }
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setWorkPlaceType(
-                                    WorkPlaceTypeArray.map(
-                                      (data: any) => data.name
-                                    )
-                                  );
-                                } else {
-                                  setWorkPlaceType([]);
-                                }
-                              }}
+                              onChange={handleSelectAll}
                               className="mr-2"
                             />
                             <span className="checkmark checkmark_black"></span>
                           </label>
                         )}
-                        {WorkPlaceTypeArray.map((data: any) => (
+
+                        {WorkPlaceTypeArray.map((data) => (
                           <label
+                            key={data.id}
                             className="py-2 container text-base text-gray"
-                            htmlFor={data.name}
+                            htmlFor={data.id}
                           >
                             {data.name}
                             <input
                               type="checkbox"
-                              id={data.name}
-                              value={data.name}
-                              checked={WorkPlaceType.includes(data.name)}
-                              onChange={() =>
-                                setWorkPlaceType((prevState: any[]) =>
-                                  prevState.includes(data.name)
-                                    ? prevState.filter(
-                                        (item) => item !== data.name
-                                      )
-                                    : [...prevState, data.name]
-                                )
-                              }
+                              id={data.id}
+                              value={data.id}
+                              checked={filters.WorkPlaceType.includes(data.id)}
+                              onChange={() => handleIndividualChange(data.id)}
                               className="mr-2"
                             />
                             <span className="checkmark checkmark_black"></span>
@@ -788,10 +878,13 @@ const MainSection: React.FC = () => {
                   onClick={() => {
                     if (!validFilter) {
                       handleTogglePopup();
-                      setCategory([]);
-                      setJobType([]);
-                      setLocation([]);
-                      setWorkPlaceType([]);
+                      setFilters({
+                        Category: [],
+                        JobType: [],
+                        Location: [],
+                        Experience: null,
+                        WorkPlaceType: [],
+                      });
                     }
                   }}
                 >
@@ -823,14 +916,17 @@ const MainSection: React.FC = () => {
                           <input
                             type="checkbox"
                             id="allCategory"
-                            checked={Category.length === categoryArray.length}
+                            checked={
+                              filters.Category.length === categoryArray.length
+                            }
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setCategory(
+                                handleFilterChange(
+                                  "Category",
                                   categoryArray.map((data: any) => data.name)
                                 );
                               } else {
-                                setCategory([]);
+                                handleFilterChange("Category", []);
                               }
                             }}
                             className="mr-2"
@@ -838,28 +934,46 @@ const MainSection: React.FC = () => {
                           <span className="checkmark checkmark_black"></span>
                         </label>
                       )}
-                      {categoryArray.map((data: any) => (
+
+                      {categoryArray.map((data: any, index: number) => (
                         <label
                           className="py-2 container text-base text-gray"
                           htmlFor={data.name}
+                          key={index}
                         >
                           {data.name}
                           <input
                             type="checkbox"
                             id={data.name}
                             value={data.name}
-                            checked={Category.includes(data.name)}
-                            onChange={() =>
-                              setCategory((prevState: any[]) =>
-                                prevState.includes(data.name)
-                                  ? prevState.filter(
+                            checked={
+                              Array.isArray(filters.Category) &&
+                              filters.Category.includes(data.name)
+                            }
+                            onChange={() => {
+                              setFilters((prevFilters) => {
+                                const categoryArray = Array.isArray(
+                                  prevFilters.Category
+                                )
+                                  ? prevFilters.Category
+                                  : [];
+                                const updatedCategory = categoryArray.includes(
+                                  data.name
+                                )
+                                  ? categoryArray.filter(
                                       (item) => item !== data.name
                                     )
-                                  : [...prevState, data.name]
-                              )
-                            }
+                                  : [...categoryArray, data.name];
+
+                                return {
+                                  ...prevFilters,
+                                  Category: updatedCategory,
+                                };
+                              });
+                            }}
                             className="mr-2"
                           />
+
                           <span className="checkmark checkmark_black"></span>
                         </label>
                       ))}
@@ -890,14 +1004,17 @@ const MainSection: React.FC = () => {
                           <input
                             type="checkbox"
                             id="allJobs"
-                            checked={JobType.length === jobTypeArray.length}
+                            checked={
+                              filters.JobType.length === jobTypeArray.length
+                            }
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setJobType(
+                                handleFilterChange(
+                                  "JobType",
                                   jobTypeArray.map((data: any) => data.name)
                                 );
                               } else {
-                                setJobType([]);
+                                handleFilterChange("JobType", []);
                               }
                             }}
                             className="mr-2"
@@ -905,25 +1022,38 @@ const MainSection: React.FC = () => {
                           <span className="checkmark checkmark_black"></span>
                         </label>
                       )}
-                      {jobTypeArray.map((data: any) => (
+                      {jobTypeArray.map((data: any, index: number) => (
                         <label
                           className="py-2 container text-base text-gray"
                           htmlFor={data.name}
+                          key={index}
                         >
                           {data.name}
                           <input
                             type="checkbox"
                             id={data.name}
                             value={data.name}
-                            checked={JobType.includes(data.name)}
+                            checked={filters.JobType.includes(data.name)}
                             onChange={() =>
-                              setJobType((prevState: any[]) =>
-                                prevState.includes(data.name)
-                                  ? prevState.filter(
+                              setFilters((prevFilters) => {
+                                const jobType_Array = Array.isArray(
+                                  prevFilters.JobType
+                                )
+                                  ? prevFilters.JobType
+                                  : [];
+                                const updatedJobType = jobType_Array.includes(
+                                  data.name
+                                )
+                                  ? jobType_Array.filter(
                                       (item) => item !== data.name
                                     )
-                                  : [...prevState, data.name]
-                              )
+                                  : [...jobType_Array, data.name];
+
+                                return {
+                                  ...prevFilters,
+                                  JobType: updatedJobType,
+                                };
+                              })
                             }
                             className="mr-2"
                           />
@@ -949,9 +1079,9 @@ const MainSection: React.FC = () => {
                   {openIndex === "Location" && (
                     <div className="bg-white mt-2">
                       <AutocompleteInputMultipleLocationHome
-                        value={Location || []}
+                        value={filters.Location || []}
                         onChange={(newItems) => {
-                          setLocation(newItems);
+                          handleFilterChange("Location", newItems);
                         }}
                         placeholder="Enter location"
                         className="h-10 lg:h-12"
@@ -977,11 +1107,13 @@ const MainSection: React.FC = () => {
                       {ExperienceArray.map((exp, index) => (
                         <div
                           className={`p-2 cursor-pointer text-primary ${
-                            Experience === exp.name
+                            filters.Experience === exp.name
                               ? "bg-[#EFECE5] font-medium"
                               : ""
                           }`}
-                          onClick={() => setExperience(exp.name)}
+                          onClick={() =>
+                            handleFilterChange("Experience", exp.name)
+                          }
                           key={index}
                         >
                           {exp.name}
@@ -1015,44 +1147,29 @@ const MainSection: React.FC = () => {
                             type="checkbox"
                             id="all"
                             checked={
-                              WorkPlaceType.length === WorkPlaceTypeArray.length
+                              filters.WorkPlaceType.length ===
+                              WorkPlaceTypeArray.length
                             }
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setWorkPlaceType(
-                                  WorkPlaceTypeArray.map(
-                                    (data: any) => data.name
-                                  )
-                                );
-                              } else {
-                                setWorkPlaceType([]);
-                              }
-                            }}
+                            onChange={handleSelectAll}
                             className="mr-2"
                           />
                           <span className="checkmark checkmark_black"></span>
                         </label>
                       )}
-                      {WorkPlaceTypeArray.map((data: any) => (
+
+                      {WorkPlaceTypeArray.map((data) => (
                         <label
+                          key={data.id}
                           className="py-2 container text-base text-gray"
-                          htmlFor={data.name}
+                          htmlFor={data.id}
                         >
                           {data.name}
                           <input
                             type="checkbox"
-                            id={data.name}
-                            value={data.name}
-                            checked={WorkPlaceType.includes(data.name)}
-                            onChange={() =>
-                              setWorkPlaceType((prevState: any[]) =>
-                                prevState.includes(data.name)
-                                  ? prevState.filter(
-                                      (item) => item !== data.name
-                                    )
-                                  : [...prevState, data.name]
-                              )
-                            }
+                            id={data.id}
+                            value={data.id}
+                            checked={filters.WorkPlaceType.includes(data.id)}
+                            onChange={() => handleIndividualChange(data.id)}
                             className="mr-2"
                           />
                           <span className="checkmark checkmark_black"></span>
@@ -1071,10 +1188,13 @@ const MainSection: React.FC = () => {
                 className="w-full"
                 onClick={() => {
                   handleTogglePopup();
-                  setCategory([]);
-                  setJobType([]);
-                  setLocation([]);
-                  setWorkPlaceType([]);
+                  setFilters({
+                    Category: [],
+                    JobType: [],
+                    Location: [],
+                    Experience: null,
+                    WorkPlaceType: [],
+                  });
                 }}
               >
                 <ButtonUx

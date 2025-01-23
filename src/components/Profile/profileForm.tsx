@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
+import Ic_trash from "@/assets/images/Ic_trash.svg";
 import ButtonUx from "../common/button";
 import AutocompleteInput from "../ui/inputLocation";
 import Ic_search from "@/assets/images/Ic_search.svg";
@@ -159,6 +160,8 @@ const ProfileForm: React.FC = () => {
     }
     if (data.logo) {
       formData.append("logo", data.logo);
+    } else if (data.logo === null) {
+      formData.append("logo", "null");
     }
 
     try {
@@ -203,6 +206,13 @@ const ProfileForm: React.FC = () => {
 
   const [charCount, setCharCount] = useState(0);
   const maxChars = 200;
+
+  const handleResetAndSubmit = () => {
+    form.setValue("logo", null);
+    setImageUrl(null);
+
+    form.handleSubmit(onFormSubmit)();
+  };
 
   return (
     <div className="lg:shadow-shadow2 rounded-[8px] relative">
@@ -303,12 +313,22 @@ const ProfileForm: React.FC = () => {
                       </>
                     )}
                   </div>
-                  <span
-                    className="flex items-center gap-2 text-sm lg:text-base font-semibold text-primary cursor-pointer py-2 px-6 border-2 border-primary rounded-[8px]"
-                    onClick={handleClick}
-                  >
-                    Upload Profile Photo
-                  </span>
+                  <div className="flex flex-col gap-2">
+                    <span
+                      className="flex items-center gap-2 text-sm lg:text-base font-semibold text-primary cursor-pointer py-2 px-6 border-2 border-primary rounded-[8px]"
+                      onClick={handleClick}
+                    >
+                      Upload Profile Photo
+                    </span>
+                    {(userDetails?.logo || imageUrl) && (
+                      <span
+                        className="flex items-center gap-1 text-xs lg:text-sm w-max font-medium text-red cursor-pointer"
+                        onClick={handleResetAndSubmit}
+                      >
+                        <img src={Ic_trash} alt="delete" /> Remove
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="file"
                     ref={fileInputRef}

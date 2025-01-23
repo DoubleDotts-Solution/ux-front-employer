@@ -15,7 +15,7 @@ import SearchJob from "./searchJob";
 import Modal from "./common/modal";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { PHOTO_URL } from "@/config/constant";
+import { PHOTO_URL, VITE_PUBLIC_JOB_SEEKER_URL } from "@/config/constant";
 import { clearCredentials } from "@/store/slice/auth.slice";
 
 export const Navbar: React.FC = () => {
@@ -159,7 +159,7 @@ export const Navbar: React.FC = () => {
           </Link>
           {/* Nav items */}
           {currentPath !== "/create-account" && (
-            <div className="hidden laptop:flex items-center gap-3 big:gap-12 font-semibold text-lg laptop:text-xl">
+            <div className="hidden laptop:flex items-center gap-6 big:gap-12 font-semibold text-lg laptop:text-xl">
               <Link
                 to={"/find-talent"}
                 className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${
@@ -337,9 +337,12 @@ export const Navbar: React.FC = () => {
                   />
                 </Link>
                 <div className="border-l border-gray5 h-[18px] w-1"></div>
-                <p className="text-primary text-lg font-medium">
+                <a
+                  href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}
+                  className="text-primary text-lg font-medium"
+                >
                   For Job Seekers
-                </p>
+                </a>
               </div>
             )}
           </>
@@ -456,9 +459,12 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="w-full border-t border-gray5 my-4"></div>
-          <div className="text-center w-full py-2 mb-6 text-primary text-lg font-medium">
+          <a
+            href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}
+            className="text-center w-full py-2 mb-6 text-primary text-lg font-medium"
+          >
             For Job Seekers
-          </div>
+          </a>
         </div>
       </div>
       {searchDivOpen && (

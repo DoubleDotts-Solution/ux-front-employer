@@ -82,11 +82,12 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
         .replace(/[\s,]+/g, "-");
       queryParams.push(`experience=${encodeURIComponent(formattedexperience)}`);
     }
-    const city: any = data.city;
-    const encodedCities = encodeURIComponent(city.join(","));
-
-    if (data.city !== undefined) {
-      queryParams.push(`city=${encodedCities}`);
+    if (data.city) {
+      const city: any = data.city;
+      const encodedCities = encodeURIComponent(city.join(","));
+      if (data.city !== undefined) {
+        queryParams.push(`city=${encodedCities}`);
+      }
     }
     if (remoteJobsOnly === true) {
       queryParams.push(`remote=remote`);

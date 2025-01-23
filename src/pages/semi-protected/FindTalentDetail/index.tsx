@@ -100,7 +100,7 @@ export const FindTalentDetail: React.FC = () => {
             </span>
           </Link>
           <img src={Ic_right_breadCrumb_arrow} alt="arrow" />
-          <span className="text-gray text-sm">{userDetails?.name}</span>
+          <span className="text-gray text-sm">Candidate</span>
         </nav>
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="w-[80px] h-[80px] md:w-[130px] md:h-[130px] lg:w-[180px] lg:h-[180px] desktop:w-[206px] desktop:h-[206px] border-2 border-primary bg-[#D2EBFF] rounded-[8px] flex items-center justify-center text-primary font-semibold text-2xl md:text-3xl desktop:text-[48px]">
@@ -120,7 +120,15 @@ export const FindTalentDetail: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 w-full">
               <div className="flex flex-col gap-1">
                 <div className="flex gap-3 items-center">
-                  <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+                  <h3
+                    className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]"
+                    style={{
+                      backdropFilter: "blur(12px)",
+                      WebkitBackdropFilter: "blur(12px)",
+                      WebkitFilter: "blur(12px)",
+                      backgroundColor: "rgba(255, 255, 255, 0.9)",
+                    }}
+                  >
                     {userDetails?.name}
                   </h3>
                   {userDetails && userDetails?.pronouns && (

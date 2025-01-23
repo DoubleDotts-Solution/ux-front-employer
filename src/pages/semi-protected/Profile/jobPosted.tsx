@@ -326,9 +326,10 @@ const JobPosted: React.FC = () => {
         <>
           <div className="flex flex-col gap-5">
             {AppliedJobDataArray.map((job: any, index: any) => (
-              <div
+              <Link
                 key={job?.id}
                 className="border-2 border-primary rounded-[12px] md:rounded-2xl p-4 lg:p-5 desktop:p-6 flex flex-col gap-5 hover:shadow-shadow1"
+                to={`/profile?job-posted&&person-id=${job?.id}`}
               >
                 <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
                   <div className="flex items-center gap-2 md:gap-3 lg:gap-4 desktop:gap-5">
@@ -368,15 +369,12 @@ const JobPosted: React.FC = () => {
                       {formatTimeAgo(job.updatedAt)}
                     </p>
                     <div className="bg-[#EFECE5] h-[8px] w-[8px] rounded-full"></div>
-                    <Link
-                      to={`/profile?job-posted&&person-id=${job?.id}`}
-                      className="flex items-center gap-1 cursor-pointer"
-                    >
+                    <div className="flex items-center gap-1">
                       <img src={Ic_person} alt="person" />
                       <span className="text-primary font-semibold text-base lg:text-lg">
                         {job.appliedJobsCount}
                       </span>
-                    </Link>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between gap-2">
@@ -528,7 +526,7 @@ const JobPosted: React.FC = () => {
                     )}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           {(data as any)?.pagination.totalCount > params.limit ? (

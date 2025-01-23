@@ -23,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import MultiSelect from "@/components/ui/multiSelect";
 import ButtonUx from "@/components/common/button";
 import MultiSelectAutoSuggestions from "@/components/ui/multiSelectAutoSuggest";
 import Ic_info_circle_black from "@/assets/images/Ic_info_circle_black.svg";
@@ -36,6 +35,7 @@ import Ic_experience from "@/assets/images/Ic_experience.svg";
 import Ic_time from "@/assets/images/Ic_time.svg";
 import Ic_rupee from "@/assets/images/Ic_rupee.svg";
 import Img_cancel from "@/assets/images/Img_cancel.png";
+import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
 import { useGetCategoryQuery } from "@/store/slice/apiSlice/categoryApi";
 import {
@@ -53,6 +53,7 @@ import {
 import { useSelector } from "react-redux";
 import { PHOTO_URL } from "@/config/constant";
 import JobTagsDisplay from "@/components/jobsTagDisplay";
+import MultiSelectAutoSuggestionsSkills from "@/components/ui/multiSelectAutoSuggestSkills";
 
 const ExperienceArray = [
   { name: "Fresher (Less then 1 Year)" },
@@ -76,6 +77,7 @@ interface Option2 {
 export const PostJobForm: React.FC = () => {
   const [isJobPreviewPopupVisible, setJobPreviewPopupVisible] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const userDetails = useSelector((state: any) => state.user)?.userDetails;
 
@@ -346,6 +348,7 @@ export const PostJobForm: React.FC = () => {
           toast.success(response.data.message, {
             position: "top-right",
           });
+          setIsSuccess(true);
         } else {
           toast.error(response.error.data.message, {
             position: "top-right",
@@ -368,6 +371,7 @@ export const PostJobForm: React.FC = () => {
           toast.success(response.data.message, {
             position: "top-right",
           });
+          setIsSuccess(true);
         } else {
           toast.error(response.error.data.message, {
             position: "top-right",
@@ -427,7 +431,7 @@ export const PostJobForm: React.FC = () => {
   };
 
   const handleMinPayChange = (value: string) => {
-    const minPayValue = parseFloat(value) || 0;
+    const minPayValue = parseFloat(value);
     const maxPayValue = form.getValues("maximum_pay");
     if (minPayValue > maxPayValue) {
       form.setError("minimum_pay", {
@@ -440,7 +444,7 @@ export const PostJobForm: React.FC = () => {
   };
 
   const handleMaxPayChange = (value: string) => {
-    const maxPayValue = parseFloat(value) || 0;
+    const maxPayValue = parseFloat(value);
     const minPayValue = form.getValues("minimum_pay");
     if (maxPayValue < minPayValue) {
       form.setError("maximum_pay", {
@@ -481,6 +485,19 @@ export const PostJobForm: React.FC = () => {
       body?.classList.remove("h-screen");
     } else {
       setIsCancel(true);
+      body?.classList.add("overflow-hidden");
+      body?.classList.add("h-screen");
+    }
+  };
+  const openSuccessPopup = () => {
+    if (isSuccess) {
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 300);
+      body?.classList.remove("overflow-hidden");
+      body?.classList.remove("h-screen");
+    } else {
+      setIsSuccess(true);
       body?.classList.add("overflow-hidden");
       body?.classList.add("h-screen");
     }
@@ -906,19 +923,23 @@ export const PostJobForm: React.FC = () => {
                           </p>
                           <FormControl>
                             <div className="relative">
-                              <MultiSelect
-                                options={options}
-                                onChange={(selectedOptions: any) =>
-                                  handleSkillsChange(selectedOptions)
-                                }
-                                placeholder="e.g., UI UX Design, Product Design"
-                                className={`pl-8 lg:pl-9 ${
-                                  fieldState?.error
-                                    ? "border-red"
-                                    : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
-                                } `}
-                                value={field.value || []}
-                              />
+                              <FormControl>
+                                <div className="relative">
+                                  <MultiSelectAutoSuggestionsSkills
+                                    onChange={(selectedOptions: any) =>
+                                      handleSkillsChange(selectedOptions)
+                                    }
+                                    placeholder="e.g., UI UX Design, Product Design"
+                                    className={`bg-white pl-8 lg:pl-9 flex items-center h-full ${
+                                      fieldState.error
+                                        ? "border-red"
+                                        : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
+                                    } text-base text-primary border-2 rounded-[8px]`}
+                                    value={field.value}
+                                    options={options}
+                                  />
+                                </div>
+                              </FormControl>
                               <img
                                 src={Ic_search}
                                 alt="search"
@@ -1619,7 +1640,7 @@ export const PostJobForm: React.FC = () => {
                 have add for Create a Job.
               </p>
             </div>
-            <div className="flex items-center gap-5 relative">
+            <div className="flex items-center gap-5 relative mt-4">
               <div
                 onClick={() => {
                   form.reset();
@@ -1636,6 +1657,30 @@ export const PostJobForm: React.FC = () => {
                   label="No, Keep"
                   buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
                 />
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
+      {isSuccess && (
+        <Modal onClose={openSuccessPopup} isOpen={true}>
+          <div className="p-4 md:p-6 desktop:p-8 flex flex-col items-center justify-center gap-4 desktop:gap-8">
+            <img src={Img_subscribe_success} alt="image" />
+            <div>
+              <h4 className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+                Job Post Successfully Submitted for Review!
+              </h4>
+              <p className="text-gray text-sm md:text-base desktop:text-lg mt-3 text-center">
+                Thank you! We’re reviewing your job post and will publish it
+                soon.
+              </p>
+              <div className="flex items-center justify-center gap-5 relative mt-4">
+                <Link to="/">
+                  <ButtonUx
+                    label="Go to Home"
+                    buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                  />
+                </Link>
               </div>
             </div>
           </div>

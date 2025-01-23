@@ -7,6 +7,7 @@ import twitter from "@/assets/images/Ic_footer_twitter.svg";
 import instagram from "@/assets/images/Ic_footer_insta.svg";
 import youtube from "@/assets/images/Ic_footer_youtube.svg";
 import ButtonUx from "./common/button";
+import { VITE_PUBLIC_JOB_SEEKER_URL } from "@/config/constant";
 
 const Footer = () => {
   return (
@@ -30,12 +31,12 @@ const Footer = () => {
               tech industries, helping professionals thrive in their careers.
             </p>
           </div>
-          <Link to={"/"}>
+          <a href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}>
             <ButtonUx
               label="For Job Seekers"
               buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px]"
             />
-          </Link>
+          </a>
         </div>
         <div className="flex flex-col sm:flex-row lg:flex-nowrap gap-8 lg:gap-20 mb-4 lg:mb-12">
           <div>
