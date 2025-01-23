@@ -147,7 +147,7 @@ const RegisterForm: React.FC = () => {
     clientId: GOOGLE_CLIENT_ID,
     onSuccess: handleGoogleLoginSuccess,
     onError: handleGoogleLoginError,
-    redirectUri: "https://uxjobsite.com/",
+    redirectUri: "https://employer.uxjobsite.com/",
   };
 
   const googleLogin = useGoogleLogin(googleLoginOptions);
