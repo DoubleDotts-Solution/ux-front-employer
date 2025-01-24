@@ -69,6 +69,17 @@ const ApiUtils = {
       throw error.response;
     }
   },
+  resendEmailWithTokenKey: async function ({ data }: { data: any }) {
+    try {
+      const response = await api.put(
+        `${BASE_URL}employer/resend-verification-email`,
+        data
+      );
+      return response;
+    } catch (error: any) {
+      throw error.response;
+    }
+  },
   changePasswordWithTokenKey: async function ({
     token,
     key,

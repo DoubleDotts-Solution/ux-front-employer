@@ -394,11 +394,16 @@ const ProfileForm: React.FC = () => {
                                       : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } border-2 rounded-[8px] lg:h-[100px]`}
                               onChange={(e) => {
-                                if (e.target.value.length <= maxChars) {
-                                  setCharCount(e.target.value.length);
-                                  field.onChange(e);
+                                let inputValue = e.target.value;
+
+                                if (inputValue.length > maxChars) {
+                                  inputValue = inputValue.slice(0, maxChars);
                                 }
+
+                                setCharCount(inputValue.length);
+                                field.onChange(inputValue);
                               }}
+                              value={field.value || ""}
                             />
                           </div>
                         </FormControl>

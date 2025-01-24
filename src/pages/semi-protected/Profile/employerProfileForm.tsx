@@ -40,7 +40,7 @@ const EmployerProfileForm: React.FC = () => {
   useEffect(() => {
     const completeness = calculateProfileCompleteness(userDetails);
     setValue(completeness);
-  }, []);
+  }, [userDetails]);
 
   return (
     <>

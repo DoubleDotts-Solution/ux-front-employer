@@ -10,8 +10,10 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import Ic_info from "@/assets/images/Ic_info.svg";
 import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
+import Ic_close_black from "@/assets/images/Ic_close_black.svg";
 import google from "@/assets/images/Img_login_google.svg";
 import Ic_valid from "@/assets/images/Ic_valid.png";
 import { Eye, EyeOff } from "lucide-react";
@@ -51,6 +53,7 @@ const LoginForm: React.FC = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [verifyMailBox, setVerifyMailBox] = useState(false);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -117,7 +120,6 @@ const LoginForm: React.FC = () => {
         toast.error(response.data.message || "Check Email or Password", {
           position: "top-right",
         });
-
         console.error("API error:", response.error);
       }
     } catch (error: any) {
@@ -125,7 +127,32 @@ const LoginForm: React.FC = () => {
         position: "top-right",
       });
 
-      console.error("Validation error:", error);
+      if (
+        error.data.message ==
+        "Email verification is pending. Please verify your email."
+      ) {
+        try {
+          const resendEmailData = {
+            email: data.email,
+          };
+          const response = await ApiUtils.resendEmailWithTokenKey({
+            data: resendEmailData,
+          });
+
+          if (response.status === 200) {
+            setVerifyMailBox(true);
+
+            toast.success("Rend Email! Please check your Email!", {
+              position: "top-right",
+            });
+          }
+        } catch (error: any) {
+          toast.error(error.data.data.message || "Something went wrong!", {
+            position: "top-right",
+          });
+          console.error("Unexpected error:", error);
+        }
+      }
     }
   };
 
@@ -186,13 +213,13 @@ const LoginForm: React.FC = () => {
     clientId: GOOGLE_CLIENT_ID,
     onSuccess: handleGoogleLoginSuccess,
     onError: handleGoogleLoginError,
-    redirectUri: "https://employer.uxjobsite.com/",
+    redirectUri: "https://employer.uxjobsite.com",
   };
 
   const googleLogin = useGoogleLogin(googleLoginOptions);
   return (
     <>
-      <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8">
+      <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8 relative">
         <div className="flex flex-col gap-1 desktop:gap-3">
           <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
             Welcome to UX Jobsite
@@ -363,6 +390,40 @@ const LoginForm: React.FC = () => {
           />
           <span className="text-primary font-medium">Continue with Google</span>
         </div>
+        {verifyMailBox && (
+          <div className="sticky bottom-6 z-50 w-full justify-end flex">
+            <div className="flex-col sm:flex-row w-max border border-primary rounded-[8px] bg-lightPurple py-2 px-2 desktop:px-4 flex gap-2 lg:gap-4 items-start">
+              <div className="flex items-start gap-3">
+                <img src={Ic_info} alt="info" />
+                <div>
+                  <h4 className="text-primary font-semibold text-sm md:text-base desktop:text-lg mb-1">
+                    Verify your Email ID
+                  </h4>
+                  <p className="text-gray text-xs lg:text-sm">
+                    We have sent you verification mail. Please verify <br />{" "}
+                    that to continue
+                  </p>
+                </div>
+              </div>
+              <div
+                className="text-primary font-medium text-sm cursor-pointer"
+                onClick={() =>
+                  window.open("https://mail.google.com/mail/", "_blank")
+                }
+              >
+                Go to Mail
+              </div>
+              <img
+                src={Ic_close_black}
+                alt="close"
+                className="cursor-pointer absolute sm:relative right-[12px] sm:right-auto"
+                onClick={() => {
+                  setVerifyMailBox(false);
+                }}
+              />
+            </div>
+          </div>
+        )}
         <div className="text-gray text-sm md:text-base desktop:text-lg text-center">
           Didn’t Registered?{" "}
           <Link to={"/create-account"} className="text-primary font-semibold">

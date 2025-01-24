@@ -87,6 +87,7 @@ export const Navbar: React.FC = () => {
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsDropdownOpen(false);
+        setSearchDivOpen(false);
       }
     };
 
@@ -115,8 +116,6 @@ export const Navbar: React.FC = () => {
   };
   const logout = () => {
     localStorage.removeItem("employer_email");
-    localStorage.removeItem("userDetails_employer");
-
     dispatch(clearCredentials());
     onLogout();
     toast.success("Logged out successfully", { position: "top-right" });
@@ -475,7 +474,10 @@ export const Navbar: React.FC = () => {
               zIndex: 999999999999999,
             }}
           >
-            <div className="bg-white pt-3 pb-8 px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px]">
+            <div
+              className="bg-white pt-3 pb-8 px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px]"
+              ref={dropdownRef}
+            >
               <div className="flex items-center font-bold text-2xl laptop:text-[28px] big:text-[34px] tracking-wider mb-6">
                 <span className="text-primary">ux</span>
                 <img

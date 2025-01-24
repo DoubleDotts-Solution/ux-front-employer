@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
 import ApiUtils from "@/api/ApiUtils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "@/store/slice/user.slice";
 import { toast } from "react-hot-toast";
 import { GOOGLE_CLIENT_ID } from "@/config/constant";
@@ -77,6 +77,31 @@ const RegisterForm: React.FC = () => {
   const [verifyMailBox, setVerifyMailBox] = useState(false);
   const [successfullyRegister, setSuccessfullyRegister] = useState(false);
   const dispatch = useDispatch();
+
+  const userDetails = useSelector((state: any) => state.user)?.userDetails;
+
+  useEffect(() => {
+    if (userDetails) {
+      form.setValue("email", userDetails?.email);
+      form.setValue("mobile_no", userDetails?.mobile_no);
+      form.setValue("website", userDetails?.website);
+      form.setValue("name", userDetails?.name);
+      form.setValue("company_name", userDetails?.company_name);
+    }
+  }, [form, userDetails]);
+
+  useEffect(() => {
+    if (
+      form.getValues("email") &&
+      form.getValues("mobile_no") &&
+      form.getValues("website") &&
+      form.getValues("name") &&
+      form.getValues("company_name") &&
+      userDetails
+    ) {
+      setVerifyMailBox(true);
+    }
+  }, [form, userDetails]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // setSuccessfullyRegister(true);
@@ -147,7 +172,7 @@ const RegisterForm: React.FC = () => {
     clientId: GOOGLE_CLIENT_ID,
     onSuccess: handleGoogleLoginSuccess,
     onError: handleGoogleLoginError,
-    redirectUri: "https://employer.uxjobsite.com/",
+    redirectUri: "https://employer.uxjobsite.com",
   };
 
   const googleLogin = useGoogleLogin(googleLoginOptions);
