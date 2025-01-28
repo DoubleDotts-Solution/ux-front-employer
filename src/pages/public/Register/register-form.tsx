@@ -19,7 +19,6 @@ import { Eye, EyeOff } from "lucide-react";
 import ButtonUx from "@/components/common/button";
 import { InputMobile } from "@/components/ui/inputMobile";
 import { useGoogleLogin } from "@react-oauth/google";
-import { Link } from "react-router-dom";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
 import ApiUtils from "@/api/ApiUtils";
@@ -27,6 +26,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "@/store/slice/user.slice";
 import { toast } from "react-hot-toast";
 import { GOOGLE_CLIENT_ID } from "@/config/constant";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { phoneNumberValidations } from "@/config/phoneValidation";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -56,12 +57,21 @@ const formSchema = z.object({
     .regex(/[@$!%*?&#]/, {
       message: "Password must contain at least one special character.",
     }),
-  mobile_no: z
-    .string()
-    .min(10, { message: "Please enter a valid phone number." })
-    .regex(/^\+?\d{1,4}?\s?\d{1,14}$/, {
-      message: "Please enter a valid phone number.",
-    }),
+  mobile_no: z.string().refine(
+    (value) => {
+      const parsedNumber = parsePhoneNumber(value);
+      const countryCode = parsedNumber?.countryCallingCode
+        ? `+${parsedNumber.countryCallingCode}`
+        : "";
+      const phoneNumber = parsedNumber?.nationalNumber || "";
+
+      const validator = phoneNumberValidations[countryCode];
+      return validator ? validator(phoneNumber) : false;
+    },
+    {
+      message: "Please enter a valid phone number for the selected country.",
+    }
+  ),
   company_name: z.string().min(2, {
     message: "Job Title must be at least 2 characters.",
   }),
@@ -429,13 +439,21 @@ const RegisterForm: React.FC = () => {
               </div>
               <div className="col-span-2 text-primary text-sm">
                 By registering, you agree to our{" "}
-                <Link to={"/terms-condition"} className="font-semibold">
+                <a
+                  target="__blank"
+                  href={"/terms-condition"}
+                  className="font-semibold"
+                >
                   terms and conditions
-                </Link>{" "}
+                </a>{" "}
                 and{" "}
-                <Link to={"/privacy-policy"} className="font-semibold">
+                <a
+                  target="__blank"
+                  href={"/privacy-policy"}
+                  className="font-semibold"
+                >
                   privacy policy
-                </Link>
+                </a>
                 .
               </div>
               <div style={{ display: "none" }}>

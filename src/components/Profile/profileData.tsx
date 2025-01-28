@@ -21,7 +21,7 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
             <p className="text-primary text-sm lg:text-base">
               Boost Your Hiring Success with a Standout Recruiter Profile
             </p>
-            <span className="text-primary text-sm lg:text-base font-medium">
+            <span className="text-primary text-sm lg:text-base font-medium whitespace-nowrap">
               {value}% Profile Completed
             </span>
           </div>

@@ -19,6 +19,8 @@ import ButtonUx from "@/components/common/button";
 import { InputMobile } from "@/components/ui/inputMobile";
 import Loading from "@/components/common/loading";
 import { useCreateContactApiMutation } from "@/store/slice/apiSlice/contactApi";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { phoneNumberValidations } from "@/config/phoneValidation";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,12 +36,21 @@ const formSchema = z.object({
   message: z.string().min(2, {
     message: "Message must be at least 10 characters.",
   }),
-  mobile_no: z
-    .string()
-    .min(10, { message: "Please enter a valid phone number." })
-    .regex(/^\+?\d{1,4}?\s?\d{1,14}$/, {
-      message: "Please enter a valid phone number.",
-    }),
+  mobile_no: z.string().refine(
+    (value) => {
+      const parsedNumber = parsePhoneNumber(value);
+      const countryCode = parsedNumber?.countryCallingCode
+        ? `+${parsedNumber.countryCallingCode}`
+        : "";
+      const phoneNumber = parsedNumber?.nationalNumber || "";
+
+      const validator = phoneNumberValidations[countryCode];
+      return validator ? validator(phoneNumber) : false;
+    },
+    {
+      message: "Please enter a valid phone number for the selected country.",
+    }
+  ),
 });
 
 export const ContactUs: React.FC = () => {

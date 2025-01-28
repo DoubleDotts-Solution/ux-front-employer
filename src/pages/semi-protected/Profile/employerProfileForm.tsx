@@ -6,26 +6,28 @@ import EditProfile from "@/components/Profile/editProfile";
 import { useSelector } from "react-redux";
 
 const calculateProfileCompleteness = (data: any) => {
-  let filledFields = 0;
-  let totalFields = 0;
+  const fields = [
+    "company_name",
+    "country",
+    "description",
+    "designation",
+    "email",
+    "logo",
+    "mobile_no",
+    "name",
+    "verifyEmail",
+    "website",
+  ];
 
-  const countFilledFields = (obj: any) => {
-    for (const key in obj) {
-      if (obj[key] !== null && obj[key] !== undefined) {
-        if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
-          countFilledFields(obj[key]);
-        } else if (Array.isArray(obj[key])) {
-          filledFields += obj[key].length > 0 ? 1 : 0;
-        } else {
-          filledFields++;
-        }
-      }
-      totalFields++;
-    }
-  };
+  const filledFields = fields.filter((field) =>
+    typeof data[field] === "string" ? data[field].trim() : data[field]
+  ).length;
 
-  countFilledFields(data);
-  return Math.round((filledFields / totalFields) * 100);
+  const completenessPercentage = Math.round(
+    (filledFields / fields.length) * 100
+  );
+
+  return completenessPercentage || 0;
 };
 
 const EmployerProfileForm: React.FC = () => {

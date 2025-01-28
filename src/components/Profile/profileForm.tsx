@@ -29,6 +29,8 @@ import ApiUtils from "@/api/ApiUtils";
 import { setUserDetails } from "@/store/slice/user.slice";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { phoneNumberValidations } from "@/config/phoneValidation";
 
 const formSchema = z.object({
   company_name: z.string().min(2, {
@@ -45,8 +47,8 @@ const formSchema = z.object({
     z
       .instanceof(File)
       .nullable()
-      .refine((file) => file === null || file.size <= 100 * 1024 * 1024, {
-        message: "File size must be less than 100MB.",
+      .refine((file) => file === null || file.size <= 10 * 1024 * 1024, {
+        message: "File size must be less than 10MB.",
       })
       .optional(),
     z.string().optional(),
@@ -65,13 +67,21 @@ const formSchema = z.object({
     .email({ message: "Please enter a valid email address." })
     .min(2, { message: "Email must be at least 2 characters long." })
     .optional(),
-  mobile_no: z
-    .string()
-    .min(10, { message: "Please enter a valid phone number." })
-    .regex(/^\+?\d{1,4}?\s?\d{1,14}$/, {
-      message: "Please enter a valid phone number.",
-    })
-    .optional(),
+  mobile_no: z.string().refine(
+    (value) => {
+      const parsedNumber = parsePhoneNumber(value);
+      const countryCode = parsedNumber?.countryCallingCode
+        ? `+${parsedNumber.countryCallingCode}`
+        : "";
+      const phoneNumber = parsedNumber?.nationalNumber || "";
+
+      const validator = phoneNumberValidations[countryCode];
+      return validator ? validator(phoneNumber) : false;
+    },
+    {
+      message: "Please enter a valid phone number for the selected country.",
+    }
+  ),
   designation: z.string().min(1, { message: "Designation must be specified." }),
 });
 

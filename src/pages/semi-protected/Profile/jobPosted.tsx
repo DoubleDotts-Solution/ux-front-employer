@@ -480,7 +480,11 @@ const JobPosted: React.FC = () => {
                     <img
                       src={Ic_option}
                       alt="option"
-                      onClick={() => toggleChangeJobPost(index)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleChangeJobPost(index);
+                      }}
                       className="cursor-pointer"
                     />
                     {isChangeJobPost === index && (
@@ -496,28 +500,44 @@ const JobPosted: React.FC = () => {
                         </Link>
                         <li
                           className="whitespace-nowrap flex gap-3 items-center rounded-[8px] text-primary px-3 py-2 hover:bg-[#EFECE5] cursor-pointer"
-                          onClick={() => handleDuplicateJob(job.id)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDuplicateJob(job.id);
+                          }}
                         >
                           <img src={Ic_copy} alt="eye" />
                           Duplicate
                         </li>
                         <li
                           className="whitespace-nowrap flex gap-3 items-center rounded-[8px] text-primary px-3 py-2 hover:bg-[#EFECE5] cursor-pointer"
-                          onClick={() => openJobPreviewPopup(job.id)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            openJobPreviewPopup(job.id);
+                          }}
                         >
                           <img src={Ic_eye} alt="eye" />
                           View Live
                         </li>
                         <li
                           className="whitespace-nowrap flex gap-3 items-center rounded-[8px] text-primary px-3 py-2 hover:bg-[#EFECE5] cursor-pointer"
-                          onClick={() => onChangeStatus(job.id)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onChangeStatus(job.id);
+                          }}
                         >
                           <img src={Ic_refresh} alt="refresh" />
                           Update Status
                         </li>
                         <li
                           className="whitespace-nowrap flex gap-3 items-center rounded-[8px] text-primary px-3 py-2 hover:bg-[#EFECE5] cursor-pointer"
-                          onClick={() => onDelete(job.id)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onDelete(job.id);
+                          }}
                         >
                           <img src={Ic_trash_black} alt="delete" />
                           Delete
@@ -717,7 +737,13 @@ const JobPosted: React.FC = () => {
               Job Post Preview
             </h4>
             {jobPostedData && jobPostedData && (
-              <div>
+              <div
+                style={{
+                  maxHeight: "calc(100vh - 280px)",
+                  overflowY: "auto",
+                }}
+                className="overFlowYAuto"
+              >
                 <div className="bg-lightChiku p-3 lg:p-5 desktop:p-6 flex flex-col gap-4 mb-10">
                   <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
                     <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
@@ -838,13 +864,7 @@ const JobPosted: React.FC = () => {
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    maxHeight: "calc(100vh - 600px)",
-                    overflowY: "auto",
-                  }}
-                  className="overFlowYAuto px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8"
-                >
+                <div className=" px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8">
                   <h4 className="mb-4 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
                     Job Description
                   </h4>

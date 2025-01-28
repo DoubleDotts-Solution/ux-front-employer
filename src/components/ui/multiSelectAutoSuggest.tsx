@@ -5,6 +5,7 @@ import Autosuggest, {
 } from "react-autosuggest";
 import Ic_close_black from "../../assets/images/Ic_close_black.svg";
 import ApiUtils from "@/api/ApiUtils";
+import debounce from "lodash.debounce";
 
 interface Option {
   label: string;
@@ -29,19 +30,33 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
 
-  const fetchCountries = async (inputValue: string) => {
+  const fetchCountries = debounce(async (inputValue: string) => {
+    setLoading(true);
     try {
-      const response: any = await ApiUtils.getLocation(inputValue);
-      const countriesWithStates = response?.data?.data?.map((country: any) => ({
-        city: country.city,
-        states: country.state,
-      }));
-      setCountries(countriesWithStates);
-    } catch (err) {
-      console.error(err);
+      if (inputValue.length > 3) {
+        const response: any = await ApiUtils.getLocation(inputValue);
+
+        const countriesWithStates = response?.data?.data?.map(
+          (country: any) => {
+            return {
+              city: country.city,
+              states: country.state,
+            };
+          }
+        );
+
+        setCountries(countriesWithStates);
+      } else {
+        setCountries([]);
+      }
+    } catch (err: any) {
+      console.error("Error fetching countries:", err);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, 0);
 
   const renderSuggestion = (
     suggestion: { name: string },
@@ -83,6 +98,9 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
     if (inputValue) {
       fetchCountries(inputValue);
     }
+    return () => {
+      fetchCountries.cancel();
+    };
   }, [inputValue]);
 
   const getSuggestions = (inputValue: string) => {
@@ -147,7 +165,7 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
 
   return (
     <div
-      className={`flex flex-wrap gap-2 min-h-10 lg:min-h-12 max-h-auto w-full rounded-[8px] px-3 py-2 ${
+      className={`flex flex-wrap gap-2 min-h-10 lg:min-h-12 max-h-auto w-full rounded-[8px] relative px-3 py-2 ${
         className || ""
       }`}
       onClick={() => inputRef.current?.focus()}
@@ -184,6 +202,11 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
           handleSelectOption(suggestion)
         }
       />
+      {loading && (
+        <div className="absolute top-2 right-2 h-10 w-10 flex items-center justify-center">
+          <div className="loader w-8 h-8 border-[4px] rounded-full border-gray5 border-t-[#2D2D2D]"></div>
+        </div>
+      )}
     </div>
   );
 };

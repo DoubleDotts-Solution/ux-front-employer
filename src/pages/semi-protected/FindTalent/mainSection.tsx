@@ -586,6 +586,16 @@ const MainSection: React.FC = () => {
                     </p>
                     {openIndex === "Experience" && (
                       <div className="bg-white mt-2 h-auto max-h-[130px] big:max-h-[280px] overflow-y-auto overflowYScroll">
+                        <div
+                          className={`p-2 cursor-pointer text-primary ${
+                            filters.Experience === null
+                              ? "bg-[#EFECE5] font-medium"
+                              : ""
+                          }`}
+                          onClick={() => handleFilterChange("Experience", null)}
+                        >
+                          All Experience
+                        </div>
                         {ExperienceArray.map((exp, index) => (
                           <div
                             className={`p-2 cursor-pointer text-primary ${
@@ -1104,6 +1114,16 @@ const MainSection: React.FC = () => {
                   </p>
                   {openIndex === "Experience" && (
                     <div className="bg-white mt-2 h-auto max-h-[130px] big:max-h-[280px] overflow-y-auto overflowYScroll">
+                      <div
+                        className={`p-2 cursor-pointer text-primary ${
+                          filters.Experience === null
+                            ? "bg-[#EFECE5] font-medium"
+                            : ""
+                        }`}
+                        onClick={() => handleFilterChange("Experience", null)}
+                      >
+                        All Experience
+                      </div>
                       {ExperienceArray.map((exp, index) => (
                         <div
                           className={`p-2 cursor-pointer text-primary ${

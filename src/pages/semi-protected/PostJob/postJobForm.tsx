@@ -180,7 +180,13 @@ export const PostJobForm: React.FC = () => {
 
       if (
         selectedApplyByName === "Link" &&
-        !z.string().url().safeParse(data.apply_text).success
+        !z
+          .string()
+          .regex(
+            /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/,
+            { message: "Please enter a valid URL." }
+          )
+          .safeParse(data.apply_text).success
       ) {
         ctx.addIssue({
           path: ["apply_text"],
@@ -1461,144 +1467,146 @@ export const PostJobForm: React.FC = () => {
             <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-6 px-4 md:px-6 desktop:px-8">
               Job Post Preview
             </h4>
-
-            <div className="bg-lightChiku p-3 lg:p-5 desktop:p-6 flex flex-col gap-4 mb-10">
-              <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
-                <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
-                  {userDetails?.logo && (
-                    <img
-                      src={`${PHOTO_URL}/${userDetails?.logo}`}
-                      alt="icon"
-                      className="w-[55px] desktop:w-[80px] h-[55px] desktop:h-[80px] rounded-[12px]"
-                    />
-                  )}
-                  <div className="flex flex-col gap-1">
-                    <div className="text-gray text-sm md:text-lg font-medium">
-                      {userDetails?.company_name}
-                    </div>
-                    <h2 className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
-                      {(() => {
-                        const selectedCategoryName =
-                          categoryName.find(
-                            (cat: any) => cat.id === formValues?.category
-                          )?.name || null;
-                        return selectedCategoryName;
-                      })()}
-                    </h2>
-                  </div>
-                </div>
-                <p className="text-base lg:text-lg text-gray">Now</p>
-              </div>
-              <div className="flex flex-wrap gap-2 lg:gap-4 desktop:gap-5 items-center">
-                <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
-                  <img
-                    src={Ic_layout_grid}
-                    alt="icon"
-                    className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                  />
-                  {formValues?.job_title}
-                </span>
-                <div className="border-l border-gray5 h-[18px]"></div>
-                <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                  <img
-                    src={Ic_location}
-                    alt="location"
-                    className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                  />
-                  <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl relative">
-                    <span className="location-link">{firstLocation}</span>&nbsp;
-                    {otherLocations.length > 0 && (
-                      <span
-                        className="text-primary underline cursor-pointer"
-                        onClick={toggleDropdown}
-                      >
-                        +{otherLocations.length}
-                      </span>
-                    )}
-                    {dropdownVisible && (
-                      <div className="location-dropdown absolute">
-                        {otherLocations.map((location, index) => (
-                          <div key={index} className="dropdown-item">
-                            {location}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </span>
-                </div>
-                <div className="border-l border-gray5 h-[18px]"></div>
-                <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                  <img
-                    src={Ic_experience}
-                    alt="experience"
-                    className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                  />
-                  <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
-                    {formValues.job_experience}
-                  </span>
-                </div>
-                <div className="border-l border-gray5 h-[18px]"></div>
-                <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                  <img
-                    src={Ic_time}
-                    alt="time"
-                    className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                  />
-                  <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
-                    {(() => {
-                      const selectedJobTypeName =
-                        jobTypeName.find(
-                          (job: any) => job.id === formValues?.job_type
-                        )?.name || null;
-                      return selectedJobTypeName;
-                    })()}
-                  </span>
-                </div>
-                <div className="border-l border-gray5 h-[18px]"></div>
-                <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
-                  <img
-                    src={Ic_rupee}
-                    alt="rupee"
-                    className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                  />
-
-                  <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
-                    {getCurrencySymbol(SalaryCurrency)}{" "}
-                    {formValues?.minimum_pay} -{" "}
-                    {getCurrencySymbol(SalaryCurrency)}{" "}
-                    {formValues?.maximum_pay}
-                  </span>
-                </div>
-                <div className="border-l border-gray5 h-[18px]"></div>
-                <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
-                  <img
-                    src={Ic_briefcase}
-                    alt="briefcase"
-                    className="w-[20px] h-[20px] md:w-auto md:h-auto"
-                  />
-                  {formValues?.work_place_type}
-                </span>
-              </div>
-              <div className="flex items-center gap-3 mb-4 md:mb-6">
-                <span className="text-primary text-sm lg:text-base">
-                  Skills:
-                </span>
-                <JobTagsDisplay tags={SkillArrayForTag} />
-              </div>
-            </div>
             <div
               style={{
-                maxHeight: "calc(100vh - 600px)",
+                maxHeight: "calc(100vh - 280px)",
                 overflowY: "auto",
               }}
-              className="overFlowYAuto px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8"
+              className="overFlowYAuto"
             >
-              <h4 className="mb-3 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
-                Job Description
-              </h4>
-              <div
-                dangerouslySetInnerHTML={{ __html: formValues?.description }}
-              />
+              <div className="bg-lightChiku p-3 lg:p-5 desktop:p-6 flex flex-col gap-4 mb-10">
+                <div className="flex flex-col sm:flex-row gap-2 lg:gap-0 justify-between">
+                  <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
+                    {userDetails?.logo && (
+                      <img
+                        src={`${PHOTO_URL}/${userDetails?.logo}`}
+                        alt="icon"
+                        className="w-[55px] desktop:w-[80px] h-[55px] desktop:h-[80px] rounded-[12px]"
+                      />
+                    )}
+                    <div className="flex flex-col gap-1">
+                      <div className="text-gray text-sm md:text-lg font-medium">
+                        {userDetails?.company_name}
+                      </div>
+                      <h2 className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
+                        {(() => {
+                          const selectedCategoryName =
+                            categoryName.find(
+                              (cat: any) => cat.id === formValues?.category
+                            )?.name || null;
+                          return selectedCategoryName;
+                        })()}
+                      </h2>
+                    </div>
+                  </div>
+                  <p className="text-base lg:text-lg text-gray">Now</p>
+                </div>
+                <div className="flex flex-wrap gap-2 lg:gap-4 desktop:gap-5 items-center">
+                  <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
+                    <img
+                      src={Ic_layout_grid}
+                      alt="icon"
+                      className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                    />
+                    {formValues?.job_title}
+                  </span>
+                  <div className="border-l border-gray5 h-[18px]"></div>
+                  <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                    <img
+                      src={Ic_location}
+                      alt="location"
+                      className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                    />
+                    <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl relative">
+                      <span className="location-link">{firstLocation}</span>
+                      &nbsp;
+                      {otherLocations.length > 0 && (
+                        <span
+                          className="text-primary underline cursor-pointer"
+                          onClick={toggleDropdown}
+                        >
+                          +{otherLocations.length}
+                        </span>
+                      )}
+                      {dropdownVisible && (
+                        <div className="location-dropdown absolute">
+                          {otherLocations.map((location, index) => (
+                            <div key={index} className="dropdown-item">
+                              {location}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </span>
+                  </div>
+                  <div className="border-l border-gray5 h-[18px]"></div>
+                  <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                    <img
+                      src={Ic_experience}
+                      alt="experience"
+                      className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                    />
+                    <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
+                      {formValues.job_experience}
+                    </span>
+                  </div>
+                  <div className="border-l border-gray5 h-[18px]"></div>
+                  <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                    <img
+                      src={Ic_time}
+                      alt="time"
+                      className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                    />
+                    <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
+                      {(() => {
+                        const selectedJobTypeName =
+                          jobTypeName.find(
+                            (job: any) => job.id === formValues?.job_type
+                          )?.name || null;
+                        return selectedJobTypeName;
+                      })()}
+                    </span>
+                  </div>
+                  <div className="border-l border-gray5 h-[18px]"></div>
+                  <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                    <img
+                      src={Ic_rupee}
+                      alt="rupee"
+                      className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                    />
+
+                    <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
+                      {getCurrencySymbol(SalaryCurrency)}{" "}
+                      {formValues?.minimum_pay} -{" "}
+                      {getCurrencySymbol(SalaryCurrency)}{" "}
+                      {formValues?.maximum_pay}
+                    </span>
+                  </div>
+                  <div className="border-l border-gray5 h-[18px]"></div>
+                  <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl flex items-center gap-2">
+                    <img
+                      src={Ic_briefcase}
+                      alt="briefcase"
+                      className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                    />
+                    {formValues?.work_place_type}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 mb-4 md:mb-6">
+                  <span className="text-primary text-sm lg:text-base">
+                    Skills:
+                  </span>
+                  <JobTagsDisplay tags={SkillArrayForTag} />
+                </div>
+              </div>
+              <div className="px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8">
+                <h4 className="mb-3 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
+                  Job Description
+                </h4>
+                <div
+                  dangerouslySetInnerHTML={{ __html: formValues?.description }}
+                />
+              </div>
             </div>
             <div className="flex flex-col sm:flex-row justify-between w-full gap-2 md:gap-5 md:items-center sticky bottom-0 bg-white shadow-shadow2 px-4 md:px-6 desktop:px-8 py-4">
               <div onClick={openCancelPopup}>

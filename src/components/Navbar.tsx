@@ -132,7 +132,7 @@ export const Navbar: React.FC = () => {
     >
       <div className="flex items-center justify-between relative">
         <div
-          className={`gap-3 laptop:gap-6 flex items-center ${
+          className={`gap-3 laptop:gap-10 flex items-center ${
             (!isUserLogin || (isUserLogin && currentPath === "/")) &&
             "laptop:w-[57%]"
           } laptop:justify-between`}
@@ -158,7 +158,7 @@ export const Navbar: React.FC = () => {
           </Link>
           {/* Nav items */}
           {currentPath !== "/create-account" && (
-            <div className="hidden laptop:flex items-center gap-6 big:gap-12 font-semibold text-lg laptop:text-xl">
+            <div className="hidden laptop:flex items-center gap-6 big:gap-10 font-semibold text-lg laptop:text-xl">
               <Link
                 to={"/find-talent"}
                 className={`font-medium text-primary hover-underline-animation-navbar hover-underline-animation text-lg border-b-2 border-t-2 ${

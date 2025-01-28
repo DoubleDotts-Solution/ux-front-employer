@@ -46,11 +46,11 @@ const Datepicker: React.FC<DatePickerProps> = ({
           }`}
         >
           <input
-            value={value || selectedDate}
+            value={value || ""}
             className="w-full h-full text-primary bg-white font-normal focus:outline-none focus:ring-0 placeholder:text-[#767676] placeholder:text-lg disabled:cursor-not-allowed disabled:bg-[#F5F5F5] disabled:hover:border-gray7 disabled:text-[#767676] disabled:border-gray7"
             onClick={onClick}
             ref={ref}
-            placeholder={`${placeholder ? placeholder : "yyyy-MM-dd"}`}
+            placeholder={`${placeholder ? placeholder : "MM-yyyy"}`}
             readOnly
             disabled={disabled}
           />
@@ -73,14 +73,14 @@ const Datepicker: React.FC<DatePickerProps> = ({
   return (
     <div
       className={cn(
-        "bg-white text-base font-medium border-2 rounded-[8px] flex h-10 lg:h-12 w-full border-input text-primary",
+        "bg-white text-base font-medium border-2 rounded-[8px] flex h-10 lg:h-12 w-full border-input text-primary DatePicker",
         className
       )}
     >
       <DatePicker
         selected={internalSelectedDate}
         onChange={handleDateChange}
-        dateFormat="yyyy-MM-dd"
+        dateFormat="MM-yyyy"
         customInput={<ExampleCustomInput />}
         disabled={disabled}
         className={`w-full focus:outline-none h-full ${
@@ -88,7 +88,7 @@ const Datepicker: React.FC<DatePickerProps> = ({
             ? "border-gray7 cursor-not-allowed bg-[#F5F5F5] hover:border-gray7 text-[#767676]"
             : ""
         }`}
-        placeholderText={format(internalSelectedDate || today, "yyyy-MM-dd")}
+        placeholderText={format(internalSelectedDate || today, "MM-yyyy")}
         filterDate={(date) => !isFutureDate(date)}
         peekNextMonth
         showMonthDropdown
