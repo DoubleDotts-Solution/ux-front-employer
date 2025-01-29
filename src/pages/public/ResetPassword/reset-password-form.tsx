@@ -134,7 +134,7 @@ const ResetPasswordForm: React.FC = () => {
                     return (
                       <FormItem>
                         <p
-                          className={`mb-1 lg:mb-2 text-sm lg:text-base ${
+                          className={`mb-[6px] lg:mb-2 text-sm lg:text-base ${
                             fieldState?.error ? "text-red" : "text-primary"
                           }`}
                         >
@@ -193,7 +193,7 @@ const ResetPasswordForm: React.FC = () => {
                     return (
                       <FormItem>
                         <p
-                          className={`mb-1 lg:mb-2 text-sm lg:text-base ${
+                          className={`mb-[6px] lg:mb-2 text-sm lg:text-base ${
                             fieldState?.error ? "text-red" : "text-primary"
                           }`}
                         >
@@ -240,7 +240,7 @@ const ResetPasswordForm: React.FC = () => {
             <div className="mt-[24px] md:mt-[32px] md:flex md:justify-center w-full">
               <ButtonUx
                 label="Reset Password"
-                buttonClassName={`text-lg px-8 desktop:px-14 py-2 w-full h-10 lg:h-12 font-semibold border-2 rounded-[8px] ${
+                buttonClassName={`text-lg px-8 desktop:px-14 py-2 w-full h-12 font-semibold border-2 rounded-[8px] ${
                   form.formState.isValid
                     ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                     : "border-gray7 bg-[#D8D8D8] text-[#767676]"
@@ -262,11 +262,11 @@ const ResetPasswordForm: React.FC = () => {
             <div className="flex items-center gap-5 relative">
               <ButtonUx
                 label="Cancel"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
               />
               <ButtonUx
                 label="Continue"
-                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
               />
             </div>
           </div>

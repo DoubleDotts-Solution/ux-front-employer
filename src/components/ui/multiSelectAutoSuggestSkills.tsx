@@ -140,7 +140,7 @@ const MultiSelectAutoSuggestionsSkills: React.FC<
     onChange: (_: React.FormEvent<any>, { newValue }: any) => {
       setInputValue(newValue);
     },
-    className: `focus:border-none focus:outline-none flex w-full items-center placeholder:text-[#767676] placeholder:text-lg`,
+    className: `focus:border-none focus:outline-none flex w-full items-center placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg`,
   };
 
   return (

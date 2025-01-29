@@ -157,13 +157,13 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
       }
     },
     className:
-      "h-10 lg:h-12 w-full focus:outline-none flex rounded-[8px] pr-3 py-2 placeholder:text-[#767676] placeholder:text-lg min-w-[50px]",
+      "h-12 w-full focus:outline-none flex rounded-[8px] pr-3 py-2 placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg min-w-[50px]",
   };
 
   return (
     <div className={`relative ${className}`} ref={containerRef}>
       <div
-        className="flex flex-nowrap items-center gap-2 border border-gray-300 bg-white overflow-x-auto overflow-y-hidden overFlowScrollHidden h-10 lg:h-12 w-full rounded-[8px] py-2 pl-3"
+        className="flex flex-nowrap items-center gap-2 border border-gray-300 bg-white overflow-x-auto overflow-y-hidden overFlowScrollHidden h-12 w-full rounded-[8px] py-2 pl-3"
         onClick={() => document.querySelector("input")?.focus()}
       >
         {value.map((item, index) => (

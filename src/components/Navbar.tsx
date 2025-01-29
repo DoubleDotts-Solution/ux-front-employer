@@ -127,7 +127,12 @@ export const Navbar: React.FC = () => {
       className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] py-2 sticky top-0 bg-white w-full"
       style={{
         zIndex: "999",
-        boxShadow: hasShadow ? "0px 4px 12px 0px #00000014" : "none",
+        boxShadow:
+          currentPath === "/"
+            ? hasShadow
+              ? "0px 4px 12px 0px #00000014"
+              : "none"
+            : "0px 4px 12px 0px #00000014",
       }}
     >
       <div className="flex items-center justify-between relative">
@@ -288,9 +293,9 @@ export const Navbar: React.FC = () => {
               <Link to={"/search-job"}>
                 <img src={Ic_search} alt="search" />
               </Link>
-              <Link
-                to={"/profile"}
+              <div
                 className="border-2 border-primary overflow-hidden z-50 flex items-center justify-center w-[32px] h-[32px] rounded-[8px] bg-[#D2EBFF] font-semibold"
+                onClick={toggleDropdown}
               >
                 {userDetails?.profile_photo ? (
                   <img
@@ -302,7 +307,7 @@ export const Navbar: React.FC = () => {
                   userDetails &&
                   userDetails?.company_name.charAt(0).toUpperCase()
                 )}
-              </Link>
+              </div>
             </div>
           </>
         ) : (
@@ -401,7 +406,7 @@ export const Navbar: React.FC = () => {
         }}
         className={`fixed top-0 left-0 w-full h-screen z-50`}
       >
-        <div className="bg-white h-max border-b-2 px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] border-primary">
+        <div className="bg-white h-max border-b-2 px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] border-primary pb-6">
           <div className="flex items-center justify-between py-2">
             <div className="gap-[12px] flex items-center">
               <Link to={"/"}>
@@ -420,7 +425,7 @@ export const Navbar: React.FC = () => {
               &times;
             </button>
           </div>
-          <div className="flex flex-col items-start font-medium mb-[40px]">
+          <div className="flex flex-col items-start font-medium">
             <Link
               to={"/find-talent"}
               className="text-primary text-lg py-[14px]"
@@ -443,27 +448,35 @@ export const Navbar: React.FC = () => {
               Blogs
             </Link>
           </div>
-          <div className="w-full flex gap-[16px]">
-            <Link to="/" className="w-1/2">
-              <ButtonUx
-                label="Login"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3 w-full"
-              />
-            </Link>
-            <Link to={"/create-account"} className="w-1/2">
-              <ButtonUx
-                label="Register"
-                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px] w-full"
-              />
-            </Link>
-          </div>
-          <div className="w-full border-t border-gray5 my-4"></div>
-          <a
-            href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}
-            className="text-center w-full py-2 mb-6 text-primary text-lg font-medium"
-          >
-            For Job Seekers
-          </a>
+          {!isUserLogin && (
+            <>
+              <div className="w-full flex gap-[16px] mt-[40px]">
+                <Link to="/" className="w-1/2" onClick={toggleDrawer}>
+                  <ButtonUx
+                    label="Login"
+                    buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3 w-full"
+                  />
+                </Link>
+                <Link
+                  to={"/create-account"}
+                  className="w-1/2"
+                  onClick={toggleDrawer}
+                >
+                  <ButtonUx
+                    label="Register"
+                    buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px] w-full"
+                  />
+                </Link>
+              </div>
+              <div className="w-full border-t border-gray5 my-4"></div>
+              <a
+                href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}
+                className="text-center w-full py-2 mb-6 text-primary text-lg font-medium"
+              >
+                For Job Seekers
+              </a>
+            </>
+          )}
         </div>
       </div>
       {searchDivOpen && (
@@ -510,13 +523,13 @@ export const Navbar: React.FC = () => {
               <div className="w-full" onClick={logout}>
                 <ButtonUx
                   label="Yes, Logout"
-                  buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                  buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </div>
               <div className="w-full" onClick={onLogout}>
                 <ButtonUx
                   label="No, Stay"
-                  buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                  buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
                 />
               </div>
             </div>

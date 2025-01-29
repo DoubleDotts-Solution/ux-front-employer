@@ -48,7 +48,7 @@ const YearPicker: React.FC<DatePickerProps> = ({
         >
           <input
             value={value || selectedDate}
-            className="w-full h-full text-primary bg-white font-normal focus:outline-none focus:ring-0 placeholder:text-[#767676] placeholder:text-lg disabled:cursor-not-allowed disabled:bg-[#F5F5F5] disabled:hover:border-gray7 disabled:text-[#767676] disabled:border-gray7"
+            className="w-full h-full text-primary bg-white font-normal focus:outline-none focus:ring-0 placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg disabled:cursor-not-allowed disabled:bg-[#F5F5F5] disabled:hover:border-gray7 disabled:text-[#767676] disabled:border-gray7"
             onClick={onClick}
             ref={ref}
             placeholder={`${placeholder ? placeholder : "yyyy"}`}
@@ -89,7 +89,7 @@ const YearPicker: React.FC<DatePickerProps> = ({
   return (
     <div
       className={cn(
-        "bg-white text-base font-medium border-2 rounded-[8px] flex h-10 lg:h-12 w-full border-input text-primary focus:bg-lightYellow2 focus:shadow-shadow1",
+        "bg-white text-base font-medium border-2 rounded-[8px] flex h-12 w-full border-input text-primary focus:bg-lightYellow2 focus:shadow-shadow1",
         className
       )}
     >

@@ -119,7 +119,7 @@ const ChangePassword: React.FC = () => {
                       <p
                         className={`${
                           fieldState.error ? "text-red" : "text-primary"
-                        } mb-1 lg:mb-2 text-sm lg:text-base`}
+                        } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                       >
                         Current Password (Min 8 Characters)
                       </p>
@@ -170,7 +170,7 @@ const ChangePassword: React.FC = () => {
                     <p
                       className={`${
                         fieldState.error ? "text-red" : "text-primary"
-                      } mb-1 lg:mb-2 text-sm lg:text-base`}
+                      } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                     >
                       New Password (Min 8 Characters)
                     </p>
@@ -212,7 +212,7 @@ const ChangePassword: React.FC = () => {
                       <p
                         className={`${
                           fieldState.error ? "text-red" : "text-primary"
-                        } mb-1 lg:mb-2 text-sm lg:text-base`}
+                        } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                       >
                         Confirm Password (Min 8 Characters)
                       </p>
@@ -258,12 +258,12 @@ const ChangePassword: React.FC = () => {
             <div onClick={() => passwordForm.reset()}>
               <ButtonUx
                 label="Cancel"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-8 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
               />
             </div>
             <ButtonUx
               label="Save"
-              buttonClassName={`text-lg px-8 py-2 w-max h-10 lg:h-12 font-semibold border-2 rounded-[8px] ${
+              buttonClassName={`text-lg px-8 py-2 w-max h-12 font-semibold border-2 rounded-[8px] ${
                 passwordForm.formState.isValid
                   ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                   : "border-gray7 bg-[#D8D8D8] text-[#767676]"

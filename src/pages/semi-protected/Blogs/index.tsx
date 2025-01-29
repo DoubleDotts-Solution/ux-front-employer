@@ -211,7 +211,7 @@ export const Blogs: React.FC = () => {
                   <img
                     src={`${PHOTO_URL}/${blog.image}`}
                     alt="blog-image"
-                    className="w-full h-[265px] rounded-[12px]"
+                    className="w-full h-[240px] md:h-[265px] rounded-[12px]"
                   />
                   <p className="text-primary text-base md:text-lg desktop:text-xl">
                     {blog.title}

@@ -108,7 +108,7 @@ const WhyWeBestBet: React.FC = () => {
         <div className="flex items-start lg:items-center gap-2 lg:gap-8">
           <img src={LikeImg} alt="like" className="w-[60px] desktop:w-auto" />
           <div>
-            <h2 className="text-primary text-xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px] mb-[4px]">
+            <h2 className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px] mb-[4px]">
               Why We’re Your{" "}
               <span className="relative">
                 Best Bet

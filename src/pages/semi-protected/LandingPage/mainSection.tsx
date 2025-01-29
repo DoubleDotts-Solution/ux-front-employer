@@ -11,7 +11,7 @@ const MainSection: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
     <>
       <div className="bg-lightChiku2 py-[48px] md:py-[72px] big:py-[100px] relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] flex flex-col lg:flex-row gap-[40px] laptop:gap-[68px] sBig:gap-[200px]">
         <div className="w-full lg:w-[50%] desktop:w-[60%]">
-          <h1 className="text-2xl md:text-4xl lg:text-5xl big:text-7xl lg:leading-[60px] big:leading-[100px] font-semibold text-primary mb-4">
+          <h1 className="text-[32px] md:text-4xl lg:text-5xl big:text-7xl lg:leading-[60px] big:leading-[100px] font-semibold text-primary mb-4">
             Hire the Best UX Talent, Effortlessly!
           </h1>
           <p className="text-gray text-base sm:text-lg md:text-xl desktop:text-[20px] mb-4 md:mb-6 desktop:mb-8">
@@ -22,13 +22,13 @@ const MainSection: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
             <Link to={"/post-job"}>
               <ButtonUx
                 label="Post a Job for Free"
-                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
               />
             </Link>
             <Link to={"/find-talent"}>
               <ButtonUx
                 label="Explore Candidates"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
               />
             </Link>
           </div>

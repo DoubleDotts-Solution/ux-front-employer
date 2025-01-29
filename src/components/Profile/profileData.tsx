@@ -19,7 +19,9 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
         <div>
           <div className="flex flex-col sm:flex-row gap-2 sm:items-center justify-between p-2.5 pb-4 lg:p-4 bg-white">
             <p className="text-primary text-sm lg:text-base">
-              Boost Your Hiring Success with a Standout Recruiter Profile
+              {value === 100
+                ? "Congrats! Your recruiter profile is complete. Post jobs, connect with top UX talent, and attract the best candidates effortlessly. Start hiring now!"
+                : "Boost Your Hiring Success with a Standout Recruiter Profile"}
             </p>
             <span className="text-primary text-sm lg:text-base font-medium whitespace-nowrap">
               {value}% Profile Completed
@@ -45,7 +47,7 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
           <Link to={"/profile?update-profile"}>
             <ButtonUx
               label="Update"
-              buttonClassName="z-50 relative w-max h-10 lg:h-12 font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2"
+              buttonClassName="z-50 relative w-max h-12 font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2"
             />
           </Link>
         </div>

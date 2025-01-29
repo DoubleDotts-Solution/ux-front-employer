@@ -564,7 +564,7 @@ const MainSection: React.FC = () => {
                             handleFilterChange("Location", newItems);
                           }}
                           placeholder="Enter location"
-                          className="h-10 lg:h-12"
+                          className="h-12"
                         />
                       </div>
                     )}
@@ -733,8 +733,8 @@ const MainSection: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-2 lg:gap-4 desktop:gap-5 items-center">
-                          <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                        <div className="flex flex-wrap gap-3 lg:gap-4 desktop:gap-5 items-center">
+                          <div className="flex items-center gap-1 md:gap-2 w-[100%] sm:w-auto whitespace-nowrap">
                             <img
                               src={Ic_location}
                               alt="location"
@@ -777,8 +777,8 @@ const MainSection: React.FC = () => {
                           </div>
                           {job?.total_experience && (
                             <>
-                              <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
-                              <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                              <div className="border-l border-primary h-[25px] lg:h-[30px] hidden sm:block"></div>
+                              <div className="flex items-center gap-1 md:gap-2 w-[100%] sm:w-auto whitespace-nowrap">
                                 <img
                                   src={Ic_experience}
                                   alt="experience"
@@ -791,7 +791,7 @@ const MainSection: React.FC = () => {
                             </>
                           )}
                           <div className="border-l border-primary h-[25px] lg:h-[30px] hidden sm:block"></div>
-                          <div className="flex items-center gap-1 md:gap-2 w-[47%] sm:w-auto whitespace-nowrap">
+                          <div className="flex items-center gap-1 md:gap-2 w-[100%] sm:w-auto whitespace-nowrap">
                             <img
                               src={Ic_call}
                               alt="time"
@@ -803,13 +803,13 @@ const MainSection: React.FC = () => {
                           </div>
                         </div>
                         {job.bio && (
-                          <div className="flex gap-2 items-center">
+                          <div className="flex gap-2 items-start md:items-center">
                             <img src={Ic_file} alt="icon" />
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: job.bio,
                               }}
-                              className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
+                              className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription2 md:jobDescription"
                             />
                           </div>
                         )}
@@ -1094,7 +1094,7 @@ const MainSection: React.FC = () => {
                           handleFilterChange("Location", newItems);
                         }}
                         placeholder="Enter location"
-                        className="h-10 lg:h-12"
+                        className="h-12"
                       />
                     </div>
                   )}

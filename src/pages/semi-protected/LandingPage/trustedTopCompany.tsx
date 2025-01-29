@@ -41,22 +41,22 @@ const TrustedTopCompany: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
               {isUserLogin ? (
                 <div
                   onClick={() => navigate("/post-job")}
-                  className="h-10 lg:h-12 relative flex items-start"
+                  className="h-12 relative flex items-start"
                 >
                   <ButtonUx
                     label="Post a Job For Free"
-                    buttonClassName={`text-lg px-8 py-2 w-full md:w-max h-10 lg:h-12 font-semibold border-2 rounded-[8px] hover:shadow-shadow1 border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 relative`}
+                    buttonClassName={`text-lg px-8 py-2 w-full md:w-max h-12 font-semibold border-2 rounded-[8px] hover:shadow-shadow1 border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 relative`}
                     type="submit"
                   />
                 </div>
               ) : (
                 <div
                   onClick={() => navigate("/create-account")}
-                  className="h-10 lg:h-12 relative flex items-start"
+                  className="h-12 relative flex items-start"
                 >
                   <ButtonUx
                     label="Register"
-                    buttonClassName={`text-lg px-8 py-2 w-full md:w-max h-10 lg:h-12 font-semibold border-2 rounded-[8px] hover:shadow-shadow1 border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 relative`}
+                    buttonClassName={`text-lg px-8 py-2 w-full md:w-max h-12 font-semibold border-2 rounded-[8px] hover:shadow-shadow1 border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 relative`}
                     type="submit"
                   />
                 </div>

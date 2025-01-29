@@ -167,7 +167,7 @@ const JobsOpportunity: React.FC = () => {
                   </div>
                   <ButtonUx
                     label="Subscribe"
-                    buttonClassName={`text-lg px-8 py-2 w-full md:w-max h-10 lg:h-12 font-semibold border-2 rounded-[8px] ${
+                    buttonClassName={`text-lg px-8 py-2 w-full md:w-max h-12 font-semibold border-2 rounded-[8px] ${
                       validSubScribeForm
                         ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                         : "border-gray7 bg-[#D8D8D8] text-[#767676]"

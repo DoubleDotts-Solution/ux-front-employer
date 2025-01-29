@@ -32,7 +32,7 @@ const InputMobile = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        className={`flex gap-[8px] h-10 lg:h-12 w-full items-center rounded-[8px] border border-input text-primary px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium ${className}`}
+        className={`flex gap-[8px] h-12 w-full items-center rounded-[8px] border border-input text-primary px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium ${className}`}
       >
         <PhoneInput
           ref={ref as any}

@@ -344,7 +344,9 @@ const JobPosted: React.FC = () => {
                     )}
                     <div className="flex flex-col gap-2">
                       <h4 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
-                        {job?.job_title}
+                        <span className="w-auto max-w-[98px] sm:w-auto truncate">
+                          {job?.job_title}
+                        </span>
                         <span
                           className={`font-normal text-sm md:text-base desktop:text-lg border border-primary rounded-lg px-4 py-0.5`}
                           style={{
@@ -378,8 +380,8 @@ const JobPosted: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex flex-wrap gap-2 lg:gap-4 desktop:gap-5 items-center">
-                    <div className="flex items-center gap-1 md:gap-2 whitespace-nowrap">
+                  <div className="flex flex-wrap gap-3 lg:gap-4 desktop:gap-5 items-center">
+                    <div className="flex items-center gap-1 md:gap-2 w-[100%] sm:w-auto whitespace-nowrap">
                       <img
                         src={Ic_location}
                         alt="location"
@@ -413,8 +415,8 @@ const JobPosted: React.FC = () => {
                         )}
                       </span>
                     </div>
-                    <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
-                    <div className="flex items-center gap-1 md:gap-2 whitespace-nowrap">
+                    <div className="border-l border-primary h-[25px] lg:h-[30px] hidden sm:block"></div>
+                    <div className="flex items-center gap-1 md:gap-2 w-[100%] sm:w-auto whitespace-nowrap">
                       <img
                         src={Ic_experience}
                         alt="experience"
@@ -424,8 +426,8 @@ const JobPosted: React.FC = () => {
                         {job?.job_experience}
                       </span>
                     </div>
-                    <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
-                    <div className="flex items-center gap-1 md:gap-2 whitespace-nowrap">
+                    <div className="border-l border-primary h-[25px] lg:h-[30px] hidden sm:block"></div>
+                    <div className="flex items-center gap-1 md:gap-2 w-[100%] sm:w-auto whitespace-nowrap">
                       <img
                         src={Ic_time}
                         alt="time"
@@ -435,8 +437,8 @@ const JobPosted: React.FC = () => {
                         {job?.job_type.name}
                       </span>
                     </div>
-                    <div className="border-l border-primary h-[25px] lg:h-[30px]"></div>
-                    <div className="flex items-center gap-1 md:gap-2 whitespace-nowrap">
+                    <div className="border-l border-primary h-[25px] lg:h-[30px] hidden sm:block"></div>
+                    <div className="flex items-center gap-1 md:gap-2 w-[100%] sm:w-auto whitespace-nowrap">
                       <img
                         src={Ic_rupee}
                         alt="rupee"
@@ -456,7 +458,7 @@ const JobPosted: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-start md:items-center">
                   <img src={Ic_file} alt="icon" />
                   <div
                     dangerouslySetInnerHTML={{
@@ -464,11 +466,11 @@ const JobPosted: React.FC = () => {
                         job.description ||
                         (job && job.jobs && job?.description),
                     }}
-                    className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
+                    className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription2 md:jobDescription"
                   />
                 </div>
                 <div className="w-full h-[1px] bg-gray5"></div>
-                <div className="flex flex-col gap-4 lg:gap-2 lg:flex-row justify-between lg:items-center">
+                <div className="flex gap-4 lg:gap-2 flex-row justify-between lg:items-center">
                   <div className="flex flex-wrap items-center gap-3 md:gap-4 desktop:gap-5">
                     <JobTagsDisplay
                       tags={
@@ -577,7 +579,7 @@ const JobPosted: React.FC = () => {
             <Link to={"/post-job"}>
               <ButtonUx
                 label="Post a Job for Free"
-                buttonClassName="z-50 relative w-full h-10 lg:h-12 font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2"
+                buttonClassName="z-50 relative w-full h-12 font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2"
               />
             </Link>
           </div>
@@ -599,7 +601,7 @@ const JobPosted: React.FC = () => {
               <div className="w-full" onClick={onDelete}>
                 <ButtonUx
                   label="Cancel"
-                  buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                  buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </div>
               <div
@@ -610,7 +612,7 @@ const JobPosted: React.FC = () => {
               >
                 <ButtonUx
                   label="Confirm"
-                  buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                  buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
                 />
               </div>
             </div>
@@ -698,13 +700,13 @@ const JobPosted: React.FC = () => {
                   <div className="w-full" onClick={onChangeStatus}>
                     <ButtonUx
                       label="Cancel"
-                      buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                      buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                     />
                   </div>
                   <div className="w-full">
                     <ButtonUx
                       label="Confirm & Update"
-                      buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                      buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
                       type="submit"
                     />
                   </div>

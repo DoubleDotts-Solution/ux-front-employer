@@ -128,7 +128,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
     onChange: (_: React.FormEvent<any>, { newValue }: ChangeEvent) => {
       onChange(newValue);
     },
-    className: `flex h-10 lg:h-12 w-full focus:bg-lightYellow2 focus:outline-none focus:border-primary focus:border-[2px] rounded-[8px] px-3 py-2 placeholder:text-[#767676] placeholder:text-lg focus:shadow-shadow1 ${
+    className: `flex h-12 w-full focus:bg-lightYellow2 focus:outline-none focus:border-primary focus:border-[2px] rounded-[8px] px-3 py-2 placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg focus:shadow-shadow1 ${
       className && className
     }`,
   };

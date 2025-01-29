@@ -32,7 +32,7 @@ const EditProfile: React.FC = () => {
           See Public View
         </Link>
       </div>
-      <div className="flex border-b border-gray5 gap-6 desktop:gap-10 items-center mb-4 desktop:mb-6 overflow-x-auto overFlowScrollHidden mx-4 sm:mx-5 md:mx-8 lg:mx-0">
+      <div className="flex border-b border-gray5 gap-6 desktop:gap-10 items-center mb-1 desktop:mb-6 overflow-x-auto overFlowScrollHidden mx-4 sm:mx-5 md:mx-8 lg:mx-0">
         {tabs.map((tab, index) => (
           <div
             className={`py-1.5 md:py-2 desktop:py-3 border-b-4 text-sm md:text-base desktop:text-lg cursor-pointer whitespace-nowrap ${

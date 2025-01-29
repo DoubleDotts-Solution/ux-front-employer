@@ -568,7 +568,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Job Title
                           </p>
@@ -605,7 +605,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Category
                           </p>
@@ -664,7 +664,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Location
                           </p>
@@ -696,7 +696,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Experience Level
                           </p>
@@ -749,7 +749,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Job Type
                           </p>
@@ -804,7 +804,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Choose Workplace Type
                           </p>
@@ -880,7 +880,7 @@ export const PostJobForm: React.FC = () => {
                         form.formState.errors.description
                           ? "text-red"
                           : "text-primary"
-                      } mb-1 text-sm lg:text-base`}
+                      } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                     >
                       Job Description
                     </p>
@@ -923,7 +923,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Skills(Max 10)
                           </p>
@@ -977,7 +977,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Currency
                           </p>
@@ -1039,7 +1039,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Minimum Pay
                           </p>
@@ -1097,7 +1097,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Maximum Pay
                           </p>
@@ -1155,7 +1155,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Payment Type
                           </p>
@@ -1219,7 +1219,7 @@ export const PostJobForm: React.FC = () => {
                           <p
                             className={`${
                               fieldState.error ? "text-red" : "text-primary"
-                            } mb-1 text-sm lg:text-base`}
+                            } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
                             Apply Via
                           </p>
@@ -1287,7 +1287,7 @@ export const PostJobForm: React.FC = () => {
                             <p
                               className={`${
                                 fieldState.error ? "text-red" : "text-primary"
-                              } mb-1 text-sm lg:text-base`}
+                              } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                             >
                               Link to Apply
                             </p>
@@ -1326,7 +1326,7 @@ export const PostJobForm: React.FC = () => {
                             <p
                               className={`${
                                 fieldState.error ? "text-red" : "text-primary"
-                              } mb-1 text-sm lg:text-base`}
+                              } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                             >
                               Email to Apply
                             </p>
@@ -1365,7 +1365,7 @@ export const PostJobForm: React.FC = () => {
                             <p
                               className={`${
                                 fieldState.error ? "text-red" : "text-primary"
-                              } mb-1 text-sm lg:text-base`}
+                              } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                             >
                               Add Instructions
                             </p>
@@ -1415,7 +1415,7 @@ export const PostJobForm: React.FC = () => {
               >
                 <ButtonUx
                   label="Preview Job"
-                  buttonClassName={`bg-white border-2 font-semibold text-base rounded-[8px] px-6 desktop:px-8 py-2 h-10 lg:h-12
+                  buttonClassName={`bg-white border-2 font-semibold text-base rounded-[8px] px-6 desktop:px-8 py-2 h-12
                       ${
                         form.formState.isValid
                           ? "text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3 border-primary"
@@ -1427,11 +1427,11 @@ export const PostJobForm: React.FC = () => {
               <div className="flex items-center gap-3 md:gap-5">
                 <ButtonUx
                   label="Import from URL"
-                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
                 <ButtonUx
                   label="Post a Job"
-                  buttonClassName={`text-lg px-6 desktop:px-8 py-2 h-10 lg:h-12 font-semibold border-2 rounded-[8px] w-max ${
+                  buttonClassName={`text-lg px-6 desktop:px-8 py-2 h-12 font-semibold border-2 rounded-[8px] w-max ${
                     form.formState.isValid
                       ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                       : "border-gray7 bg-[#D8D8D8] text-[#767676]"
@@ -1612,14 +1612,14 @@ export const PostJobForm: React.FC = () => {
               <div onClick={openCancelPopup}>
                 <ButtonUx
                   label="Cancel"
-                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </div>
               <div className="flex items-center gap-3 md:gap-5">
                 <div onClick={openJobPreviewPopup}>
                   <ButtonUx
                     label="Edit Job Post"
-                    buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                    buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                   />
                 </div>
                 <div
@@ -1630,7 +1630,7 @@ export const PostJobForm: React.FC = () => {
                 >
                   <ButtonUx
                     label="Post a Job"
-                    buttonClassName={`text-lg px-6 desktop:px-8 py-2 h-10 lg:h-12 font-semibold border-2 rounded-[8px] w-max ${
+                    buttonClassName={`text-lg px-6 desktop:px-8 py-2 h-12 font-semibold border-2 rounded-[8px] w-max ${
                       form.formState.isValid
                         ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                         : "border-gray7 bg-[#D8D8D8] text-[#767676]"
@@ -1665,13 +1665,13 @@ export const PostJobForm: React.FC = () => {
               >
                 <ButtonUx
                   label="Yes, Cancel"
-                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </div>
               <div onClick={openCancelPopup}>
                 <ButtonUx
                   label="No, Keep"
-                  buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                  buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
                 />
               </div>
             </div>
@@ -1694,7 +1694,7 @@ export const PostJobForm: React.FC = () => {
                 <Link to="/">
                   <ButtonUx
                     label="Go to Home"
-                    buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                    buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
                   />
                 </Link>
               </div>
@@ -1719,13 +1719,13 @@ export const PostJobForm: React.FC = () => {
               <Link to="/">
                 <ButtonUx
                   label="Login"
-                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </Link>
               <Link to="/crate-account">
                 <ButtonUx
                   label="Register"
-                  buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-10 lg:h-12"
+                  buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
                 />
               </Link>
             </div>

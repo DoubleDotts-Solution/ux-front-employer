@@ -243,7 +243,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           Company Name
                         </p>
@@ -276,7 +276,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           Company Website Link
                         </p>
@@ -356,7 +356,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           Company Location
                         </p>
@@ -388,7 +388,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 lg:mb-2 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           About the Company
                         </p>
@@ -442,7 +442,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           Full Name
                         </p>
@@ -475,7 +475,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           Designation
                         </p>
@@ -513,7 +513,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           Work Email Id
                         </p>
@@ -533,7 +533,7 @@ const ProfileForm: React.FC = () => {
                             <img
                               src={Ic_check_circle}
                               alt="icon"
-                              className="absolute top-[8px] lg:top-[12px] right-[8px] lg:right-[12px]"
+                              className="absolute top-[12px] right-[12px]"
                             />
                           </div>
                         </FormControl>
@@ -551,7 +551,7 @@ const ProfileForm: React.FC = () => {
                         <p
                           className={`${
                             fieldState.error ? "text-red" : "text-primary"
-                          } mb-1 text-sm lg:text-base`}
+                          } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                         >
                           Mobile Number
                         </p>
@@ -572,12 +572,12 @@ const ProfileForm: React.FC = () => {
                               <img
                                 src={Ic_check_circle}
                                 alt="icon"
-                                className="absolute top-[8px] lg:top-[12px] right-[8px] lg:right-[12px]"
+                                className="absolute top-[12px] right-[12px]"
                               />
                             ) : (
                               <Link
                                 to={"/verify-otp"}
-                                className="text-primary text-sm font-semibold absolute top-[10px] lg:top-[14px] right-[8px] lg:right-[12px]"
+                                className="text-primary text-sm font-semibold absolute top-[14px] right-[12px]"
                                 onClick={() => {
                                   localStorage.setItem(
                                     "triggerResendOTP",
@@ -602,12 +602,12 @@ const ProfileForm: React.FC = () => {
             <div onClick={() => form.reset()}>
               <ButtonUx
                 label="Cancel"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-8 py-2 h-10 lg:h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
               />
             </div>
             <ButtonUx
               label="Save"
-              buttonClassName={`text-lg px-8 py-2 w-max h-10 lg:h-12 font-semibold border-2 rounded-[8px] ${
+              buttonClassName={`text-lg px-8 py-2 w-max h-12 font-semibold border-2 rounded-[8px] ${
                 form.formState.isValid
                   ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                   : "border-gray7 bg-[#D8D8D8] text-[#767676]"

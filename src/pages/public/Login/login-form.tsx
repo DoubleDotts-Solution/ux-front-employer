@@ -238,7 +238,7 @@ const LoginForm: React.FC = () => {
                   render={({ field, fieldState }) => (
                     <FormItem>
                       <p
-                        className={`mb-1 lg:mb-2 text-sm lg:text-base ${
+                        className={`mb-[6px] lg:mb-2 text-sm lg:text-base ${
                           fieldState?.error ? "text-red" : "text-primary"
                         }`}
                       >
@@ -294,7 +294,7 @@ const LoginForm: React.FC = () => {
                       return (
                         <FormItem>
                           <p
-                            className={`mb-1 lg:mb-2 text-sm lg:text-base ${
+                            className={`mb-[6px] lg:mb-2 text-sm lg:text-base ${
                               fieldState?.error ? "text-red" : "text-primary"
                             }`}
                           >
@@ -350,7 +350,7 @@ const LoginForm: React.FC = () => {
             <div className="mt-[24px] md:mt-[32px] md:flex md:justify-center w-full">
               <ButtonUx
                 label="Login"
-                buttonClassName={`text-lg px-8 desktop:px-14 py-2 w-full h-10 lg:h-12 font-semibold border-2 rounded-[8px] ${
+                buttonClassName={`text-lg px-8 desktop:px-14 py-2 w-full h-12 font-semibold border-2 rounded-[8px] ${
                   form.formState.isValid
                     ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                     : "border-gray7 bg-[#D8D8D8] text-[#767676]"

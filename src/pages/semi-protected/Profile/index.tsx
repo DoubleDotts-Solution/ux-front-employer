@@ -79,11 +79,11 @@ export const Profile: React.FC = () => {
           }`}
         >
           <div className="overflow-x-auto overFlowScrollHidden lg:border border-primary lg:p-3 rounded-[8px]">
-            <div className="flex gap-2 lg:gap-0 lg:flex-col w-max lg:w-auto lg:min-w-full">
+            <div className="flex lg:flex-col w-max lg:w-auto lg:min-w-full">
               {tabs.map((tab, index) => (
                 <button
                   key={index}
-                  className={`px-2 py-1 md:p-3 desktop:p-5 flex gap-1.5 md:gap-2 desktop:gap-4 rounded-[8px] w-auto ${
+                  className={`px-3 py-2 md:p-3 desktop:p-5 flex gap-1.5 md:gap-2 desktop:gap-4 rounded-[8px] w-auto ${
                     activeTabIndex === index ? "bg-[#EFECE5]" : ""
                   }`}
                   onClick={() => {

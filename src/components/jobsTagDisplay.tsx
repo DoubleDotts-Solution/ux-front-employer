@@ -68,11 +68,11 @@ const JobTagsDisplay: React.FC<TagsDisplayProps> = ({ tags }) => {
   }, [tags]);
 
   return (
-    <div className="flex flex-wrap items-center gap-3 md:gap-4 desktop:gap-5">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 desktop:gap-5">
       {displayedTags?.map((tag, index) => (
         <div
           key={index}
-          className="border border-gray text-base desktop:text-lg bg-lightChiku2 px-3 desktop:px-5 py-1 rounded-full"
+          className="border border-gray text-xs sm:text-sm md:text-base desktop:text-lg bg-lightChiku2 px-3 desktop:px-5 py-1 rounded-full"
         >
           {tag.name}
         </div>
