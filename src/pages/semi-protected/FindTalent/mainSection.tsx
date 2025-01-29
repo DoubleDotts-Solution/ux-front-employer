@@ -809,7 +809,7 @@ const MainSection: React.FC = () => {
                               dangerouslySetInnerHTML={{
                                 __html: job.bio,
                               }}
-                              className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription2 md:jobDescription"
+                              className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
                             />
                           </div>
                         )}

@@ -466,7 +466,7 @@ const JobPosted: React.FC = () => {
                         job.description ||
                         (job && job.jobs && job?.description),
                     }}
-                    className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription2 md:jobDescription"
+                    className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray jobDescription"
                   />
                 </div>
                 <div className="w-full h-[1px] bg-gray5"></div>
