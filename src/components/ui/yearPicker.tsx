@@ -40,7 +40,7 @@ const YearPicker: React.FC<DatePickerProps> = ({
     ({ value, onClick }, ref) => {
       return (
         <div
-          className={`flex items-center justify-between w-full h-10 lg:h-11 rounded-[8px] px-3 py-2 ${
+          className={`flex items-center justify-between w-full h-11 rounded-[8px] px-3 py-2 ${
             disabled
               ? "cursor-not-allowed bg-[#F5F5F5] hover:border-gray7 text-[#767676] border-gray7"
               : ""

@@ -10,7 +10,7 @@ const TrustedTopCompany: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
   return (
     <>
       {/* --- */}
-      <div className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[48px] big:py-[72px] pt-0 big:pt-0">
+      <div className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] pt-[24px] pb-[48px] big:py-[72px] pt-0 big:pt-0">
         <span className="relative inline-block w-full">
           <div className="relative bg-black3 px-4 py-6 desktop:p-10 desktop:py-14 text-7xl rounded-[12px] md:rounded-[20px] z-50 flex flex-col lg:flex-row items-center gap-6 desktop:gap-24 w-full justify-end">
             <div className="w-full lg:w-[27%] flex justify-center items-center">

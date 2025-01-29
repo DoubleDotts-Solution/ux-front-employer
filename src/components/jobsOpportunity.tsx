@@ -118,7 +118,7 @@ const JobsOpportunity: React.FC = () => {
               />
             </div>
             <div className="w-full">
-              <h3 className="text-white font-semibold text-[32px] leading-[35.2px] md:text-4xl desktop:text-[40px] mb-1.5 desktop:mb-3 desktop:leading-[48px] flex flex-wrap">
+              <h3 className="text-white font-semibold text-[24px] leading-[32px] md:text-3xl desktop:text-[40px] mb-1.5 desktop:mb-3 desktop:leading-[48px] flex flex-wrap">
                 Never Miss a Job&nbsp;
                 <span className="relative abc flex items-center gap-[12px] w-max">
                   Opportunity

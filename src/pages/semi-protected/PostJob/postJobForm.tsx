@@ -949,7 +949,7 @@ export const PostJobForm: React.FC = () => {
                               <img
                                 src={Ic_search}
                                 alt="search"
-                                className="absolute top-[8px] lg:top-[13px] left-[8px] lg:left-[12px]"
+                                className="absolute top-[13px] left-[8px] lg:left-[12px]"
                               />
                             </div>
                           </FormControl>
@@ -1067,7 +1067,7 @@ export const PostJobForm: React.FC = () => {
                                   }
                                 }}
                               />
-                              <span className="absolute top-[8px] lg:top-[13px] left-[8px] lg:left-[12px] text-primary text-base">
+                              <span className="absolute top-[13px] left-[8px] lg:left-[12px] text-primary text-base">
                                 {(() => {
                                   const selectedCurrencyName =
                                     SalaryCurrencyName.find(
@@ -1125,7 +1125,7 @@ export const PostJobForm: React.FC = () => {
                                   }
                                 }}
                               />
-                              <span className="absolute top-[8px] lg:top-[13px] left-[8px] lg:left-[12px] text-primary text-base">
+                              <span className="absolute top-[13px] left-[8px] lg:left-[12px] text-primary text-base">
                                 {(() => {
                                   const selectedCurrencyName =
                                     SalaryCurrencyName.find(

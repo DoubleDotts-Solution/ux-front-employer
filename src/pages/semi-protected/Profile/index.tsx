@@ -67,13 +67,13 @@ export const Profile: React.FC = () => {
   return (
     <div className="">
       <div
-        className={`pt-[44px] desktop:pt-[56px] ${
+        className={`pt-[24px] desktop:pt-[56px] ${
           activeTabIndex !== 0 &&
           "pb-[44px] desktop:pb-[72px] px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px]"
         } flex flex-col lg:flex-row gap-[20px]`}
       >
         <div
-          className={`w-full lg:w-[24%] flex flex-col justify-between ${
+          className={`w-full lg:w-[24%] flex flex-col justify-between pb-3 lg:pb-0 border-b border-primary lg:border-b-0 ${
             activeTabIndex === 0 &&
             "px-4 sm:px-5 md:px-8 lg:p-0 lg:ml-10 big:ml-[120px] xBig:ml-[200px]"
           }`}

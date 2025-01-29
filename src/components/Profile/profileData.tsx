@@ -53,8 +53,8 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
         </div>
       </div>
       <div className="mt-6 flex flex-col gap-4 md:gap-6 desktop:gap-8">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
-          <h3 className="text-primary font-semibold text-xl md:text-2xl desktop:text-[2rem]">
+        <div className="flex items-center gap-2 justify-between">
+          <h3 className="text-primary font-semibold text-[24px] md:text-3xl desktop:text-[2rem]">
             What Job Seeker will See
           </h3>
           <Link
@@ -62,7 +62,7 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
             className="flex items-center gap-3"
           >
             <img src={Ic_edit} alt="edit" />
-            <span className="text-primary text-base font-semibold">
+            <span className="text-primary text-base font-semibold hidden sm:block">
               Edit Profile
             </span>
           </Link>

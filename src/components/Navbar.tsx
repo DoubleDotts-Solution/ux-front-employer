@@ -290,9 +290,7 @@ export const Navbar: React.FC = () => {
             )}
 
             <div className="flex laptop:hidden items-center gap-3">
-              <Link to={"/search-job"}>
-                <img src={Ic_search} alt="search" />
-              </Link>
+              <img src={Ic_search} alt="search" onClick={toggleSearchDiv} />
               <div
                 className="border-2 border-primary overflow-hidden z-50 flex items-center justify-center w-[32px] h-[32px] rounded-[8px] bg-[#D2EBFF] font-semibold"
                 onClick={toggleDropdown}

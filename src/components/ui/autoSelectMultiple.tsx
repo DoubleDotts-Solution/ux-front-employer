@@ -157,7 +157,7 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
       }
     },
     className:
-      "h-12 w-full focus:outline-none flex rounded-[8px] pr-3 py-2 placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg min-w-[50px]",
+      "h-12 w-full focus:outline-none flex rounded-[8px] pr-3 py-2 placeholder:text-[#767676] placeholder:text-lg min-w-[50px]",
   };
 
   return (

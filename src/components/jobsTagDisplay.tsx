@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 
 interface TagsDisplayProps {
@@ -8,6 +9,8 @@ const JobTagsDisplay: React.FC<TagsDisplayProps> = ({ tags }) => {
   const [displayedTags, setDisplayedTags] = useState<
     { id?: number; name: string }[]
   >([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [moreIndex, setMoreIndex] = useState<number | null>(null);
 
   const updateTags = () => {
     let tagsToShow: { id?: number; name: string }[] = [];
@@ -67,14 +70,41 @@ const JobTagsDisplay: React.FC<TagsDisplayProps> = ({ tags }) => {
     };
   }, [tags]);
 
+  const toggleDropdown = (e: any, index: number) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setIsDropdownOpen((prev) => !prev);
+    setMoreIndex(index);
+  };
+
   return (
     <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 desktop:gap-5">
       {displayedTags?.map((tag, index) => (
-        <div
-          key={index}
-          className="border border-gray text-xs sm:text-sm md:text-base desktop:text-lg bg-lightChiku2 px-3 desktop:px-5 py-1 rounded-full"
-        >
-          {tag.name}
+        <div key={index} className="relative">
+          <div
+            className="border border-gray text-xs sm:text-sm md:text-base desktop:text-lg bg-lightChiku2 px-3 desktop:px-5 py-1 rounded-full"
+            onClick={
+              tag.name.includes("More")
+                ? (e) => toggleDropdown(e, index)
+                : undefined
+            }
+          >
+            {tag.name}
+          </div>
+          {isDropdownOpen && moreIndex === index && (
+            <div
+              className="absolute top-full mt-2 bg-white border border-gray py-3 px-4 rounded-lg shadow-lg w-max"
+              style={{ zIndex: 999999999999999 }}
+            >
+              <ul>
+                {tags.slice(displayedTags.length - 1).map((fullTag, idx) => (
+                  <li key={idx} className="py-1 text-sm text-primary">
+                    {fullTag.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       ))}
     </div>

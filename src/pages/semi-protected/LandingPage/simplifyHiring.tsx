@@ -51,7 +51,7 @@ const SimplifyHiring: React.FC = () => {
   return (
     <>
       <div
-        className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[48px] big:py-[72px]"
+        className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] pt-[24px] pb-[48px] big:py-[72px]"
         ref={section3Ref}
       >
         <h2 className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px] mb-8 lg:mb-10 desktop:mb-12">

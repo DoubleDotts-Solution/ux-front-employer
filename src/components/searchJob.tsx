@@ -172,7 +172,7 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
                           }}
                         >
                           <SelectTrigger
-                            className={`h-10 lg:h-[50px] bg-white text-lg border-2 ${
+                            className={`h-[50px] bg-white text-lg border-2 ${
                               fieldState.error
                                 ? "border-red"
                                 : "border-primary hover:border-primary"

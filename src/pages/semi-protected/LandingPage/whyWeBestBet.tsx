@@ -102,7 +102,7 @@ const WhyWeBestBet: React.FC = () => {
   return (
     <>
       <div
-        className="bg-lightChiku px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[48px] big:py-[72px]"
+        className="bg-lightChiku px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] pt-[24px] pb-[48px] big:py-[72px]"
         ref={sectionRef}
       >
         <div className="flex items-start lg:items-center gap-2 lg:gap-8">

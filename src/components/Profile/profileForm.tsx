@@ -495,7 +495,7 @@ const ProfileForm: React.FC = () => {
                             <img
                               src={Ic_search}
                               alt="search"
-                              className="absolute top-[8px] lg:top-[13px] left-[8px] lg:left-[12px]"
+                              className="absolute top-[13px] left-[8px] lg:left-[12px]"
                             />
                           </div>
                         </FormControl>
@@ -599,15 +599,15 @@ const ProfileForm: React.FC = () => {
             </div>
           </div>
           <div className="mt-[24px] md:mt-[32px] flex justify-end w-full gap-5 items-center sticky bottom-0 bg-white shadow-shadow2 p-4">
-            <div onClick={() => form.reset()}>
+            <div onClick={() => form.reset()} className="w-1/2 sm:w-auto">
               <ButtonUx
                 label="Cancel"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                buttonClassName="bg-white font-semibold w-full text-base border-2 border-primary rounded-[8px] px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
               />
             </div>
             <ButtonUx
               label="Save"
-              buttonClassName={`text-lg px-8 py-2 w-max h-12 font-semibold border-2 rounded-[8px] ${
+              buttonClassName={`text-lg px-8 py-2 w-1/2 sm:w-max h-12 font-semibold border-2 rounded-[8px] ${
                 form.formState.isValid
                   ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
                   : "border-gray7 bg-[#D8D8D8] text-[#767676]"
