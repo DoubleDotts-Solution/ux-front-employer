@@ -95,7 +95,7 @@ const JobPostedPerson: React.FC = () => {
   return (
     <>
       <nav className="flex items-center gap-2 mb-5 md:mb-[28px]">
-        <Link to={"/find-talent"}>
+        <Link to={"/profile?job-posted"}>
           <img src={Ic_left_arrow} alt="arrow" />
         </Link>
         <Link to={"/profile?job-posted"}>

@@ -21,7 +21,25 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 4px 4px 0px 0px #070707, 0 0 0px 1000px #fffadf inset;
   box-shadow: 4px 4px 0px 0px #070707, 0 0 0px 1000px #fffadf inset;
 }
-
+/* ---- */
+.overFlowXScroll::-webkit-scrollbar {
+  height: 4px;
+  position: absolute !important;
+  border-radius: 24px;
+}
+.overFlowXScroll::-webkit-scrollbar-track {
+  border-radius: 24px;
+  background: #d9d9d9;
+}
+.overFlowXScroll::-webkit-scrollbar-thumb {
+  border-radius: 24px;
+  background: #919191;
+  margin: 10px 2px;
+}
+.overFlowXScroll::-webkit-scrollbar-thumb:hover {
+  border-radius: 24px;
+  background: #919191;
+}
 /* ---- */
 .ql-editor::-webkit-scrollbar,
 .overFlowYAuto::-webkit-scrollbar,

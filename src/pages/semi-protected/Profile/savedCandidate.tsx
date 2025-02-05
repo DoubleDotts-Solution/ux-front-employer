@@ -5,7 +5,7 @@ import Img_profile_no_data from "@/assets/images/Img_profile_no_data.png";
 import { Pagination } from "@/components/common/pagination";
 import ButtonUx from "@/components/common/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { convertJobLocation } from "@/lib/utils";
 import Ic_location from "@/assets/images/Ic_location.svg";
 import Ic_experience from "@/assets/images/Ic_experience.svg";
@@ -70,6 +70,12 @@ const SavedCandidate: React.FC = () => {
               value={searchJob || ""}
             />
             <Search className="absolute left-0 top-[2px] lg:top-[3px] m-2.5 h-4 w-4 text-muted-foreground" />
+            {searchJob && (
+              <X
+                className="absolute right-0 top-[2px] lg:top-[3px] m-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+                onClick={() => setSearchJob("")}
+              />
+            )}
           </div>
         </div>
       </div>

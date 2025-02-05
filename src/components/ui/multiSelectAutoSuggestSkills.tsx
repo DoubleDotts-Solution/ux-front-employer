@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Autosuggest, {
   SuggestionsFetchRequestedParams,
 } from "react-autosuggest";
@@ -25,6 +25,7 @@ const MultiSelectAutoSuggestionsSkills: React.FC<
   const [countries, setCountries] = useState<any[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const renderSuggestion = (
     suggestion: { name: string },
@@ -125,6 +126,11 @@ const MultiSelectAutoSuggestionsSkills: React.FC<
       setInputValue("");
     }
   };
+  useEffect(() => {
+    if (selectedOptions && scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, [selectedOptions]);
 
   const handleRemoveOption = (option: Option) => {
     const updatedOptions = selectedOptions.filter(
@@ -135,54 +141,57 @@ const MultiSelectAutoSuggestionsSkills: React.FC<
   };
 
   const inputProps = {
-    placeholder,
+    placeholder: inputValue == "" ? placeholder : "",
     value: inputValue,
     onChange: (_: React.FormEvent<any>, { newValue }: any) => {
       setInputValue(newValue);
     },
-    className: `focus:border-none focus:outline-none flex w-full items-center placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg`,
+    className: `flex h-full rounded-[8px] px-3 py-2 placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg border-gray7 focus:border-none focus:outline-none`,
   };
 
   return (
     <>
-      <div
-        className={`flex flex-col items-center gap-2 w-full rounded-[8px] px-3 py-2 ${
-          className || ""
-        }`}
-      >
-        <Autosuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          getSuggestionValue={(suggestion: any) => suggestion.name}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
-          onSuggestionSelected={(_, { suggestion }) =>
-            handleSelectOption(suggestion)
-          }
-        />
-      </div>
-      {selectedOptions.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-2">
-          {selectedOptions.map((option) => (
-            <div
-              key={option.value}
-              className="flex items-center bg-[#EFEFEF] text-primary text-sm rounded-[8px] px-2 py-[3.5px] gap-[4px]"
-            >
-              {option.label}
-              <img
-                src={Ic_close_black}
-                alt="close"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemoveOption(option);
-                }}
-                className="cursor-pointer w-[20px] h-[20px]"
-              />
+      <div className="relative">
+        <div
+          className={`flex items-center gap-2 w-full rounded-[8px] px-3 py-2 overflow-x-auto overFlowXScroll ${
+            className || ""
+          }`}
+          ref={scrollRef}
+        >
+          {selectedOptions.length > 0 && (
+            <div className="flex items-center gap-2">
+              {selectedOptions.map((option) => (
+                <div
+                  key={option.value}
+                  className="flex items-center bg-[#EFEFEF] text-primary text-sm rounded-[8px] px-2 py-[3.5px] gap-[4px] whitespace-nowrap w-max"
+                >
+                  {option.label}
+                  <img
+                    src={Ic_close_black}
+                    alt="close"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveOption(option);
+                    }}
+                    className="cursor-pointer w-[20px] h-[20px]"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+          <Autosuggest
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            getSuggestionValue={(suggestion: any) => suggestion.name}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+            onSuggestionSelected={(_, { suggestion }) =>
+              handleSelectOption(suggestion)
+            }
+          />
         </div>
-      )}
+      </div>
     </>
   );
 };

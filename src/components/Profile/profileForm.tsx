@@ -22,6 +22,7 @@ import { PHOTO_URL } from "@/config/constant";
 import { useDispatch, useSelector } from "react-redux";
 import AutocompleteSearchInput from "../ui/inputSearch";
 import {
+  useCreateDesignationMutation,
   useGetDesignationQuery,
   useUpdateProfileApiMutation,
 } from "@/store/slice/apiSlice/profileApi";
@@ -100,7 +101,8 @@ const ProfileForm: React.FC = () => {
     value: "",
   };
 
-  const { data } = useGetDesignationQuery(params);
+  const [createDesignation] = useCreateDesignationMutation();
+  const { data, refetch } = useGetDesignationQuery(params);
   const company = (data as any)?.data || [];
   const designationName =
     company && company.length > 0
@@ -125,11 +127,10 @@ const ProfileForm: React.FC = () => {
     ];
 
     fieldsToSet.forEach(({ key, value }) => {
-      if (value) {
+      if (typeof value === "string" && value.trim() !== "") {
         form.setValue(key as any, value);
       }
     });
-
     form.trigger();
   }, [userDetails]);
 
@@ -140,9 +141,6 @@ const ProfileForm: React.FC = () => {
       data.website = `https://${data.website}`;
     }
 
-    const designationValue = company.find((a: any) => {
-      return a.name === data.designation;
-    })?.id;
     const formData = new FormData();
     if (data.email) {
       formData.append("email", data.email);
@@ -157,7 +155,27 @@ const ProfileForm: React.FC = () => {
       formData.append("description", data.description);
     }
     if (data.designation) {
-      formData.append("designation", designationValue);
+      const designationValue = company.find((a: any) => {
+        return a.name === data.designation;
+      });
+      if (designationValue && designationValue?.id) {
+        formData.append("designation", designationValue?.id);
+      } else {
+        const fieldStudyData = {
+          name: data.designation,
+        };
+        try {
+          const response: any = await createDesignation({
+            data: fieldStudyData,
+          });
+          if (response.data.status === 200) {
+            refetch();
+            formData.append("designation", response?.data?.data.id ?? "");
+          }
+        } catch (error: any) {
+          console.error("Validation error:", error);
+        }
+      }
     }
     if (data.name) {
       formData.append("name", data.name);

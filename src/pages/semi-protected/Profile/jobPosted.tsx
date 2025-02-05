@@ -12,7 +12,7 @@ import Ic_option from "@/assets/images/Ic_option.svg";
 import Ic_person from "@/assets/images/Ic_person.svg";
 import { Pagination } from "@/components/common/pagination";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import JobTagsDisplay from "@/components/jobsTagDisplay";
 import ButtonUx from "@/components/common/button";
 import { useForm } from "react-hook-form";
@@ -319,6 +319,12 @@ const JobPosted: React.FC = () => {
               value={searchJob || ""}
             />
             <Search className="absolute left-0 top-[2px] lg:top-[3px] m-2.5 h-4 w-4 text-muted-foreground" />
+            {searchJob && (
+              <X
+                className="absolute right-0 top-[2px] lg:top-[3px] m-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+                onClick={() => setSearchJob("")}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -344,7 +350,7 @@ const JobPosted: React.FC = () => {
                     )}
                     <div className="flex flex-col gap-2">
                       <h4 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
-                        <span className="w-auto max-w-[98px] sm:w-auto truncate">
+                        <span className="w-auto max-w-[98px] sm:w-full sm:max-w-full truncate">
                           {job?.job_title}
                         </span>
                         <span

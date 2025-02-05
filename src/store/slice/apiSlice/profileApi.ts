@@ -76,6 +76,13 @@ const profileApi = mainApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    createDesignation: builder.mutation<any, { data: any }>({
+      query: ({ data }) => ({
+        url: `designation/create`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -91,4 +98,5 @@ export const {
   useListOfJobSeekerQuery,
   useGetSkillsQuery,
   useVerifyMobileMutation,
+  useCreateDesignationMutation,
 } = profileApi;

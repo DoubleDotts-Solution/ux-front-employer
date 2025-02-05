@@ -341,7 +341,7 @@ export const Navbar: React.FC = () => {
                 <div className="border-l border-gray5 h-[18px] w-1"></div>
                 <a
                   href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}
-                  className="text-primary text-lg font-medium"
+                  className="text-primary text-lg font-medium hover-underline-animation-navbar hover-underline-animation"
                 >
                   For Job Seekers
                 </a>

@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Ic_close_black from "@/assets/images/Ic_close_black.svg";
 import Ic_down_arrow from "@/assets/images/Ic_down_arrow.svg";
+import Ic_check from "@/assets/images/Ic_check.svg";
 
 interface Option {
   value: string | number;
@@ -71,21 +72,23 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       return foundOption ? foundOption : { value: val, label: val };
     });
 
-    if (
-      selectedOptions?.length !== optionsFromValue?.length ||
-      !optionsFromValue?.every((opt: any) =>
-        selectedOptions?.some((selected) => selected.value === opt.value)
-      )
-    ) {
+    if (optionsFromValue?.length > 0) {
       setSelectedOptions(optionsFromValue);
     }
-  }, [value, options, selectedOptions]);
+  }, [value, options]);
+  const scrollRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (selectedOptions && scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, [selectedOptions]);
 
   return (
     <div className="relative" ref={dropdownRef}>
       <div className="relative">
         <div
-          className={`flex gap-2 justify-between items-center py-2 px-3 focus:border-[2px] focus:border-primary border-2 rounded-[8px] min-h-[40px] lg:min-h-[48px] h-auto ${className} ${
+          className={`flex gap-2 justify-between items-center py-1 px-3 focus:border-[2px] focus:border-primary focus:shadow-shadow1 border-2 rounded-[8px] h-12 ${className} ${
             isOpen &&
             "border-[2px] border-primary bg-lightYellow2 shadow-shadow1"
           } ${
@@ -95,7 +98,33 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           }`}
           onClick={() => !disabled && setIsOpen(!isOpen)}
         >
-          <p className="text-[#767676] text-lg">{placeholder}</p>
+          <p
+            className="text-[#767676] text-lg flex items-center gap-2 whitespace-nowrap overflow-x-auto overFlowXScroll py-1"
+            ref={scrollRef}
+          >
+            {selectedOptions?.length > 0 && (
+              <div className="flex gap-2 items-center">
+                {selectedOptions.map((option) => (
+                  <div
+                    key={option.value}
+                    className="flex items-center bg-lightChiku2 text-gray rounded-[8px] px-2 py-[1px] gap-[4px] whitespace-nowrap w-max"
+                  >
+                    {option.label}
+                    <img
+                      src={Ic_close_black}
+                      alt="close"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveOption(option);
+                      }}
+                      className="cursor-pointer w-[20px] h-[20px]"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+            {placeholder}
+          </p>
           <img
             src={Ic_down_arrow}
             alt="arrow"
@@ -104,43 +133,27 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         </div>
         {isOpen && (
           <div className="absolute z-10 top-[40px] lg:top-[48px] left-0 w-full mt-1 bg-white border rounded-[8px] shadow-lg max-h-60 overflow-auto">
-            {options?.map((option) => (
+            {options.map((option) => (
               <div
                 key={option.value}
-                className={`p-2 cursor-pointer hover:bg-gray-100 ${
-                  selectedOptions?.some((item) => item.value === option.value)
-                    ? "text-gray"
-                    : ""
-                }`}
+                className={`flex items-center justify-between gap-2 p-2 cursor-pointer hover:bg-gray-100 text-black`}
                 onClick={() => handleToggleOption(option)}
               >
                 {option.label}
+                <div className="">
+                  {selectedOptions?.some(
+                    (item) => item.value === option.value
+                  ) ? (
+                    <img src={Ic_check} alt="check" />
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
-      {selectedOptions?.length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center py-2">
-          {selectedOptions?.map((option) => (
-            <div
-              key={option.value}
-              className="flex items-center bg-lightChiku2 text-gray rounded-[8px] px-2 py-[3.5px] gap-[4px]"
-            >
-              {option.label}
-              <img
-                src={Ic_close_black}
-                alt="close"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemoveOption(option);
-                }}
-                className="cursor-pointer w-[20px] h-[20px]"
-              />
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

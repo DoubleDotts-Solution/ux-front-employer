@@ -324,9 +324,9 @@ const LoginForm: React.FC = () => {
                                 }
                               >
                                 {isPasswordVisible ? (
-                                  <Eye className="text-gray w-[18px]" />
-                                ) : (
                                   <EyeOff className="text-gray w-[18px]" />
+                                ) : (
+                                  <Eye className="text-gray w-[18px]" />
                                 )}
                               </button>
                             </div>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetCurrentCompanyQuery } from "@/store/slice/apiSlice/categoryApi";
 import { useGetSkillsQuery } from "@/store/slice/apiSlice/profileApi";
+import { X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import Autosuggest, {
   SuggestionsFetchRequestedParams,
@@ -187,6 +188,12 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
             handleAdd(suggestion.category)
           }
         />
+        {inputValue && (
+          <X
+            className="absolute right-0 m-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+            onClick={() => setInputValue("")}
+          />
+        )}
       </div>
     </div>
   );

@@ -946,11 +946,13 @@ export const PostJobForm: React.FC = () => {
                                   />
                                 </div>
                               </FormControl>
-                              <img
-                                src={Ic_search}
-                                alt="search"
-                                className="absolute top-[13px] left-[8px] lg:left-[12px]"
-                              />
+                              <div className="bg-white absolute top-[2px] left-[2px] h-[52px] w-[40px] rounded-[8px]">
+                                <img
+                                  src={Ic_search}
+                                  alt="search"
+                                  className="top-[14px] left-[8px] lg:left-[12px] relative"
+                                />
+                              </div>
                             </div>
                           </FormControl>
                           <FormMessage />

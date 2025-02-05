@@ -31,6 +31,7 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
   const [inputValue, setInputValue] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const fetchCountries = debounce(async (inputValue: string) => {
     setLoading(true);
@@ -118,6 +119,12 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
       }));
   };
 
+  useEffect(() => {
+    if (selectedOptions && scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, [selectedOptions]);
+
   const onSuggestionsFetchRequested = ({
     value,
   }: SuggestionsFetchRequestedParams) => {
@@ -164,49 +171,52 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
   // }, [selectedOptions, onChange]);
 
   return (
-    <div
-      className={`flex flex-wrap gap-2 min-h-10 lg:min-h-12 max-h-auto w-full rounded-[8px] relative px-3 py-2 ${
-        className || ""
-      }`}
-      onClick={() => inputRef.current?.focus()}
-    >
-      {selectedOptions.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-2">
-          {selectedOptions.map((option) => (
-            <div
-              key={option.value}
-              className="flex items-center bg-[#EFEFEF] text-primary text-sm rounded-[8px] px-2 py-[3.5px] gap-[4px]"
-            >
-              {option.label}
-              <img
-                src={Ic_close_black}
-                alt="close"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemoveOption(option);
-                }}
-                className="cursor-pointer w-[20px] h-[20px]"
-              />
-            </div>
-          ))}
-        </div>
-      )}
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={onSuggestionsClearRequested}
-        getSuggestionValue={(suggestion: any) => suggestion.name}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-        onSuggestionSelected={(_, { suggestion }) =>
-          handleSelectOption(suggestion)
-        }
-      />
-      {loading && (
-        <div className="absolute top-2 right-2 h-10 w-10 flex items-center justify-center">
-          <div className="loader w-8 h-8 border-[4px] rounded-full border-gray5 border-t-[#2D2D2D]"></div>
-        </div>
-      )}
+    <div className="relative">
+      <div
+        className={`flex items-center gap-2 min-h-10 lg:min-h-12 max-h-auto w-full rounded-[8px] overflow-x-auto overFlowXScroll px-3 py-2 ${
+          className || ""
+        }`}
+        onClick={() => inputRef.current?.focus()}
+        ref={scrollRef}
+      >
+        {selectedOptions.length > 0 && (
+          <div className="items-center flex gap-2">
+            {selectedOptions.map((option) => (
+              <div
+                key={option.value}
+                className="flex items-center bg-[#EFEFEF] text-primary text-sm rounded-[8px] px-2 py-[3.5px] gap-[4px] whitespace-nowrap w-max"
+              >
+                {option.label}
+                <img
+                  src={Ic_close_black}
+                  alt="close"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveOption(option);
+                  }}
+                  className="cursor-pointer w-[20px] h-[20px]"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={onSuggestionsClearRequested}
+          getSuggestionValue={(suggestion: any) => suggestion.name}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+          onSuggestionSelected={(_, { suggestion }) =>
+            handleSelectOption(suggestion)
+          }
+        />
+        {loading && (
+          <div className="absolute top-2 right-2 h-10 w-10 flex items-center justify-center">
+            <div className="loader w-8 h-8 border-[4px] rounded-full border-gray5 border-t-[#2D2D2D]"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
