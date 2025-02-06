@@ -354,7 +354,7 @@ const JobPosted: React.FC = () => {
                           {job?.job_title}
                         </span>
                         <span
-                          className={`font-normal text-sm md:text-base desktop:text-lg border border-primary rounded-lg px-2 md:px-4 py-0.5`}
+                          className={`font-normal text-sm whitespace-nowrap md:text-base desktop:text-lg border border-primary rounded-lg px-2 md:px-4 py-0.5`}
                           style={{
                             background: getJobStatus(
                               job.job_status ||
