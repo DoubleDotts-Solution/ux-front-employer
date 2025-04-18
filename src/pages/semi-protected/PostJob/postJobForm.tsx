@@ -183,7 +183,7 @@ export const PostJobForm: React.FC = () => {
         !z
           .string()
           .regex(
-            /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/,
+            /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/,
             { message: "Please enter a valid URL." }
           )
           .safeParse(data.apply_text).success

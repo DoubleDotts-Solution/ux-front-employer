@@ -49,6 +49,17 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
         );
 
         setCountries(countriesWithStates);
+        const suggestionsList = countriesWithStates
+          .filter((location: any) =>
+            `${location.city}, ${location.states}`
+              .toLowerCase()
+              .includes(inputValue.toLowerCase())
+          )
+          .map((location: any) => ({
+            name: `${location.city}, ${location.states}`,
+          }));
+
+        setSuggestions(suggestionsList);
       } else {
         setCountries([]);
       }

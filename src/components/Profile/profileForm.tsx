@@ -41,7 +41,7 @@ const formSchema = z.object({
     .string()
     .min(1, { message: "Profile Link is required." })
     .regex(
-      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/,
+      /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/,
       { message: "Please enter a valid URL." }
     ),
   logo: z.union([

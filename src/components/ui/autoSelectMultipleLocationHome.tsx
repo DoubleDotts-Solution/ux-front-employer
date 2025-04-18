@@ -110,6 +110,17 @@ const AutocompleteInputMultipleLocationHome: React.FC<
       });
 
       setCountries(countriesWithStates);
+      const suggestionsList = countriesWithStates
+        .filter((location: any) =>
+          `${location.city}, ${location.states}`
+            .toLowerCase()
+            .includes(inputValue.toLowerCase())
+        )
+        .map((location: any) => ({
+          name: `${location.city}, ${location.states}`,
+        }));
+
+      setSuggestions(suggestionsList);
     } catch (err: any) {
       console.log(err);
     }
