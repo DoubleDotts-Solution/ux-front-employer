@@ -31,7 +31,7 @@ const Footer = () => {
               tech industries, helping professionals thrive in their careers.
             </p>
           </div>
-          <a href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}>
+          <a href={`${VITE_PUBLIC_JOB_SEEKER_URL}`} target="__blank">
             <ButtonUx
               label="For Job Seekers"
               buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px]"
