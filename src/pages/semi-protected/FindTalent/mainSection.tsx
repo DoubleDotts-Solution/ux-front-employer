@@ -30,13 +30,10 @@ import AutocompleteInputMultipleLocationHome from "@/components/ui/autoSelectMul
 
 const ExperienceArray = [
   { name: "Fresher (Less then 1 Year)" },
-  { name: "1 year" },
-  { name: "2 years" },
-  { name: "3 years" },
-  { name: "4 years" },
-  { name: "5 years" },
-  { name: "6 years" },
-  { name: "7 years" },
+  { name: "1 - 3 year" },
+  { name: "3 - 5 years" },
+  { name: "5 - 7 years" },
+  { name: "7 year +" },
 ];
 const WorkPlaceTypeArray = [
   { name: "On Site", id: "on-site" },
@@ -182,16 +179,38 @@ const MainSection: React.FC = () => {
       .map((item) => item.replace(/_/g, " "))
       .join(",");
   };
+  // const formatString = (value: string | null): string => {
+  //   if (!value) return "";
+  //   return value
+  //     .split("-")
+  //     .map((word) => {
+  //       if (!isNaN(Number(word))) {
+  //         return word;
+  //       }
+  //       return word.charAt(0).toUpperCase() + word.slice(1);
+  //     })
+  //     .join(" ");
+  // };
   const formatString = (value: string | null): string => {
     if (!value) return "";
-    return value
-      .split("-")
-      .map((word) => {
-        if (!isNaN(Number(word))) {
-          return word;
+
+    let hyphenCount = 0;
+    const result = value
+      .split("")
+      .map((char) => {
+        if (char === "-") {
+          hyphenCount++;
+          return hyphenCount === 2 ? "-" : " ";
         }
-        return word.charAt(0).toUpperCase() + word.slice(1);
+        return char;
       })
+      .join("");
+
+    return result
+      .split(" ")
+      .map((word) =>
+        !isNaN(Number(word)) ? word : word.charAt(0) + word.slice(1)
+      )
       .join(" ");
   };
 

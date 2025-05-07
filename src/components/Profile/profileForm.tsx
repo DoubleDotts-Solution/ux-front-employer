@@ -13,7 +13,7 @@ import {
 import { Input } from "../ui/input";
 import Ic_trash from "@/assets/images/Ic_trash.svg";
 import ButtonUx from "../common/button";
-import AutocompleteInput from "../ui/inputLocation";
+// import AutocompleteInput from "../ui/inputLocation";
 import Ic_search from "@/assets/images/Ic_search.svg";
 import Ic_check_circle from "@/assets/images/Ic_check_circle.svg";
 import { TextArea } from "../ui/textarea";
@@ -32,6 +32,7 @@ import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { phoneNumberValidations } from "@/config/phoneValidation";
+import MultiSelectAutoSuggestions from "../ui/multiSelectAutoSuggest";
 
 const formSchema = z.object({
   company_name: z.string().min(2, {
@@ -54,8 +55,11 @@ const formSchema = z.object({
       .optional(),
     z.string().optional(),
   ]),
-  country: z.string().min(1, {
-    message: "Location must be specified.",
+  // country: z.string().min(1, {
+  //   message: "Location must be specified.",
+  // }),
+  country: z.array(z.string()).nonempty({
+    message: "At least one location must be selected.",
   }),
   description: z.string().max(200, {
     message: "About Company must be at least 200 characters.",
@@ -117,7 +121,7 @@ const ProfileForm: React.FC = () => {
     const fieldsToSet = [
       { key: "company_name", value: userDetails.company_name },
       { key: "website", value: userDetails.website },
-      { key: "country", value: userDetails.country },
+      // { key: "country", value: userDetails.country },
       { key: "description", value: userDetails.description },
       { key: "logo", value: userDetails.logo },
       { key: "designation", value: userDetails.designation?.name },
@@ -125,6 +129,16 @@ const ProfileForm: React.FC = () => {
       { key: "name", value: userDetails.name },
       { key: "email", value: userDetails.email },
     ];
+
+    if (userDetails?.country) {
+      const str = userDetails?.country;
+      const locations = str
+        .split("', '")
+        .map((item: any) => item.replace(/'/g, ""));
+      if (locations.length > 0 && !form.getValues("country")) {
+        form.setValue("country", locations);
+      }
+    }
 
     fieldsToSet.forEach(({ key, value }) => {
       if (typeof value === "string" && value.trim() !== "") {
@@ -149,7 +163,10 @@ const ProfileForm: React.FC = () => {
       formData.append("company_name", data.company_name);
     }
     if (data.country) {
-      formData.append("country", data.country);
+      formData.append(
+        "country",
+        data.country.map((location) => `'${location}'`).join(", ")
+      );
     }
     if (data.description) {
       formData.append("description", data.description);
@@ -241,7 +258,16 @@ const ProfileForm: React.FC = () => {
 
     form.handleSubmit(onFormSubmit)();
   };
+  const handleLocationMenuChange = (selectedOptions: any = []) => {
+    const locationMenu: any = Array.isArray(selectedOptions)
+      ? selectedOptions.map((option) => option.value)
+      : selectedOptions;
 
+    if (locationMenu.length > 0) {
+      form.setValue("country", locationMenu);
+      form.clearErrors("country");
+    }
+  };
   return (
     <div className="lg:shadow-shadow2 rounded-[8px] relative">
       <Form {...form}>
@@ -380,7 +406,7 @@ const ProfileForm: React.FC = () => {
                         </p>
                         <FormControl>
                           <div className="relative">
-                            <AutocompleteInput
+                            {/* <AutocompleteInput
                               value={field.value || ""}
                               onChange={(newValue) => field.onChange(newValue)}
                               placeholder="Choose Location"
@@ -389,6 +415,16 @@ const ProfileForm: React.FC = () => {
                                   ? "border-red"
                                   : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                               } text-base text-primary border-2 rounded-[8px]`}
+                            /> */}
+                            <MultiSelectAutoSuggestions
+                              onChange={handleLocationMenuChange}
+                              placeholder="Enter Location"
+                              className={`bg-white ${
+                                fieldState.error
+                                  ? "border-red"
+                                  : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
+                              } text-base text-primary border-2 rounded-[8px]`}
+                              value={field.value}
                             />
                           </div>
                         </FormControl>

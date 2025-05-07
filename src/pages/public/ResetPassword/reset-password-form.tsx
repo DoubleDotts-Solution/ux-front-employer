@@ -16,7 +16,7 @@ import ButtonUx from "@/components/common/button";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
 import { toast } from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ApiUtils from "@/api/ApiUtils";
 
 const formSchema = z
@@ -48,6 +48,7 @@ const ResetPasswordForm: React.FC = () => {
   const [successfullyRegister, setSuccessfullyRegister] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const query = new URLSearchParams(location.search);
 
   useEffect(() => {
@@ -260,14 +261,18 @@ const ResetPasswordForm: React.FC = () => {
               <br /> Successfully Rest
             </h4>
             <div className="flex items-center gap-5 relative">
-              <ButtonUx
-                label="Cancel"
-                buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
-              />
-              <ButtonUx
-                label="Continue"
-                buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
-              />
+              <div onClick={() => setSuccessfullyRegister(false)}>
+                <ButtonUx
+                  label="Cancel"
+                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                />
+              </div>
+              <div onClick={() => navigate("/login")}>
+                <ButtonUx
+                  label="Continue"
+                  buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
+                />
+              </div>
             </div>
           </div>
         </Modal>

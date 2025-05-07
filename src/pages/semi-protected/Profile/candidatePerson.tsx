@@ -199,7 +199,7 @@ const CandidatePerson: React.FC = () => {
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
           <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
-            Skills
+            Tags
           </h4>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">

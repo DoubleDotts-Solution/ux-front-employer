@@ -82,9 +82,15 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      const isInSelectDropdown = (target as HTMLElement)?.closest(
+        "[data-radix-popper-content-wrapper]"
+      );
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        !isInSelectDropdown
       ) {
         setIsDropdownOpen(false);
         setSearchDivOpen(false);
@@ -116,6 +122,8 @@ export const Navbar: React.FC = () => {
   };
   const logout = () => {
     localStorage.removeItem("employer_email");
+    localStorage.removeItem("userDetails_employer");
+
     dispatch(clearCredentials());
     onLogout();
     toast.success("Logged out successfully", { position: "top-right" });
@@ -209,7 +217,7 @@ export const Navbar: React.FC = () => {
                 >
                   <img src={Ic_search} alt="search" />{" "}
                   <span className="text-gray text-sm">
-                    Search for Skills, Companies
+                    Search for Tags, Companies
                   </span>
                 </div>
               )}

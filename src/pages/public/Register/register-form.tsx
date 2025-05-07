@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,7 +22,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import Img_subscribe_success from "@/assets/images/Img_subscribe_success.png";
 import Modal from "@/components/common/modal";
 import ApiUtils from "@/api/ApiUtils";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserDetails } from "@/store/slice/user.slice";
 import { toast } from "react-hot-toast";
 import { GOOGLE_CLIENT_ID } from "@/config/constant";
@@ -87,31 +87,6 @@ const RegisterForm: React.FC = () => {
   const [verifyMailBox, setVerifyMailBox] = useState(false);
   const [successfullyRegister, setSuccessfullyRegister] = useState(false);
   const dispatch = useDispatch();
-
-  const userDetails = useSelector((state: any) => state.user)?.userDetails;
-
-  useEffect(() => {
-    if (userDetails) {
-      form.setValue("email", userDetails?.email);
-      form.setValue("mobile_no", userDetails?.mobile_no);
-      form.setValue("website", userDetails?.website);
-      form.setValue("name", userDetails?.name);
-      form.setValue("company_name", userDetails?.company_name);
-    }
-  }, [form, userDetails]);
-
-  useEffect(() => {
-    if (
-      form.getValues("email") &&
-      form.getValues("mobile_no") &&
-      form.getValues("website") &&
-      form.getValues("name") &&
-      form.getValues("company_name") &&
-      userDetails
-    ) {
-      setVerifyMailBox(true);
-    }
-  }, [form, userDetails]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // setSuccessfullyRegister(true);
@@ -225,6 +200,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="text"
+                            autocomplete="off"
                           />
                         </div>
                       </FormControl>
@@ -258,6 +234,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="email"
+                            autocomplete="off"
                           />
                         </div>
                       </FormControl>
@@ -304,6 +281,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="text"
+                            autocomplete="off"
                           />
                         </div>
                       </FormControl>
@@ -337,6 +315,7 @@ const RegisterForm: React.FC = () => {
                                               : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                             type="text"
+                            autocomplete="off"
                           />
                         </div>
                       </FormControl>
@@ -412,6 +391,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                               type={isPasswordVisible ? "text" : "password"}
+                              autocomplete="off"
                             />
                             <button
                               type="button"

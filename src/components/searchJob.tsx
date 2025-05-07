@@ -26,13 +26,10 @@ import AutocompleteInputMultipleLocationHome from "./ui/autoSelectMultipleLocati
 
 const experienceArray = [
   { name: "Fresher (Less then 1 Year)" },
-  { name: "1 year" },
-  { name: "2 years" },
-  { name: "3 years" },
-  { name: "4 years" },
-  { name: "5 years" },
-  { name: "6 years" },
-  { name: "7 years" },
+  { name: "1 - 3 year" },
+  { name: "3 - 5 years" },
+  { name: "5 - 7 years" },
+  { name: "7 year +" },
 ];
 
 const formSchema = z.object({
@@ -148,7 +145,7 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
                             setSelectedItems(newItems);
                             field.onChange(newItems);
                           }}
-                          placeholder="Search for Skills, Companies"
+                          placeholder="Search for Tags, Companies"
                           className="h-12"
                         />
                       </FormControl>

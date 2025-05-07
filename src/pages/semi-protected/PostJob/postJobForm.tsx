@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Ic_search from "@/assets/images/Ic_search.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,13 +58,10 @@ import MultiSelectAutoSuggestionsSkills from "@/components/ui/multiSelectAutoSug
 
 const ExperienceArray = [
   { name: "Fresher (Less then 1 Year)" },
-  { name: "1 year" },
-  { name: "2 years" },
-  { name: "3 years" },
-  { name: "4 years" },
-  { name: "5 years" },
-  { name: "6 years" },
-  { name: "7 years" },
+  { name: "1 - 3 year" },
+  { name: "3 - 5 years" },
+  { name: "5 - 7 years" },
+  { name: "7 year +" },
 ];
 interface Option {
   value: string;
@@ -131,96 +129,108 @@ export const PostJobForm: React.FC = () => {
   const skillsName = (skills as any)?.data || [];
   const options: Option2[] = mapDataToOptions(skillsName);
 
-  const formSchema = z
-    .object({
-      job_title: z.string().min(2, {
-        message: "Job Title must be at least 2 characters.",
-      }),
-      category: z.number().min(1, {
-        message: "Category must be specified.",
-      }),
-      job_type: z.number().min(1, {
-        message: "Job type must be specified.",
-      }),
-      job_experience: z.string().min(2, {
-        message: "Job Experience must be at least 2 characters.",
-      }),
-      location: z.array(z.string()).nonempty({
-        message: "At least one location must be selected.",
-      }),
-      work_place_type: z.string().min(1, {
-        message: "Please select a workplace type.",
-      }),
-      description: z
-        .string()
-        .min(10, "Job description must be at least 10 characters.")
-        .nonempty("Description is required."),
-      skills: z.array(z.number()).nonempty({
-        message: "At least one skill must be selected.",
-      }),
-      minimum_pay: z.number().min(0, {
-        message: "Minimum pay must be at least 0",
-      }),
-      maximum_pay: z.number().min(0, {
-        message: "Maximum pay must be at least 0",
-      }),
-      currency: z.number().min(1, { message: "Currency must be specified." }),
-      pay_type: z.number().min(1, {
-        message: "Pay Type must be specified.",
-      }),
-      apply_by: z.number().min(1, {
-        message: "Apply by must be specified.",
-      }),
-      apply_text: z.string().min(1, { message: "Apply text is required." }),
-    })
-    .superRefine((data, ctx: any) => {
-      const selectedApplyByName = ApplyByName.find(
-        (job: any) => job.id === data.apply_by
-      )?.name;
+  const getFormSchema = (ApplyByName: any) =>
+    z
+      .object({
+        job_title: z.string().min(2, {
+          message: "Job Title must be at least 2 characters.",
+        }),
+        category: z.number().min(1, {
+          message: "Category must be specified.",
+        }),
+        job_type: z.number().min(1, {
+          message: "Job type must be specified.",
+        }),
+        job_experience: z.string().min(2, {
+          message: "Job Experience must be at least 2 characters.",
+        }),
+        location: z.array(z.string()).nonempty({
+          message: "At least one location must be selected.",
+        }),
+        work_place_type: z.string().min(1, {
+          message: "Please select a workplace type.",
+        }),
+        description: z.string().min(10, {
+          message: "Job description must be at least 10 characters.",
+        }),
+        skills: z.array(z.number()).nonempty({
+          message: "At least one skill must be selected.",
+        }),
+        minimum_pay: z.number().min(0, {
+          message: "Minimum pay must be at least 0",
+        }),
+        maximum_pay: z.number().min(0, {
+          message: "Maximum pay must be at least 0",
+        }),
+        currency: z.number().min(1, {
+          message: "Currency must be specified.",
+        }),
+        pay_type: z.number().min(1, {
+          message: "Pay Type must be specified.",
+        }),
+        apply_by: z.number().min(1, {
+          message: "Apply by must be specified.",
+        }),
+        apply_text: z.string().optional(),
+      })
+      .superRefine((data, ctx: any) => {
+        const isEmpty = !data.apply_text || data.apply_text.trim().length === 0;
 
-      if (
-        selectedApplyByName === "Link" &&
-        !z
-          .string()
-          .regex(
-            /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/,
-            { message: "Please enter a valid URL." }
-          )
-          .safeParse(data.apply_text).success
-      ) {
-        ctx.addIssue({
-          path: ["apply_text"],
-          message: "Please provide a valid URL.",
-        });
-      }
+        const selectedApplyByName = ApplyByName.find(
+          (job: any) => job.id === data.apply_by
+        )?.name;
 
-      if (
-        selectedApplyByName === "Email ID" &&
-        !z.string().email().safeParse(data.apply_text).success
-      ) {
-        ctx.addIssue({
-          path: ["apply_text"],
-          message: "Please provide a valid email.",
-        });
-      }
+        if (
+          (selectedApplyByName === "Link" ||
+            selectedApplyByName === "Email ID") &&
+          isEmpty
+        ) {
+          ctx.addIssue({
+            path: ["apply_text"],
+            message: "Apply text is required.",
+          });
+        }
 
-      if (
-        selectedApplyByName === "Directly Submitting Resume" &&
-        !z.string().min(2).safeParse(data.apply_text).success
-      ) {
-        ctx.addIssue({
-          path: ["apply_text"],
-          message: "Please provide some instructions.",
-        });
-      }
+        if (
+          selectedApplyByName === "Link" &&
+          !z.string().url().safeParse(data.apply_text).success
+        ) {
+          ctx.addIssue({
+            path: ["apply_text"],
+            message: "Please provide a valid URL.",
+          });
+        }
 
-      if (data.minimum_pay > data.maximum_pay) {
-        ctx.addIssue({
-          path: ["minimum_pay"],
-          message: "Minimum pay must not be greater than maximum pay.",
-        });
-      }
-    });
+        if (
+          selectedApplyByName === "Email ID" &&
+          !z.string().email().safeParse(data.apply_text).success
+        ) {
+          ctx.addIssue({
+            path: ["apply_text"],
+            message: "Please provide a valid email.",
+          });
+        }
+
+        if (
+          selectedApplyByName === "Directly Submitting Resume" &&
+          data.apply_text &&
+          data.apply_text.trim().length > 0 &&
+          !z.string().min(2).safeParse(data.apply_text).success
+        ) {
+          ctx.addIssue({
+            path: ["apply_text"],
+            message: "Please provide some instructions.",
+          });
+        }
+
+        if (data.minimum_pay > data.maximum_pay) {
+          ctx.addIssue({
+            path: ["minimum_pay"],
+            message: "Minimum pay must not be greater than maximum pay.",
+          });
+        }
+      });
+  const formSchema = useMemo(() => getFormSchema(ApplyByName), [ApplyByName]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -283,7 +293,13 @@ export const PostJobForm: React.FC = () => {
         if (!form.getValues("maximum_pay")) {
           form.setValue("maximum_pay", Number(data?.maximum_pay));
         }
-        if (!form.getValues("apply_text")) {
+        const selectedApplyByName = ApplyByName.find(
+          (job: any) => job.id === data?.apply_by
+        )?.name;
+        if (
+          !form.getValues("apply_text") &&
+          selectedApplyByName !== "Directly Submitting Resume"
+        ) {
           form.setValue("apply_text", data?.apply_text);
         }
 
@@ -323,8 +339,15 @@ export const PostJobForm: React.FC = () => {
   const [updateJob] = useUpdateJobApiMutation();
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const selectedApplyByName = ApplyByName.find(
+      (job: any) => job.id === data.apply_by
+    )?.name;
     const formValue: any = {
       employer: userDetails?.id,
+      apply_text:
+        selectedApplyByName === "Directly Submitting Resume"
+          ? ""
+          : data?.apply_text,
     };
 
     Object.entries(data).forEach(([key, value]) => {
@@ -502,6 +525,7 @@ export const PostJobForm: React.FC = () => {
       }, 300);
       body?.classList.remove("overflow-hidden");
       body?.classList.remove("h-screen");
+      // form.reset();
     } else {
       setIsSuccess(true);
       body?.classList.add("overflow-hidden");
@@ -584,6 +608,7 @@ export const PostJobForm: React.FC = () => {
                                       : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } `}
                                 value={field.value}
+                                autocomplete="off"
                               />
                             </div>
                           </FormControl>
@@ -925,7 +950,7 @@ export const PostJobForm: React.FC = () => {
                               fieldState.error ? "text-red" : "text-primary"
                             } mb-[6px] lg:mb-2 text-sm lg:text-base`}
                           >
-                            Skills(Max 10)
+                            Tags(Max 10)
                           </p>
                           <FormControl>
                             <div className="relative">
@@ -1233,6 +1258,7 @@ export const PostJobForm: React.FC = () => {
                                   (job: any) => job.id === value
                                 )?.name;
                                 setSelectedApplyBy(selectedApplyByName);
+                                form.setValue("apply_text", "");
                               }}
                               value={String(field.value)}
                             >
@@ -1304,6 +1330,7 @@ export const PostJobForm: React.FC = () => {
                                       : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   }`}
                                   type="text"
+                                  autocomplete="off"
                                 />
                               </div>
                             </FormControl>
@@ -1343,6 +1370,7 @@ export const PostJobForm: React.FC = () => {
                                       : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   }`}
                                   type="email"
+                                  autocomplete="off"
                                 />
                               </div>
                             </FormControl>
@@ -1427,10 +1455,6 @@ export const PostJobForm: React.FC = () => {
                 />
               </div>
               <div className="flex items-center gap-3 md:gap-5">
-                <ButtonUx
-                  label="Import from URL"
-                  buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 desktop:px-8 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
-                />
                 <ButtonUx
                   label="Post a Job"
                   buttonClassName={`text-lg px-6 desktop:px-8 py-2 h-12 font-semibold border-2 rounded-[8px] w-max ${
@@ -1596,7 +1620,7 @@ export const PostJobForm: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3 mb-4 md:mb-6">
                   <span className="text-primary text-sm lg:text-base">
-                    Skills:
+                    Tags:
                   </span>
                   <JobTagsDisplay tags={SkillArrayForTag} />
                 </div>

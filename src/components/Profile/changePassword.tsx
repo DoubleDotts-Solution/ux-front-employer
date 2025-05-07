@@ -76,8 +76,10 @@ const ChangePassword: React.FC = () => {
         toast.success("Submit successfully", { position: "top-right" });
         // form.reset();
 
-        sessionStorage.removeItem("__ux_jobs_access_token__");
-        localStorage.removeItem("__ux_jobs_refresh_token__");
+        localStorage.removeItem("employer_email");
+        localStorage.removeItem("userDetails_employer");
+        sessionStorage.removeItem("__ux_employer_access_");
+        localStorage.removeItem("__ux_employer_refresh_");
         localStorage.removeItem("role");
 
         dispatch(clearCredentials());

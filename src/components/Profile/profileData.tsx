@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ButtonUx from "@/components/common/button";
 import Ic_edit from "@/assets/images/Ic_edit.svg";
@@ -8,11 +8,33 @@ import Ic_profile_call from "@/assets/images/Ic_profile_call.svg";
 import Ic_profile_link from "@/assets/images/Ic_profile_link.svg";
 import Ic_profile_mail from "@/assets/images/Ic_profile_mail.svg";
 import { PHOTO_URL } from "@/config/constant";
+import { convertJobLocation } from "@/lib/utils";
 
 const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
   value,
   userDetails,
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(null);
+
+  const toggleDropdown = (index: any, e: any) => {
+    e.stopPropagation();
+    setIsDropdownOpen((prevIndex) => (prevIndex === index ? null : index));
+  };
+  const popup = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popup.current && !popup.current.contains(event.target as Node)) {
+        setIsDropdownOpen(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <div className="rounded-[12px] p-3 desktop:p-6 bg-lightChiku2 flex flex-col gap-4 md:gap-5">
@@ -102,10 +124,45 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <img src={Ic_profile_location} alt="location" />
-                  <span className="text-sm text-gray">
+                  {/* <span className="text-sm text-gray">
                     {userDetails && userDetails?.country
                       ? userDetails?.country
                       : "-"}
+                  </span> */}
+                  <span className="text-sm text-gray relative">
+                    {convertJobLocation(userDetails?.country)[0]}
+                    &nbsp;
+                    {convertJobLocation(userDetails?.country).slice(1).length >
+                      0 && (
+                      <span
+                        className="text-primary underline font-semibold cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleDropdown(0, e);
+                        }}
+                      >
+                        +
+                        {
+                          convertJobLocation(userDetails?.country).slice(1)
+                            .length
+                        }
+                      </span>
+                    )}
+                    {isDropdownOpen === 0 && (
+                      <div
+                        className="location-dropdown absolute w-[200px]"
+                        style={{ right: "-87px" }}
+                        ref={popup}
+                      >
+                        {convertJobLocation(userDetails?.country)
+                          .slice(1)
+                          .map((location, index) => (
+                            <div key={index} className="dropdown-item">
+                              {location}
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">

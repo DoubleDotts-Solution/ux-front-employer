@@ -6,6 +6,7 @@ import Autosuggest, {
   SuggestionsFetchRequestedParams,
   ChangeEvent,
 } from "react-autosuggest";
+import debounce from "lodash.debounce";
 
 const getSuggestions = (
   value: string,
@@ -98,38 +99,45 @@ const AutocompleteInputMultipleLocationHome: React.FC<
 
   const [countries, setCountries] = useState<any[]>([]);
 
-  const fetchCountries = async (inputValue: string) => {
+  const fetchCountries = debounce(async (inputValue: string) => {
     try {
-      const response: any = await ApiUtils.getLocation(inputValue);
+      if (inputValue.length > 3) {
+        const response: any = await ApiUtils.getLocation(inputValue);
 
-      const countriesWithStates = response?.data?.data?.map((country: any) => {
-        return {
-          city: country.city,
-          states: country.state,
-        };
-      });
+        const countriesWithStates = response?.data?.data?.map(
+          (country: any) => {
+            return {
+              city: country.city,
+              states: country.state,
+            };
+          }
+        );
 
-      setCountries(countriesWithStates);
-      const suggestionsList = countriesWithStates
-        .filter((location: any) =>
-          `${location.city}, ${location.states}`
-            .toLowerCase()
-            .includes(inputValue.toLowerCase())
-        )
-        .map((location: any) => ({
-          name: `${location.city}, ${location.states}`,
-        }));
+        setCountries(countriesWithStates);
+        const suggestionsList = countriesWithStates
+          .filter((location: any) =>
+            `${location.city}, ${location.states}`
+              .toLowerCase()
+              .includes(inputValue.toLowerCase())
+          )
+          .map((location: any) => ({
+            name: `${location.city}, ${location.states}`,
+          }));
 
-      setSuggestions(suggestionsList);
+        setSuggestions(suggestionsList);
+      }
     } catch (err: any) {
       console.log(err);
     }
-  };
+  }, 0);
 
   useEffect(() => {
     if (inputValue) {
       fetchCountries(inputValue);
     }
+    return () => {
+      fetchCountries.cancel();
+    };
   }, [inputValue]);
 
   const categories = [...countries];

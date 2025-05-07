@@ -866,7 +866,7 @@ const JobPosted: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-3 mb-4 md:mb-6">
                     <span className="text-primary text-sm lg:text-base">
-                      Skills:
+                      Tags:
                     </span>
                     <JobTagsDisplay tags={jobPostedData?.skills} />
                   </div>
