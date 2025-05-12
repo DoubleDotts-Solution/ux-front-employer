@@ -35,15 +35,22 @@ const ForgotPasswordForm: React.FC = () => {
         });
         setVerifyMailBox(true);
       } else {
-        toast.error(response.error || "Please Enter Valid Email", {
-          position: "top-right",
-        });
+        toast.error(
+          response.error ||
+            "We couldn't find an account with that email. Please double-check and try again.",
+          {
+            position: "top-right",
+          }
+        );
         console.error("Forgot Password error:", response.error);
       }
     } catch (error: any) {
-      toast.error("Something went wrong!", {
-        position: "top-right",
-      });
+      toast.error(
+        "We couldn't find an account with that email. Please double-check and try again.",
+        {
+          position: "top-right",
+        }
+      );
       console.error("Unexpected error:", error);
     }
   };
@@ -128,8 +135,10 @@ const ForgotPasswordForm: React.FC = () => {
                         Verify your Email ID
                       </h4>
                       <p className="text-gray text-xs lg:text-sm">
-                        We have sent you verification mail. Please verify <br />{" "}
-                        that to continue
+                        Password reset link has been sent to your email.
+                        <br /> Please check your inbox and follow the
+                        instructions
+                        <br /> to reset your password.
                       </p>
                     </div>
                   </div>
