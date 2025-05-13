@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -90,6 +90,12 @@ const RegisterForm: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isGoogleLogin, setIsGoogleLogin] = useState(false);
+
+  useEffect(() => {
+    if (isGoogleLogin) {
+      form.setValue("password", "Abcd@123");
+    }
+  }, [isGoogleLogin]);
 
   const onSubmit = async (data: any) => {
     // setSuccessfullyRegister(true);
