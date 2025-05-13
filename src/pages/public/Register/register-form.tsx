@@ -28,6 +28,7 @@ import { toast } from "react-hot-toast";
 import { GOOGLE_CLIENT_ID } from "@/config/constant";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { phoneNumberValidations } from "@/config/phoneValidation";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -87,19 +88,40 @@ const RegisterForm: React.FC = () => {
   const [verifyMailBox, setVerifyMailBox] = useState(false);
   const [successfullyRegister, setSuccessfullyRegister] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isGoogleLogin, setIsGoogleLogin] = useState(false);
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: any) => {
     // setSuccessfullyRegister(true);
     if (data.website && !/^https?:\/\//i.test(data.website)) {
       data.website = `https://${data.website}`;
     }
 
     try {
-      const response: any = await ApiUtils.authRegister(data);
+      // const response: any = await ApiUtils.authRegister(data);
+      let response: any;
+      if (isGoogleLogin) {
+        delete data.password;
+        response = await ApiUtils.authGoogleRegister(data);
+      } else {
+        response = await ApiUtils.authRegister(data);
+      }
 
       if (response) {
-        const { user } = response.data;
+        const { user, accessToken, refreshToken } = response.data;
+        if (isGoogleLogin) {
+          localStorage.setItem("employer_email", response.data.user.email);
+          toast.success("Google Login successfully", { position: "top-right" });
+          if (accessToken && refreshToken) {
+            sessionStorage.setItem("__ux_employer_access_", accessToken);
+            localStorage.setItem("__ux_employer_refresh_", refreshToken);
+          }
+          const userDetails = await ApiUtils.getSingleUser(user.id);
 
+          dispatch(setUserDetails(userDetails?.data));
+          navigate("/");
+          return;
+        }
         localStorage.setItem("employer_email", response.data.user.email);
         const userDetails = await ApiUtils.getSingleUser(user.id);
 
@@ -132,6 +154,7 @@ const RegisterForm: React.FC = () => {
       if (data?.status === 200 || data?.status === 201) {
         form.setValue("email", data?.data?.user?.email);
         form.setValue("name", data?.data?.user?.fullName);
+        setIsGoogleLogin(true);
       } else {
         toast.error("Something went Wrong!", {
           position: "top-right",
@@ -357,66 +380,68 @@ const RegisterForm: React.FC = () => {
                   )}
                 />
               </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field, fieldState }) => {
-                    const [isPasswordVisible, setIsPasswordVisible] =
-                      // eslint-disable-next-line react-hooks/rules-of-hooks
-                      useState(false);
+              {!isGoogleLogin && (
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field, fieldState }) => {
+                      const [isPasswordVisible, setIsPasswordVisible] =
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
+                        useState(false);
 
-                    const togglePasswordVisibility = () => {
-                      setIsPasswordVisible((prev) => !prev);
-                    };
+                      const togglePasswordVisibility = () => {
+                        setIsPasswordVisible((prev) => !prev);
+                      };
 
-                    return (
-                      <FormItem>
-                        <p
-                          className={`mb-[6px] lg:mb-2 text-sm lg:text-base ${
-                            fieldState?.error ? "text-red" : "text-primary"
-                          }`}
-                        >
-                          Password (Min 8 Characters)
-                        </p>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              placeholder="Enter the password"
-                              {...field}
-                              className={`bg-white
+                      return (
+                        <FormItem>
+                          <p
+                            className={`mb-[6px] lg:mb-2 text-sm lg:text-base ${
+                              fieldState?.error ? "text-red" : "text-primary"
+                            }`}
+                          >
+                            Password (Min 8 Characters)
+                          </p>
+                          <FormControl>
+                            <div className="relative">
+                              <Input
+                                placeholder="Enter the password"
+                                {...field}
+                                className={`bg-white
                                       ${
                                         fieldState?.error
                                           ? "border-red"
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
-                              type={isPasswordVisible ? "text" : "password"}
-                              autocomplete="off"
-                            />
-                            <button
-                              type="button"
-                              onClick={togglePasswordVisibility}
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                              aria-label={
-                                isPasswordVisible
-                                  ? "Hide password"
-                                  : "Show password"
-                              }
-                            >
-                              {isPasswordVisible ? (
-                                <EyeOff className="text-gray w-[18px]" />
-                              ) : (
-                                <Eye className="text-gray w-[18px]" />
-                              )}
-                            </button>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                />
-              </div>
+                                type={isPasswordVisible ? "text" : "password"}
+                                autocomplete="off"
+                              />
+                              <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                                aria-label={
+                                  isPasswordVisible
+                                    ? "Hide password"
+                                    : "Show password"
+                                }
+                              >
+                                {isPasswordVisible ? (
+                                  <EyeOff className="text-gray w-[18px]" />
+                                ) : (
+                                  <Eye className="text-gray w-[18px]" />
+                                )}
+                              </button>
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+              )}
               <div className="col-span-2 text-primary text-sm">
                 By registering, you agree to our{" "}
                 <a

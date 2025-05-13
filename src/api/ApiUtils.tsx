@@ -153,6 +153,17 @@ const ApiUtils = {
       throw error.response;
     }
   },
+  authGoogleRegister: async function (data: any) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}employer/google/register`,
+        data
+      );
+      return response;
+    } catch (error: any) {
+      throw error.response;
+    }
+  },
 };
 
 export default ApiUtils;
