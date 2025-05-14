@@ -108,6 +108,9 @@ const RegisterForm: React.FC = () => {
       let response: any;
       if (isGoogleLogin) {
         delete data.password;
+        delete data.country;
+        delete data.logo;
+        delete data.description;
         response = await ApiUtils.authGoogleRegister(data);
       } else {
         response = await ApiUtils.authRegister(data);
