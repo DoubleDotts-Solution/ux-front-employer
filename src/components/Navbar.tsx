@@ -334,7 +334,7 @@ export const Navbar: React.FC = () => {
               </>
             ) : (
               <div className="hidden laptop:flex items-center gap-4 relative">
-                <Link to="/">
+                {/* <Link to="/">
                   <ButtonUx
                     label="Login"
                     buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-[40px] text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
@@ -346,7 +346,7 @@ export const Navbar: React.FC = () => {
                     buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-[40px]"
                   />
                 </Link>
-                <div className="border-l border-gray5 h-[18px] w-1"></div>
+                <div className="border-l border-gray5 h-[18px] w-1"></div> */}
                 <a
                   href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}
                   className="text-primary text-lg font-medium hover-underline-animation-navbar hover-underline-animation"
@@ -457,7 +457,7 @@ export const Navbar: React.FC = () => {
           </div>
           {!isUserLogin && (
             <>
-              <div className="w-full flex gap-[16px] mt-[40px]">
+              {/* <div className="w-full flex gap-[16px] mt-[40px]">
                 <Link to="/" className="w-1/2" onClick={toggleDrawer}>
                   <ButtonUx
                     label="Login"
@@ -475,7 +475,7 @@ export const Navbar: React.FC = () => {
                   />
                 </Link>
               </div>
-              <div className="w-full border-t border-gray5 my-4"></div>
+              <div className="w-full border-t border-gray5 my-4"></div> */}
               <a
                 href={`${VITE_PUBLIC_JOB_SEEKER_URL}`}
                 className="text-center w-full py-2 mb-6 text-primary text-lg font-medium"

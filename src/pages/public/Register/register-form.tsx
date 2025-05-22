@@ -76,9 +76,6 @@ const formSchema = z.object({
   company_name: z.string().min(2, {
     message: "Job Title must be at least 2 characters.",
   }),
-  logo: z.union([z.literal(null), z.string()]),
-  country: z.union([z.literal(null), z.string()]),
-  description: z.union([z.literal(null), z.string()]),
 });
 
 const RegisterForm: React.FC = () => {
@@ -108,9 +105,7 @@ const RegisterForm: React.FC = () => {
       let response: any;
       if (isGoogleLogin) {
         delete data.password;
-        delete data.country;
-        delete data.logo;
-        delete data.description;
+
         response = await ApiUtils.authGoogleRegister(data);
       } else {
         response = await ApiUtils.authRegister(data);
@@ -163,6 +158,9 @@ const RegisterForm: React.FC = () => {
       if (data?.status === 200 || data?.status === 201) {
         form.setValue("email", data?.data?.user?.email);
         form.setValue("name", data?.data?.user?.fullName);
+        form.setValue("mobile_no", "");
+        form.setValue("website", "");
+        form.setValue("company_name", "");
         setIsGoogleLogin(true);
       } else {
         toast.error("Something went Wrong!", {
@@ -267,6 +265,7 @@ const RegisterForm: React.FC = () => {
                                       } border-2 rounded-[8px]`}
                             type="email"
                             autocomplete="off"
+                            disable={isGoogleLogin}
                           />
                         </div>
                       </FormControl>
@@ -470,7 +469,7 @@ const RegisterForm: React.FC = () => {
                 </a>
                 .
               </div>
-              <div style={{ display: "none" }}>
+              {/* <div style={{ display: "none" }}>
                 <input
                   type="text"
                   value=""
@@ -490,7 +489,7 @@ const RegisterForm: React.FC = () => {
                   value=""
                   {...form.register("description", { setValueAs: () => null })}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="mt-[24px] md:mt-[32px] md:flex md:justify-center w-full">
               <ButtonUx
