@@ -127,24 +127,29 @@ const MainSection: React.FC = () => {
       body?.classList.add("h-screen");
     }
   };
-
+  const [allCategoryTrue, SetAllCategoryTrue] = useState(false);
+  const [allJobTypeTrue, SetAllJobTypeTrue] = useState(false);
+  const [allWorkPlaceTrue, SetAllWorkPlaceTrue] = useState(false);
   const GetAllJobParam: JobParams = {
     ...(sortBy && { sort_by: sortBy }),
     ...(Value && { value: Value }),
     ...(filters.Experience && { job_experience: filters.Experience }),
     ...(Array.isArray(filters.Category) &&
-      filters.Category.length > 0 && {
+      filters.Category.length > 0 &&
+      allCategoryTrue !== true && {
         category: filters.Category.map((item) => item).join(","),
       }),
     ...(Array.isArray(filters.WorkPlaceType) &&
       filters.WorkPlaceType.length > 0 &&
+      allWorkPlaceTrue !== true &&
       filters.WorkPlaceType.some((item) => item !== "All") && {
         work_place_type: filters.WorkPlaceType.filter(
           (item) => item !== "All"
         ).join(","),
       }),
     ...(Array.isArray(filters.JobType) &&
-      filters.JobType.length > 0 && {
+      filters.JobType.length > 0 &&
+      allJobTypeTrue !== true && {
         job_type: filters.JobType.map((item) => item).join(","),
       }),
     ...(Array.isArray(filters.Location) &&
@@ -191,6 +196,40 @@ const MainSection: React.FC = () => {
   //     })
   //     .join(" ");
   // };
+  useEffect(() => {
+    if (
+      Array.isArray(filters.Category) &&
+      filters.Category.length === categoryArray.length &&
+      categoryArray.length > 0
+    ) {
+      SetAllCategoryTrue(true);
+    } else {
+      SetAllCategoryTrue(false);
+    }
+  }, [filters.Category, categoryArray]);
+  useEffect(() => {
+    if (
+      Array.isArray(filters.JobType) &&
+      filters.JobType.length === jobTypeArray.length &&
+      jobTypeArray.length > 0
+    ) {
+      SetAllJobTypeTrue(true);
+    } else {
+      SetAllJobTypeTrue(false);
+    }
+  }, [filters.JobType, jobTypeArray]);
+  useEffect(() => {
+    if (
+      Array.isArray(filters.WorkPlaceType) &&
+      filters.WorkPlaceType.length === WorkPlaceTypeArray.length &&
+      WorkPlaceTypeArray.length > 0
+    ) {
+      SetAllWorkPlaceTrue(true);
+    } else {
+      SetAllWorkPlaceTrue(false);
+    }
+  }, [filters.WorkPlaceType, WorkPlaceTypeArray]);
+
   const formatString = (value: string | null): string => {
     if (!value) return "";
 

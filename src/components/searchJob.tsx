@@ -229,7 +229,7 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
               </div>
               <div className="w-full md:w-[15%]">
                 <ButtonUx
-                  label="Find Jobs"
+                  label="Find Talent"
                   buttonClassName={`text-lg px-8 py-2 w-full h-12 font-semibold border-2 rounded-[8px] ${
                     isValid
                       ? "border-primary bg-yellow text-primary hover:bg-yellow1 focus:bg-yellow2 hover:shadow-shadow1"
