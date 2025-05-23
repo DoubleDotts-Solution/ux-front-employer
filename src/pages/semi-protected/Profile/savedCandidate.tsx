@@ -106,9 +106,9 @@ const SavedCandidate: React.FC = () => {
                         />
                       )}
                       <div className="flex flex-col gap-[6px]">
-                        <h4 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium">
+                        <div className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium">
                           Karthikeyan R
-                        </h4>
+                        </div>
                         <div className="text-gray text-sm md:text-base desktop:text-lg flex items-center gap-2">
                           {job.employer?.company_name ||
                             (job &&
@@ -254,9 +254,9 @@ const SavedCandidate: React.FC = () => {
               alt="image"
               className="img-fluid mb-[16px] lg:mb-[24px]"
             />
-            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px] text-center">
+            <div className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px] text-center">
               Start Curating Your Job Opportunities!
-            </h4>
+            </div>
             <p className="text-gray mt-[8px] text-sm md:text-base desktop:text-lg text-center mb-[16px] lg:mb-[24px]">
               Saving jobs helps you track roles you’re interested in. Begin by
               exploring available positions.

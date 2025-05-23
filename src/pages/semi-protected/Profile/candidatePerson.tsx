@@ -36,9 +36,9 @@ const CandidatePerson: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 w-full">
               <div className="flex flex-col gap-1">
                 <div className="flex gap-3 items-center">
-                  <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+                  <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
                     John Doe
-                  </h3>
+                  </div>
                   <div className="bg-lightChiku2 py-1 px-2 text-sm text-gray rounded-[8px]">
                     He/Him
                   </div>
@@ -110,9 +110,9 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             About
-          </h4>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
@@ -126,9 +126,9 @@ const CandidatePerson: React.FC = () => {
           </p>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Open for Roles
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
               UI UX Designer
@@ -145,9 +145,9 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Years of Experience
-          </h4>
+          </div>
           <div className="flex gap-5 md:gap-8 desktop:gap-12 items-center">
             <div className="flex-col flex gap-2">
               <span className="text-gray text-xs lg:text-sm">
@@ -168,9 +168,9 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Current Job Details
-          </h4>
+          </div>
           <div className="flex gap-3 items-center">
             <img
               src={Img_profile_no_data}
@@ -183,9 +183,9 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Highest Education Qualification
-          </h4>
+          </div>
           <div className="flex gap-3 items-center">
             <img
               src={Img_profile_no_data}
@@ -198,9 +198,9 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Tags
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
               User Experience Design
@@ -232,9 +232,9 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Preferred Job Type
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
               Full-time
@@ -248,9 +248,9 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Preferred Job Type Workplace
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             <div className="bg-lightChiku2 py-1 px-2 rounded-[8px] text-gray text-sm md:text-base desktop:text-lg">
               Remote
@@ -261,12 +261,12 @@ const CandidatePerson: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Open to Relocate
-          </h4>
-          <h6 className="text-primary font-semibold text-sm md:text-base desktop:text-lg">
+          </div>
+          <div className="text-primary font-semibold text-sm md:text-base desktop:text-lg">
             Yes
-          </h6>
+          </div>
           <div>
             <div className="mb-2 text-xs lg:text-sm text-gray">
               Desire Locations

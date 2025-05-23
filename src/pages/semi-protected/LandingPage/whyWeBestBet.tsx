@@ -108,7 +108,7 @@ const WhyWeBestBet: React.FC = () => {
         <div className="flex items-start lg:items-center gap-2 lg:gap-8">
           <img src={LikeImg} alt="like" className="w-[60px] desktop:w-auto" />
           <div>
-            <h2 className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px] mb-[4px]">
+            <div className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px] mb-[4px]">
               Why We’re Your{" "}
               <span className="relative">
                 Best Bet
@@ -129,7 +129,7 @@ const WhyWeBestBet: React.FC = () => {
                   />
                 </svg>
               </span>
-            </h2>
+            </div>
             <p className="text-gray text-sm desktop:text-lg">
               From quick job posts to finding perfect-fit candidates—we’ve got
               you covered.
@@ -146,9 +146,9 @@ const WhyWeBestBet: React.FC = () => {
                   className="w-[32px] h-[32px] lg:w-auto lg:h-auto"
                 />
                 <div>
-                  <h3 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-medium mb-1.5 lg:mb-2">
+                  <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-medium mb-1.5 lg:mb-2">
                     {job.title}
-                  </h3>
+                  </div>
                   <p className="text-gray text-base sm:text-lg md:text-xl desktop:text-[20px]">
                     {job.description}
                   </p>

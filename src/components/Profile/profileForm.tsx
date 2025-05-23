@@ -288,9 +288,9 @@ const ProfileForm: React.FC = () => {
         <form onSubmit={form.handleSubmit(onFormSubmit)}>
           <div className="p-4 sm:px-5 md:px-8 lg:p-6">
             <div>
-              <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold mb-3 desktop:mb-5">
+              <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold mb-3 desktop:mb-5">
                 Company Details
-              </h4>
+              </div>
               <div className="flex flex-col md:grid md:grid-cols-2 gap-2 md:gap-5 desktop:gap-6 w-full">
                 <div>
                   <FormField
@@ -501,9 +501,9 @@ const ProfileForm: React.FC = () => {
             </div>
             <div className="bg-gray5 w-full my-4 md:my-5 desktop:my-6 h-[1px]"></div>
             <div>
-              <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold mb-3 desktop:mb-5">
+              <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold mb-3 desktop:mb-5">
                 Contact Person Details
-              </h4>
+              </div>
               <div className="flex flex-col md:grid md:grid-cols-2 gap-2 md:gap-5 desktop:gap-6 w-full">
                 <div>
                   <FormField

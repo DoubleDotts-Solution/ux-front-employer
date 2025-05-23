@@ -118,7 +118,7 @@ export const Blogs: React.FC = () => {
         onMouseEnter={handleSection5MouseEnter}
       >
         <div className="flex flex-col gap-[4px]">
-          <h2 className="text-primary text-xl sm:text-2xl md:text-[2rem] lg:text-[2.5rem] desktop:text-[3rem] desktop:leading-[60px] font-semibold mb-3">
+          <div className="text-primary text-xl sm:text-2xl md:text-[2rem] lg:text-[2.5rem] desktop:text-[3rem] desktop:leading-[60px] font-semibold mb-3">
             The Blog{" "}
             <span className="relative">
               Spot.
@@ -176,7 +176,7 @@ export const Blogs: React.FC = () => {
                 </defs>
               </svg>
             </span>
-          </h2>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             Insights and Trends in the World of UX.
           </p>

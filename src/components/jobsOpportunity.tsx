@@ -108,9 +108,9 @@ const JobsOpportunity: React.FC = () => {
         <span className="relative inline-block w-full">
           <div className="relative bg-black3 p-4 desktop:p-10 text-7xl rounded-[20px] z-50 flex flex-col lg:flex-row items-center gap-6 lg:gap-8 desktop:gap-14 w-full">
             <div className="bg-purple2 pl-[20px] py-[12px] sm:py-[20px] sm:pl-[28px] md:pl-[36px] desktop:pl-8 big:pl-10 desktop:pr-[50px] w-full rounded-[8px] md:rounded-2xl flex justify-between xBig:gap-6 items-center">
-              <h2 className="text-primary font-semibold text-[2rem] leading-[35.2px] sm:leading-[40px] md:leading-[48px] md:text-[2.5rem] desktop:text-[48px] desktop:leading-[60px]">
+              <div className="text-primary font-semibold text-[2rem] leading-[35.2px] sm:leading-[40px] md:leading-[48px] md:text-[2.5rem] desktop:text-[48px] desktop:leading-[60px]">
                 Land on your dream job
-              </h2>
+              </div>
               <img
                 src={Img__dream_job}
                 alt="icon"
@@ -118,13 +118,13 @@ const JobsOpportunity: React.FC = () => {
               />
             </div>
             <div className="w-full">
-              <h3 className="text-white font-semibold text-[24px] leading-[32px] md:text-3xl desktop:text-[40px] mb-1.5 desktop:mb-3 desktop:leading-[48px] flex flex-wrap">
+              <div className="text-white font-semibold text-[24px] leading-[32px] md:text-3xl desktop:text-[40px] mb-1.5 desktop:mb-3 desktop:leading-[48px] flex flex-wrap">
                 Never Miss a Job&nbsp;
                 <span className="relative abc flex items-center gap-[12px] w-max">
                   Opportunity
                   <img src={Ic_sparkle} alt="icon" />
                 </span>
-              </h3>
+              </div>
               <p className="desktop:leading-9 text-gray3 text-lg lg:text-xl desktop:text-2xl mb-5 desktop:mb-10">
                 Subscribe for Weekly Updates on New Roles and Industry Trends
               </p>
@@ -202,9 +202,9 @@ const JobsOpportunity: React.FC = () => {
               alt="success"
               className="w-[100px] md:w-[125px] desktop:w-auto"
             />
-            <h4 className="mt-6 mb-1 text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold text-center desktop:leading-[2rem]">
+            <div className="mt-6 mb-1 text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold text-center desktop:leading-[2rem]">
               You have Successfully Subscribed to our Newsletter!{" "}
-            </h4>
+            </div>
             <p className="text-gray text-sm md:text-base desktop:text-lg text-center">
               Thank you! Stay tuned for top UX job alerts and updates.{" "}
             </p>

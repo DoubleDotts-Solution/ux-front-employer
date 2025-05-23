@@ -54,7 +54,7 @@ const SimplifyHiring: React.FC = () => {
         className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] pt-[24px] pb-[48px] big:py-[72px]"
         ref={section3Ref}
       >
-        <h2 className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px] mb-8 lg:mb-10 desktop:mb-12">
+        <div className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px] mb-8 lg:mb-10 desktop:mb-12">
           Simplified Hiring, Step by <br className="sm:hidden" />
           <span className="relative">
             Step.
@@ -93,7 +93,7 @@ const SimplifyHiring: React.FC = () => {
               />
             </svg>
           </span>
-        </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-7 desktop:gap-10 z-20 relative">
           <div className="relative bg-white h-full">
             <div className="shadow-shadow1 rounded-[8px] desktop:rounded-[16px] border-2 border-primary h-full relative z-20 overflow-hidden">

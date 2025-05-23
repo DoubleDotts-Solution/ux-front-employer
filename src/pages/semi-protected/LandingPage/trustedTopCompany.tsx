@@ -21,7 +21,7 @@ const TrustedTopCompany: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
               />
             </div>
             <div className="w-full lg:w-[56%]">
-              <h3 className="text-white font-semibold text-[28px] leading-[35.2px] md:text-4xl desktop:text-[56px] mb-1.5 desktop:mb-3 desktop:leading-[72px] flex flex-wrap">
+              <div className="text-white font-semibold text-[28px] leading-[35.2px] md:text-4xl desktop:text-[56px] mb-1.5 desktop:mb-3 desktop:leading-[72px] flex flex-wrap">
                 The first step to hiring&nbsp;
                 <span className="abc">brilliance&nbsp; </span>
                 <span className="relative">
@@ -32,7 +32,7 @@ const TrustedTopCompany: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
                     className="absolute top-0 w-[24px] desktop:w-auto right-[-16px]"
                   />
                 </span>
-              </h3>
+              </div>
               <p className="desktop:leading-9 text-gray3 text-base lg:text-xl desktop:text-2xl mb-5 desktop:mb-10">
                 {isUserLogin
                   ? "Subscribe for Weekly Updates on New Roles and Industry Trends"

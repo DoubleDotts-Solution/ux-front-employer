@@ -578,9 +578,9 @@ export const PostJobForm: React.FC = () => {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4 md:gap-6 desktop:gap-8 w-full px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[48px] desktop:pt-[60px] desktop:pb-[72px]">
               <div className="bg-white flex flex-col gap-2.5 md:gap-4 desktop:gap-6">
-                <h4 className="text-primary font-semibold text-lg md:text-xl desktop:text-2xl">
+                <div className="text-primary font-semibold text-lg md:text-xl desktop:text-2xl">
                   Job Details
-                </h4>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 desktop:grid-cols-3 gap-3 lg:gap-4 desktop:gap-6">
                   <div>
                     <FormField
@@ -894,9 +894,9 @@ export const PostJobForm: React.FC = () => {
               <div className="border-t w-full border-gray5"></div>
 
               <div className="bg-white flex flex-col gap-2.5 md:gap-4 desktop:gap-6">
-                <h4 className="text-primary font-semibold text-lg md:text-xl desktop:text-2xl">
+                <div className="text-primary font-semibold text-lg md:text-xl desktop:text-2xl">
                   Job Description
-                </h4>
+                </div>
                 <div className="grid grid-cols-1 gap-3 lg:gap-4 desktop:gap-6">
                   <div>
                     <p
@@ -982,10 +982,10 @@ export const PostJobForm: React.FC = () => {
               <div className="border-t w-full border-gray5"></div>
 
               <div className="bg-white flex flex-col gap-2.5 md:gap-4 desktop:gap-6">
-                <h4 className="text-primary font-bold text-lg md:text-xl desktop:text-2xl">
+                <div className="text-primary font-bold text-lg md:text-xl desktop:text-2xl">
                   Set the Salary Range
                   {/* (Optional) */}
-                </h4>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 desktop:grid-cols-3 gap-3 lg:gap-4 desktop:gap-6">
                   <div>
                     <FormField
@@ -1225,9 +1225,9 @@ export const PostJobForm: React.FC = () => {
               <div className="border-t w-full border-gray5"></div>
 
               <div className="bg-white rounded-[8px] flex flex-col gap-2.5 md:gap-4 desktop:gap-6">
-                <h4 className="text-primary font-semibold text-lg md:text-xl desktop:text-2xl">
+                <div className="text-primary font-semibold text-lg md:text-xl desktop:text-2xl">
                   Select Application Method
-                </h4>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4 desktop:gap-6">
                   <div>
                     <FormField
@@ -1482,9 +1482,9 @@ export const PostJobForm: React.FC = () => {
               className="absolute top-[16px] md:top-[24px] right-[16px] md:right-[24px]"
               onClick={openJobPreviewPopup}
             />
-            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-6 px-4 md:px-6 desktop:px-8">
+            <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-6 px-4 md:px-6 desktop:px-8">
               Job Post Preview
-            </h4>
+            </div>
             <div
               style={{
                 maxHeight: "calc(100vh - 280px)",
@@ -1506,7 +1506,7 @@ export const PostJobForm: React.FC = () => {
                       <div className="text-gray text-sm md:text-lg font-medium">
                         {userDetails?.company_name}
                       </div>
-                      <h2 className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
+                      <div className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
                         {(() => {
                           const selectedCategoryName =
                             categoryName.find(
@@ -1514,7 +1514,7 @@ export const PostJobForm: React.FC = () => {
                             )?.name || null;
                           return selectedCategoryName;
                         })()}
-                      </h2>
+                      </div>
                     </div>
                   </div>
                   <p className="text-base lg:text-lg text-gray">Now</p>
@@ -1618,9 +1618,9 @@ export const PostJobForm: React.FC = () => {
                 </div>
               </div>
               <div className="px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8">
-                <h4 className="mb-3 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
+                <div className="mb-3 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
                   Job Description
-                </h4>
+                </div>
                 <div
                   dangerouslySetInnerHTML={{ __html: formValues?.description }}
                 />
@@ -1666,9 +1666,9 @@ export const PostJobForm: React.FC = () => {
           <div className="p-4 md:p-6 desktop:p-8 flex flex-col items-center justify-center gap-4 desktop:gap-8">
             <img src={Img_cancel} alt="image" />
             <div>
-              <h4 className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+              <div className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
                 Are you Sure you want to Cancel?
-              </h4>
+              </div>
               <p className="text-gray text-sm md:text-base desktop:text-lg mt-3 text-center">
                 By Clicking on cancel you will Loose the Data that <br /> you
                 have add for Create a Job.
@@ -1701,9 +1701,9 @@ export const PostJobForm: React.FC = () => {
           <div className="p-4 md:p-6 desktop:p-8 flex flex-col items-center justify-center gap-4 desktop:gap-8">
             <img src={Img_subscribe_success} alt="image" />
             <div>
-              <h4 className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+              <div className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
                 Job Post Successfully Submitted for Review!
-              </h4>
+              </div>
               <p className="text-gray text-sm md:text-base desktop:text-lg mt-3 text-center">
                 Thank you! We’re reviewing your job post and will publish it
                 soon.
@@ -1726,9 +1726,9 @@ export const PostJobForm: React.FC = () => {
           <div className="p-4 md:p-6 desktop:p-8 flex flex-col items-center justify-center gap-4 desktop:gap-8">
             <img src={Img_cancel} alt="image" />
             <div>
-              <h4 className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+              <div className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
                 You did’t Login as a Recruiter
-              </h4>
+              </div>
               <p className="text-gray text-sm md:text-base desktop:text-lg mt-3 text-center">
                 For Posting a Job you need to Register or Login with us
               </p>

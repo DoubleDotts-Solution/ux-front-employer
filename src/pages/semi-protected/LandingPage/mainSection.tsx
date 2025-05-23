@@ -11,9 +11,9 @@ const MainSection: React.FC<{ isUserLogin: any }> = ({ isUserLogin }) => {
     <>
       <div className="bg-lightChiku2 py-[48px] md:py-[72px] big:py-[100px] relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] flex flex-col lg:flex-row gap-[40px] laptop:gap-[68px] sBig:gap-[200px]">
         <div className="w-full lg:w-[50%] desktop:w-[60%]">
-          <h1 className="text-[32px] md:text-4xl lg:text-5xl big:text-7xl lg:leading-[60px] big:leading-[100px] font-semibold text-primary mb-4">
+          <div className="text-[32px] md:text-4xl lg:text-5xl big:text-7xl lg:leading-[60px] big:leading-[100px] font-semibold text-primary mb-4">
             Hire the Best UX Talent, Effortlessly!
-          </h1>
+          </div>
           <p className="text-gray text-base sm:text-lg md:text-xl desktop:text-[20px] mb-4 md:mb-6 desktop:mb-8">
             From single projects to full-team hires, connect seamlessly with
             exceptional design professionals on our platform.

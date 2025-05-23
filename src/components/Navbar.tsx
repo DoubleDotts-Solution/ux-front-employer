@@ -239,9 +239,9 @@ export const Navbar: React.FC = () => {
                 </div>
                 <div className="flex gap-2 items-start">
                   <div>
-                    <h5 className="text-primary font-semibold">
+                    <div className="text-primary font-semibold">
                       {userDetails && userDetails?.company_name}
-                    </h5>
+                    </div>
                     <p className="text-gray text-xs">
                       {userDetails && userDetails?.name}
                     </p>
@@ -524,9 +524,9 @@ export const Navbar: React.FC = () => {
           <div className="p-4 md:p-6 desktop:p-8 flex flex-col items-center justify-center gap-4 desktop:gap-8">
             <img src={Img_cancel} alt="image" />
 
-            <h4 className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+            <div className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
               Are you Sure you want to Logout?
-            </h4>
+            </div>
             <div className="flex items-center pt-[8px] md:pt-[12px] gap-3 md:gap-6">
               <div className="w-full" onClick={logout}>
                 <ButtonUx

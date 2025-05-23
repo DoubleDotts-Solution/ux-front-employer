@@ -194,9 +194,9 @@ const RegisterForm: React.FC = () => {
     <>
       <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8 relative">
         <div className="flex flex-col gap-1 desktop:gap-3">
-          <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
+          <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
             Create your UX Jobsite Profile
-          </h4>
+          </div>
           <p className="text-sm md:text-base desktop:text-lg text-gray">
             Search & Recruit a Candidate from Worlds No.1 UX Job Site
           </p>
@@ -538,9 +538,9 @@ const RegisterForm: React.FC = () => {
               <div className="flex items-start gap-3">
                 <img src={Ic_info} alt="info" />
                 <div>
-                  <h4 className="text-primary font-semibold text-sm md:text-base desktop:text-lg mb-1">
+                  <div className="text-primary font-semibold text-sm md:text-base desktop:text-lg mb-1">
                     Verify your Email ID
-                  </h4>
+                  </div>
                   <p className="text-gray text-xs lg:text-sm">
                     We have sent you verification mail. Please verify <br />{" "}
                     that to continue
@@ -571,9 +571,9 @@ const RegisterForm: React.FC = () => {
         <Modal onClose={handleClose} isOpen={true}>
           <div className="p-4 md:p-6 desktop:p-8 flex flex-col items-center justify-center gap-4 desktop:gap-8">
             <img src={Img_subscribe_success} alt="image" />
-            <h4 className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+            <div className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
               You are Successfully Register <br /> with us
-            </h4>
+            </div>
             <div className="flex items-center gap-5 relative">
               <ButtonUx
                 label="Cancel"

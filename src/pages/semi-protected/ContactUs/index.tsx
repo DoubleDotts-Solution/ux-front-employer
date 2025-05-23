@@ -88,9 +88,9 @@ export const ContactUs: React.FC = () => {
     <div className="relative">
       <div className="bg-lightYellow  relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-6 md:py-[61px]">
         <div className="flex flex-col gap-[12px]">
-          <h2 className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl font-semibold desktop:leading-[54px]">
+          <div className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl font-semibold desktop:leading-[54px]">
             Contact Us
-          </h2>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             Have questions or need assistance? Reach out to our team for
             support.
@@ -100,9 +100,9 @@ export const ContactUs: React.FC = () => {
       <div className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[44px] desktop:py-[72px] flex justify-center">
         <div className="relative inline-block w-full h-max max-w-[692px]">
           <div className="relative bg-white p-4 sm:p-5 lg:p-8 border border-primary z-50 flex flex-col gap-4 md:gap-6 lg:gap-8 shadow-shadow1 rounded-[12px]">
-            <h3 className="text-primary text-lg md:text-xl lg:text-[24px] font-semibold">
+            <div className="text-primary text-lg md:text-xl lg:text-[24px] font-semibold">
               Get In Touch With Us
-            </h3>
+            </div>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-4 lg:gap-6 md:grid md:grid-cols-2">
@@ -313,9 +313,9 @@ export const ContactUs: React.FC = () => {
                   </span>
                 </div>
                 <div>
-                  <h4 className="mb-[2px] text-gray text-base lg:text-lg">
+                  <div className="mb-[2px] text-gray text-base lg:text-lg">
                     Email Us
-                  </h4>
+                  </div>
                   <p className="text-lg lg:text-xl text-primary font-medium">
                     hello@uxjobsite.com
                   </p>
@@ -328,9 +328,9 @@ export const ContactUs: React.FC = () => {
                   </span>
                 </div>
                 <div>
-                  <h4 className="mb-[2px] text-gray text-base lg:text-lg">
+                  <div className="mb-[2px] text-gray text-base lg:text-lg">
                     Call Us
-                  </h4>
+                  </div>
                   <p className="text-lg lg:text-xl text-primary font-medium">
                     +91-8105338000
                   </p>

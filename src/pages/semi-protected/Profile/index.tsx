@@ -97,9 +97,9 @@ export const Profile: React.FC = () => {
                     className="w-[20px] h-[20px] md:w-[26px] desktop:w-auto md:h-[26px] desktop:h-auto"
                   />
                   <div className="flex flex-col items-start gap-1">
-                    <h5 className="text-primary text-sm md:text-base desktop:text-lg font-semibold text-left">
+                    <div className="text-primary text-sm md:text-base desktop:text-lg font-semibold text-left">
                       {tab.label.heading}
-                    </h5>
+                    </div>
                     <p className="text-gray text-xs md:text-sm text-left hidden lg:block">
                       {tab.label.description}
                     </p>

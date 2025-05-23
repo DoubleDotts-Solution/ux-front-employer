@@ -58,9 +58,9 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h4 className="text-primary text-sm md:text-base desktop:text-lg font-medium mb-1">
+            <div className="text-primary text-sm md:text-base desktop:text-lg font-medium mb-1">
               Keep Your Profile Fresh and Ready for Top Talent
-            </h4>
+            </div>
             <p className="text-sm text-gray">
               Helps attract the best candidates by showcasing your hiring
               expertise and preferences.
@@ -76,9 +76,9 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
       </div>
       <div className="mt-6 flex flex-col gap-4 md:gap-6 desktop:gap-8">
         <div className="flex items-center gap-2 justify-between">
-          <h3 className="text-primary font-semibold text-[24px] md:text-3xl desktop:text-[2rem]">
+          <div className="text-primary font-semibold text-[24px] md:text-3xl desktop:text-[2rem]">
             What Job Seeker will See
-          </h3>
+          </div>
           <Link
             to={"/profile?update-profile"}
             className="flex items-center gap-3"
@@ -105,9 +105,9 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 w-full">
               <div className="flex flex-col gap-1">
                 <div className="flex gap-3 items-center">
-                  <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+                  <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
                     {userDetails && userDetails?.company_name}
-                  </h3>
+                  </div>
                 </div>
                 <div className="text-sm md:text-base desktop:text-lg text-gray font-medium">
                   {userDetails && userDetails?.name}
@@ -198,9 +198,9 @@ const ProfileData: React.FC<{ value: number; userDetails: any }> = ({
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             About
-          </h4>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             {userDetails && userDetails?.description
               ? userDetails?.description

@@ -54,9 +54,9 @@ export const BlogsDetails: React.FC = () => {
           />
 
           <div>
-            <h2 className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px] mb-4 lg:mb-6">
+            <div className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px] mb-4 lg:mb-6">
               {blog.title}
-            </h2>
+            </div>
             <div className="flex flex-wrap items-center gap-[10px]">
               <span className="text-primary text-sm md:text-base lg:text-lg desktop:text-xl">
                 Share This Article:

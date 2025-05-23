@@ -22,9 +22,9 @@ const EditProfile: React.FC = () => {
   return (
     <>
       <div className="flex items-center justify-between gap-4 mb-3 px-4 sm:px-5 md:px-8 lg:p-0">
-        <h3 className="text-primary font-semibold text-xl md:text-2xl desktop:text-[2rem]">
+        <div className="text-primary font-semibold text-xl md:text-2xl desktop:text-[2rem]">
           Edit Profile
-        </h3>
+        </div>
         <Link
           to={"/profile"}
           className="text-primary font-semibold text-sm lg:text-base"

@@ -120,7 +120,7 @@ export const FindTalentDetail: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 w-full">
               <div className="flex flex-col gap-1">
                 <div className="flex gap-3 items-center">
-                  <h3
+                  <div
                     className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]"
                     style={{
                       backdropFilter: "blur(12px)",
@@ -130,7 +130,7 @@ export const FindTalentDetail: React.FC = () => {
                     }}
                   >
                     {userDetails?.name}
-                  </h3>
+                  </div>
                   {userDetails && userDetails?.pronouns && (
                     <div className="bg-lightChiku2 py-1 px-2 text-sm text-gray rounded-[8px]">
                       {userDetails && userDetails?.pronouns}
@@ -210,17 +210,17 @@ export const FindTalentDetail: React.FC = () => {
 
       <div className="flex flex-col gap-4 md:gap-6 desktop:gap-8 px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[48px]">
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             About
-          </h4>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             {userDetails && userDetails?.bio ? userDetails?.bio : "-"}
           </p>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Open for Roles
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             {openForRoleArray && openForRoleArray.length > 0
               ? openForRoleArray.map((role: string, index: number) => {
@@ -237,9 +237,9 @@ export const FindTalentDetail: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Years of Experience
-          </h4>
+          </div>
           <div className="flex gap-5 md:gap-8 desktop:gap-12 items-center">
             <div className="flex-col flex gap-2">
               <span className="text-gray text-xs lg:text-sm">
@@ -264,9 +264,9 @@ export const FindTalentDetail: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Current Job Details
-          </h4>
+          </div>
           {userDetails && userDetails?.current_company?.name ? (
             <div className="flex gap-3 items-center">
               <div className="w-[48px] h-[48px] sm:w-[58px] md:w-[74px] sm:h-[58px] md:h-[74px]">
@@ -286,9 +286,9 @@ export const FindTalentDetail: React.FC = () => {
                 )}
               </div>
               <div className="flex flex-col gap-1">
-                <h3 className="text-sm md:text-base desktop:text-lg font-medium text-primary">
+                <div className="text-sm md:text-base desktop:text-lg font-medium text-primary">
                   {userDetails?.current_company?.name}
-                </h3>
+                </div>
                 <p className="text-xs md:text-sm text-primary">
                   {userDetails?.current_job_title}
                 </p>
@@ -313,9 +313,9 @@ export const FindTalentDetail: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Highest Education Qualification
-          </h4>
+          </div>
           {userDetails && userDetails?.education_institute?.name ? (
             <div className="flex gap-3 items-center">
               <div className="w-[48px] h-[48px] sm:w-[58px] md:w-[74px] sm:h-[58px] md:h-[74px]">
@@ -335,9 +335,9 @@ export const FindTalentDetail: React.FC = () => {
                 )}
               </div>
               <div className="flex flex-col gap-1">
-                <h3 className="text-sm md:text-base desktop:text-lg font-medium text-primary">
+                <div className="text-sm md:text-base desktop:text-lg font-medium text-primary">
                   {userDetails?.education_institute?.name}
-                </h3>
+                </div>
                 <p className="text-xs md:text-sm text-primary">
                   {userDetails?.degree?.name}
                 </p>
@@ -362,9 +362,9 @@ export const FindTalentDetail: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Tags
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             {userDetails &&
             userDetails?.skills &&
@@ -383,9 +383,9 @@ export const FindTalentDetail: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Preferred Job Type
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             {preferJobTypeArray && preferJobTypeArray.length > 0
               ? preferJobTypeArray.map((item: string, index: number) => {
@@ -402,9 +402,9 @@ export const FindTalentDetail: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Preferred Job Type Workplace
-          </h4>
+          </div>
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             {preferWorkPlaceArray && preferWorkPlaceArray.length > 0
               ? preferWorkPlaceArray.map((item: string, index: number) => {
@@ -421,12 +421,12 @@ export const FindTalentDetail: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 md:gap-3 desktop:gap-4">
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Open to Relocate
-          </h4>
-          <h6 className="text-primary font-semibold text-sm md:text-base desktop:text-lg">
+          </div>
+          <div className="text-primary font-semibold text-sm md:text-base desktop:text-lg">
             {userDetails?.readyToRelocate === "yes" ? "Yes" : "No"}
-          </h6>
+          </div>
           {userDetails?.readyToRelocate === "yes" && (
             <div>
               <div className="mb-2 text-xs lg:text-sm text-gray">

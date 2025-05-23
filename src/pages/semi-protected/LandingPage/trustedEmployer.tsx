@@ -68,7 +68,7 @@ const TrustedEmployer: React.FC = () => {
     <>
       <div className="pt-[24px] pb-[48px] big:py-[72px]" ref={section4Ref}>
         <div className="flex flex-col gap-[4px] mb-8 lg:mb-10 desktop:mb-12 px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px]">
-          <h2 className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px]">
+          <div className="text-primary text-2xl md:text-3xl desktop:text-4xl font-semibold desktop:leading-[54px]">
             Featured{" "}
             <span className="relative">
               Employers.
@@ -92,7 +92,7 @@ const TrustedEmployer: React.FC = () => {
                 />
               </svg>
             </span>
-          </h2>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             Trusted by leading organizations worldwide.
           </p>

@@ -136,9 +136,9 @@ const VerifyOtpForm: React.FC = () => {
     <>
       <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8">
         <div className="flex flex-col gap-1 desktop:gap-3">
-          <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
+          <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
             Enter your 4 Digit Code
-          </h4>
+          </div>
           <p className="text-sm md:text-base desktop:text-lg text-gray flex flex-wrap">
             We have sent 4 Digit code on &nbsp;
             <span className="flex items-center gap-3 text-primary font-medium">

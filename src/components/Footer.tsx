@@ -40,9 +40,9 @@ const Footer = () => {
         </div>
         <div className="flex flex-col sm:flex-row lg:flex-nowrap gap-8 lg:gap-20 mb-4 lg:mb-12">
           <div>
-            <h4 className="text-white font-medium text-lg desktop:text-xl mb-4">
+            <div className="text-white font-medium text-lg desktop:text-xl mb-4">
               Quick Links
-            </h4>
+            </div>
             <div className="flex flex-col gap-2 lg:gap-3">
               <Link
                 to={"/find-talent"}
@@ -59,9 +59,9 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <h4 className="text-white font-medium text-lg desktop:text-xl mb-4">
+            <div className="text-white font-medium text-lg desktop:text-xl mb-4">
               Explore
-            </h4>
+            </div>
             <div className="flex flex-col gap-2 lg:gap-3">
               <Link
                 to={"/about-us"}
@@ -84,9 +84,9 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <h4 className="text-white font-medium text-lg desktop:text-xl mb-4">
+            <div className="text-white font-medium text-lg desktop:text-xl mb-4">
               Contact Us
-            </h4>
+            </div>
             <div className="flex flex-col gap-2">
               <div className="flex gap-3 items-start">
                 <img src={call} alt="call" />

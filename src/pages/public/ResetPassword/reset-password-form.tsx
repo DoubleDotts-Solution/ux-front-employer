@@ -109,9 +109,9 @@ const ResetPasswordForm: React.FC = () => {
     <>
       <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8">
         <div className="flex flex-col gap-1 desktop:gap-3">
-          <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
+          <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
             Reset your Password
-          </h4>
+          </div>
           <p className="text-sm md:text-base desktop:text-lg text-gray">
             Set a New Password for your Account
           </p>
@@ -256,10 +256,10 @@ const ResetPasswordForm: React.FC = () => {
         <Modal onClose={handleClose} isOpen={true}>
           <div className="p-4 md:p-6 desktop:p-8 flex flex-col items-center justify-center gap-4 desktop:gap-8">
             <img src={Img_subscribe_success} alt="image" />
-            <h4 className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+            <div className="text-primary font-semibold text-center text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
               Your Password has been
               <br /> Successfully Rest
-            </h4>
+            </div>
             <div className="flex items-center gap-5 relative">
               <div onClick={() => setSuccessfullyRegister(false)}>
                 <ButtonUx

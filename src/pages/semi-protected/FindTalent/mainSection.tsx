@@ -774,7 +774,7 @@ const MainSection: React.FC = () => {
                               />
                             )}
                             <div className="flex flex-col gap-2">
-                              <h4
+                              <div
                                 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3"
                                 style={{
                                   backdropFilter: "blur(12px)",
@@ -784,7 +784,7 @@ const MainSection: React.FC = () => {
                                 }}
                               >
                                 {job?.name}
-                              </h4>
+                              </div>
                               <div className="text-gray text-sm md:text-base desktop:text-lg">
                                 {job.job_title}
                               </div>
@@ -892,9 +892,9 @@ const MainSection: React.FC = () => {
                   alt="img"
                   className="mb-2.5 md:mb-4 desktop:mb-6"
                 />
-                <h4 className="text-lg sm:text-xl md:text-[20px] desktop:text-[24px] text-primary font-semibold mb-1 md:mb-2 desktop:mb-3 text-center">
+                <div className="text-lg sm:text-xl md:text-[20px] desktop:text-[24px] text-primary font-semibold mb-1 md:mb-2 desktop:mb-3 text-center">
                   No Research Results Found
-                </h4>
+                </div>
                 <p className="text-gray text-sm md:text-base desktop:text-lg">
                   Please Try to Search Some Different Jobs
                 </p>

@@ -219,9 +219,9 @@ const LoginForm: React.FC = () => {
     <>
       <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8 relative">
         <div className="flex flex-col gap-1 desktop:gap-3">
-          <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
+          <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
             Welcome to UX Jobsite
-          </h4>
+          </div>
           <p className="text-sm md:text-base desktop:text-lg text-gray">
             Enter your Email ID and Password to Login
           </p>
@@ -394,9 +394,9 @@ const LoginForm: React.FC = () => {
               <div className="flex items-start gap-3">
                 <img src={Ic_info} alt="info" />
                 <div>
-                  <h4 className="text-primary font-semibold text-sm md:text-base desktop:text-lg mb-1">
+                  <div className="text-primary font-semibold text-sm md:text-base desktop:text-lg mb-1">
                     Verify your Email ID
-                  </h4>
+                  </div>
                   <p className="text-gray text-xs lg:text-sm">
                     We have sent you verification mail. Please verify <br />{" "}
                     that to continue

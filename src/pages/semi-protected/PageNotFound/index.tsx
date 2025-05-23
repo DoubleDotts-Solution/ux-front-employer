@@ -13,9 +13,9 @@ export const PageNotFound: React.FC = () => {
             alt="image"
             className="img-fluid mb-[16px] lg:mb-[32px]"
           />
-          <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[40px] desktop:leading-[48px] mb-[12px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[40px] desktop:leading-[48px] mb-[12px]">
             404: We Lost the Trail!
-          </h4>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-xl text-center mb-[24px] lg:mb-[48px]">
             Looks like this page took a wrong turn. Let’s get you back on track!
           </p>

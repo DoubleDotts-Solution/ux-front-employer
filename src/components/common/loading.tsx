@@ -11,9 +11,9 @@ const Loading: React.FC = () => {
             alt="image"
             className="img-fluid mb-[16px] lg:mb-[32px]"
           />
-          <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold mb-[12px]">
+          <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold mb-[12px]">
             Hang Tight! We’re Fetching Your Data
-          </h4>
+          </div>
           <p className="text-gray mt-[8px] text-sm md:text-base desktop:text-xl text-center">
             Gathering all the latest jobs and insights. Just a moment, please!
           </p>

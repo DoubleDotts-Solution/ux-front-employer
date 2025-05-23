@@ -117,7 +117,7 @@ const JobPostedPerson: React.FC = () => {
               />
             )}
             <div className="flex flex-col gap-2">
-              <h4 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
+              <div className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
                 {jobPostedData?.job_title}
                 <span
                   className={`font-normal whitespace-nowrap text-sm md:text-base desktop:text-lg border border-primary rounded-lg px-2 md:px-4 py-0.5`}
@@ -128,7 +128,7 @@ const JobPostedPerson: React.FC = () => {
                 >
                   {getJobStatus(jobPostedData?.job_status).status}
                 </span>
-              </h4>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -252,9 +252,9 @@ const JobPostedPerson: React.FC = () => {
                       />
                     )}
                     <div className="flex flex-col gap-2">
-                      <h4 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
+                      <div className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
                         {job?.job_seeker?.name}
-                      </h4>
+                      </div>
                       <div className="text-gray text-sm md:text-base desktop:text-lg flex gap-2">
                         {job?.job_seeker?.job_title}
                         {job?.job_seeker?.resume && (

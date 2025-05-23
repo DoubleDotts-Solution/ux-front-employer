@@ -4,9 +4,9 @@ export const PrivacyPolicy: React.FC = () => {
   return (
     <div className="relative">
       <div className="bg-lightYellow  relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-6 md:py-[48px]">
-        <h2 className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl desktop:leading-[60px] font-semibold">
+        <div className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl desktop:leading-[60px] font-semibold">
           Privacy Policy
-        </h2>
+        </div>
       </div>
       <div className="px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-[44px] desktop:py-[72px] flex flex-col gap-[20px] md:gap-[28px] desktop:gap-[32px]">
         <p className="text-sm md:text-base lg:text-lg text-[#787878]">
@@ -19,9 +19,9 @@ export const PrivacyPolicy: React.FC = () => {
           of our services indicates acceptance of the revised policy.
         </p>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             What Information We Collect
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               We collect various types of information depending on your role as
@@ -45,9 +45,9 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             How We Use Your Information
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               Your information is used to:
@@ -70,9 +70,9 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Sharing Your Information
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               We only share your information under these circumstances:
@@ -94,9 +94,9 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Security Measures
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               We prioritize data security and use industry-standard measures to
@@ -107,9 +107,9 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Your Rights and Choices
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               You have the right to:
@@ -135,9 +135,9 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Aggregated Data
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               We may use your data in an aggregated and anonymised form for
@@ -147,9 +147,9 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Changes to This Policy
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               We may update this Privacy Policy from time to time. If we make
@@ -159,9 +159,9 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
+          <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px]">
             Contact Us
-          </h3>
+          </div>
           <div>
             <p className="text-sm md:text-base lg:text-lg text-[#787878]">
               If you have questions, concerns, or requests regarding your

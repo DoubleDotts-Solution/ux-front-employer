@@ -19,9 +19,9 @@ export const AboutUs: React.FC = () => {
           <span className="text-gray text-sm">AboutUs</span>
         </nav> */}
         <div className="flex flex-col gap-[12px]">
-          <h2 className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl desktop:leading-[60px] font-semibold">
+          <div className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl desktop:leading-[60px] font-semibold">
             About Us
-          </h2>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             Connecting talented UX professionals with great opportunities.
           </p>
@@ -34,9 +34,9 @@ export const AboutUs: React.FC = () => {
           className="w-[70%] sm:w-[50%] md:w-[40%] lg:w-auto"
         />
         <div>
-          <h3 className="text-primary font-semibold text-xl md:text-2xl desktop:text-[2rem] mb-2 md:mb-4 lg:mb-8">
+          <div className="text-primary font-semibold text-xl md:text-2xl desktop:text-[2rem] mb-2 md:mb-4 lg:mb-8">
             Who we are?
-          </h3>
+          </div>
           <p className="text-sm md:text-base lg:text-lg desktop:text-xl text-gray">
             We are a dedicated platform designed to connect UX professionals
             with meaningful opportunities. With a focus on simplicity and

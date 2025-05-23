@@ -350,7 +350,7 @@ const JobPosted: React.FC = () => {
                       />
                     )}
                     <div className="flex flex-col gap-2">
-                      <h4 className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
+                      <div className="text-primary text-lg lg:text-xl desktop:text-2xl font-medium flex items-center gap-2 md:gap-3">
                         <span className="w-auto max-w-[98px] sm:w-full sm:max-w-full truncate">
                           {job?.job_title}
                         </span>
@@ -370,7 +370,7 @@ const JobPosted: React.FC = () => {
                             ).status
                           }{" "}
                         </span>
-                      </h4>
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -576,9 +576,9 @@ const JobPosted: React.FC = () => {
               alt="image"
               className="img-fluid mb-[16px] lg:mb-[24px]"
             />
-            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px] text-center">
+            <div className="text-primary font-semibold text-lg sm:text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] mb-1 md:mb-[8px] text-center">
               Start Showcasing your Opportunities!
-            </h4>
+            </div>
             <p className="text-gray mt-[8px] text-sm md:text-base desktop:text-lg text-center mb-[16px] lg:mb-[24px]">
               You haven’t posted any jobs yet. Post your first job to attract
               top UX talent and grow your team.
@@ -606,9 +606,9 @@ const JobPosted: React.FC = () => {
           >
             <img src={Img_cancel} alt="image" className="mb-8" />
 
-            <h3 className="text-primary font-semibold text-lg lg:text-xl desktop:text-2xl mb-8 text-center mt-3">
+            <div className="text-primary font-semibold text-lg lg:text-xl desktop:text-2xl mb-8 text-center mt-3">
               Are you Sure you want to delete?
-            </h3>
+            </div>
             <div className="flex items-center pt-[8px] md:pt-[12px] gap-3 md:gap-6">
               <div
                 className="w-full"
@@ -639,9 +639,9 @@ const JobPosted: React.FC = () => {
           isOpen={true}
         >
           <div className="p-5 md:p-8 w-full max-w-[454px]" ref={popup}>
-            <h3 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-4 desktop:mb-5 desktop:leading-[32px]">
+            <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-4 desktop:mb-5 desktop:leading-[32px]">
               Update the Job Post Status of 'Graphic Designer'
-            </h3>
+            </div>
             <Form {...changeStatusForm}>
               <form
                 onSubmit={changeStatusForm.handleSubmit(onChangeStatusSubmit)}
@@ -747,9 +747,9 @@ const JobPosted: React.FC = () => {
               className="absolute top-[16px] md:top-[24px] right-[16px] md:right-[24px] cursor-pointer"
               onClick={openJobPreviewPopup}
             />
-            <h4 className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-6 px-4 md:px-6 desktop:px-8">
+            <div className="text-primary font-semibold text-lg sm:text-xl md:text-[20px] desktop:text-[24px] mb-6 px-4 md:px-6 desktop:px-8">
               Job Post Preview
-            </h4>
+            </div>
             {jobPostedData && jobPostedData && (
               <div
                 style={{
@@ -765,9 +765,9 @@ const JobPosted: React.FC = () => {
                         <div className="text-gray text-sm md:text-lg font-medium">
                           {jobPostedData?.employer?.company_name}
                         </div>
-                        <h2 className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
+                        <div className="text-primary text-2xl big:text-[40px] font-semibold leading-[36px] big:leading-[48px]">
                           {jobPostedData?.job_title}
-                        </h2>
+                        </div>
                       </div>
                     </div>
                     <p className="text-base lg:text-lg text-gray">
@@ -879,9 +879,9 @@ const JobPosted: React.FC = () => {
                 </div>
 
                 <div className=" px-4 md:px-6 desktop:px-8 pb-4 md:pb-6 desktop:pb-8">
-                  <h4 className="mb-4 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
+                  <div className="mb-4 text-primary text-base md:text-xl desktop:text-[2rem] font-semibold">
                     Job Description
-                  </h4>
+                  </div>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: jobPostedData?.description,

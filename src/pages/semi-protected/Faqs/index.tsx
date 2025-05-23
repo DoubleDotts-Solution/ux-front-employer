@@ -28,9 +28,9 @@ export const Faqs: React.FC = () => {
     <div className="relative">
       <div className="bg-lightYellow  relative px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] xBig:px-[200px] py-6 md:py-[61px]">
         <div className="flex flex-col gap-[12px]">
-          <h2 className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl desktop:leading-[72px] font-semibold">
+          <div className="text-primary text-2xl sm:text-3xl md:text-4xl desktop:text-5xl desktop:leading-[72px] font-semibold">
             FAQs
-          </h2>
+          </div>
           <p className="text-gray text-sm md:text-base desktop:text-lg">
             Find answers to common questions and get the help you need.
           </p>

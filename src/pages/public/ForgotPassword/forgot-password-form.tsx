@@ -59,9 +59,9 @@ const ForgotPasswordForm: React.FC = () => {
     <>
       <div className="flex flex-col gap-6 desktop:gap-[32px] p-5 md:p-8">
         <div className="flex flex-col gap-1 desktop:gap-3">
-          <h4 className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
+          <div className="text-primary text-lg sm:text-xl md:text-[20px] desktop:text-[24px] font-semibold">
             Enter your Registered Email ID
-          </h4>
+          </div>
           <p className="text-sm md:text-base desktop:text-lg text-gray">
             We’ll send you a verification mail to Reset your Password
           </p>
@@ -131,9 +131,9 @@ const ForgotPasswordForm: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <img src={Ic_info} alt="info" />
                     <div>
-                      <h4 className="text-primary font-semibold text-sm md:text-base desktop:text-lg mb-1">
+                      <div className="text-primary font-semibold text-sm md:text-base desktop:text-lg mb-1">
                         Verify your Email ID
-                      </h4>
+                      </div>
                       <p className="text-gray text-xs lg:text-sm">
                         Password reset link has been sent to your email.
                         <br /> Please check your inbox and follow the
