@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetCurrentCompanyQuery } from "@/store/slice/apiSlice/categoryApi";
-import { useGetSkillsQuery } from "@/store/slice/apiSlice/profileApi";
+import { useGetAllJobSeekerQuery } from "@/store/slice/apiSlice/profileApi";
+// import { useGetSkillsQuery } from "@/store/slice/apiSlice/profileApi";
 import { X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import Autosuggest, {
@@ -94,20 +95,26 @@ const AutocompleteInputMultiple: React.FC<AutocompleteInputProps> = ({
     value: "",
   };
 
-  const { data: skills } = useGetSkillsQuery(params);
-  const skillsName = (skills as any)?.data || [];
+  // const { data: skills } = useGetSkillsQuery(params);
+  // const skillsName = (skills as any)?.data || [];
+  const { data: candidates } = useGetAllJobSeekerQuery(params);
+  const candidatesName = (candidates as any)?.data || [];
   const { data } = useGetCurrentCompanyQuery(params);
   const AllCompanies = (data as any)?.data || [];
 
-  const skillCategories = skillsName.map((skill: any) => ({
-    category: skill.name,
+  const Allcandidates = candidatesName.map((can: any) => ({
+    category: can.name,
   }));
 
   const companyCategories = AllCompanies.map((company: any) => ({
     category: company.name,
   }));
 
-  const categories = [...skillCategories, ...companyCategories];
+  const categories = [
+    // ...skillCategories,
+    ...Allcandidates,
+    ...companyCategories,
+  ];
 
   const handleAdd = (newValue: string) => {
     if (newValue && !value.includes(newValue)) {

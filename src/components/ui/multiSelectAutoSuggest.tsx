@@ -166,6 +166,7 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
     setSelectedOptions(updatedOptions);
     onChange(updatedOptions);
   };
+  const [isFocused, setIsFocused] = useState(false);
 
   const inputProps = {
     placeholder,
@@ -173,8 +174,10 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
     onChange: (_: React.FormEvent<any>, { newValue }: any) => {
       setInputValue(newValue);
     },
-    className: `focus:border-none focus:outline-none flex items-center h-full placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg`,
+    className: `focus:border-none focus:outline-none flex items-center h-full placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg focus:bg-lightYellow2`,
     ref: inputRef,
+    onFocus: () => setIsFocused(true),
+    onBlur: () => setIsFocused(false),
   };
 
   // useEffect(() => {
@@ -184,9 +187,12 @@ const MultiSelectAutoSuggestions: React.FC<MultiSelectAutoSuggestionsProps> = ({
   return (
     <div className="relative">
       <div
+        // className={`flex focus:bg-lightYellow2 focus:shadow-shadow1 items-center gap-2 min-h-10 lg:min-h-12 max-h-auto w-full rounded-[8px] overflow-x-auto overFlowXScroll px-3 py-2 ${
+        //   className || ""
+        // }`}
         className={`flex items-center gap-2 min-h-10 lg:min-h-12 max-h-auto w-full rounded-[8px] overflow-x-auto overFlowXScroll px-3 py-2 ${
-          className || ""
-        }`}
+          isFocused ? "bg-lightYellow2 shadow-shadow1" : ""
+        } ${className || ""}`}
         onClick={() => inputRef.current?.focus()}
         ref={scrollRef}
       >

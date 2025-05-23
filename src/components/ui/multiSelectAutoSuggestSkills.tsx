@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Ic_search from "@/assets/images/Ic_search.svg";
 import React, { useEffect, useRef, useState } from "react";
 import Autosuggest, {
   SuggestionsFetchRequestedParams,
@@ -139,6 +140,7 @@ const MultiSelectAutoSuggestionsSkills: React.FC<
     setSelectedOptions(updatedOptions);
     onChange(updatedOptions);
   };
+  const [isFocused, setIsFocused] = useState(false);
 
   const inputProps = {
     placeholder: inputValue == "" ? placeholder : "",
@@ -146,18 +148,34 @@ const MultiSelectAutoSuggestionsSkills: React.FC<
     onChange: (_: React.FormEvent<any>, { newValue }: any) => {
       setInputValue(newValue);
     },
-    className: `flex h-full rounded-[8px] px-3 py-2 placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg border-gray7 focus:border-none focus:outline-none`,
+    className: `flex h-full rounded-[8px] px-3 py-2 placeholder:text-[#767676] placeholder:text-base lg:placeholder:text-lg border-gray7 focus:border-none focus:outline-none focus:bg-lightYellow2`,
+    onFocus: () => setIsFocused(true),
+    onBlur: () => setIsFocused(false),
   };
 
   return (
     <>
       <div className="relative">
         <div
+          // className={`flex items-center gap-2 w-full rounded-[8px] px-3 py-2 overflow-x-auto overFlowXScroll ${
+          //   className || ""
+          // }`}
           className={`flex items-center gap-2 w-full rounded-[8px] px-3 py-2 overflow-x-auto overFlowXScroll ${
-            className || ""
-          }`}
+            isFocused ? "bg-lightYellow2 shadow-shadow1" : ""
+          } ${className || ""}`}
           ref={scrollRef}
         >
+          <div
+            className={`${
+              isFocused ? "bg-lightYellow2" : "bg-white"
+            } absolute top-[2px] left-[2px] h-[52px] w-[40px] rounded-[8px]`}
+          >
+            <img
+              src={Ic_search}
+              alt="search"
+              className="top-[14px] left-[8px] lg:left-[12px] relative"
+            />
+          </div>
           {selectedOptions.length > 0 && (
             <div className="flex items-center gap-2">
               {selectedOptions.map((option) => (

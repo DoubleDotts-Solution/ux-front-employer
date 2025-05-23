@@ -83,6 +83,13 @@ const profileApi = mainApi.injectEndpoints({
         body: data,
       }),
     }),
+    getAllJobSeeker: builder.query<unknown, { data: any }>({
+      query: (data: any) => ({
+        url: `job-seeker`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -99,4 +106,5 @@ export const {
   useGetSkillsQuery,
   useVerifyMobileMutation,
   useCreateDesignationMutation,
+  useGetAllJobSeekerQuery,
 } = profileApi;

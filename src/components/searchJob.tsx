@@ -145,7 +145,7 @@ const SearchJob: React.FC<{ onClose?: any }> = ({ onClose }) => {
                             setSelectedItems(newItems);
                             field.onChange(newItems);
                           }}
-                          placeholder="Search for Tags, Companies"
+                          placeholder="Search for Tags, Candidates"
                           className="h-12"
                         />
                       </FormControl>

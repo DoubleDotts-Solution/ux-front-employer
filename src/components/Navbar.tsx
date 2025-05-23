@@ -217,7 +217,7 @@ export const Navbar: React.FC = () => {
                 >
                   <img src={Ic_search} alt="search" />{" "}
                   <span className="text-gray text-sm">
-                    Search for Tags, Companies
+                    Search for Tags, Candidates
                   </span>
                 </div>
               )}

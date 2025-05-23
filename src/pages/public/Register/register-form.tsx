@@ -37,10 +37,9 @@ const formSchema = z.object({
   website: z
     .string()
     .min(1, { message: "Website Link is required." })
-    .regex(
-      /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/,
-      { message: "Please enter a valid URL." }
-    ),
+    .regex(/^(https?:\/\/)?(www\.)?([a-z0-9-]+\.)+[a-z]{2,}(\/[^\s]*)?$/, {
+      message: "Please enter a valid URL.",
+    }),
   email: z
     .string()
     .email({ message: "Please enter a valid email address." })
@@ -199,7 +198,7 @@ const RegisterForm: React.FC = () => {
             Create your UX Jobsite Profile
           </h4>
           <p className="text-sm md:text-base desktop:text-lg text-gray">
-            Search & apply to jobs from Worlds No.1 UX Job Site
+            Search & Recruit a Candidate from Worlds No.1 UX Job Site
           </p>
         </div>
         <Form {...form}>
@@ -373,12 +372,11 @@ const RegisterForm: React.FC = () => {
                           <InputMobile
                             placeholder="Enter your Mobile Number"
                             {...field}
-                            className={`bg-white
-                                      ${
-                                        fieldState?.error
-                                          ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
-                                      } border-2 rounded-[8px]`}
+                            className={`${
+                              fieldState?.error
+                                ? "border-red"
+                                : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
+                            } border-2 rounded-[8px]`}
                             type="tel"
                           />
                         </div>

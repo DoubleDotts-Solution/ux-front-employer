@@ -72,8 +72,6 @@ const LoginForm: React.FC = () => {
             sessionStorage.setItem("__ux_employer_access_", accessToken);
             localStorage.setItem("__ux_employer_refresh_", refreshToken);
           }
-
-          // navigate("/login");
         }
       } catch (error: any) {
         toast.error(error.data.data.message || "Something went wrong!", {

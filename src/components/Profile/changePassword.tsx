@@ -14,10 +14,10 @@ import { Input } from "../ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import ButtonUx from "../common/button";
 import { useUpdatePasswordApiMutation } from "@/store/slice/apiSlice/profileApi";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+// import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
-import { clearCredentials } from "@/store/slice/auth.slice";
+// import { clearCredentials } from "@/store/slice/auth.slice";
 
 const passwordFormSchema = z
   .object({
@@ -59,8 +59,8 @@ const ChangePassword: React.FC = () => {
     resolver: zodResolver(passwordFormSchema),
   });
   const [handlePassword] = useUpdatePasswordApiMutation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
   const onPasswordFormSubmit = async (
     data: z.infer<typeof passwordFormSchema>
   ) => {
@@ -73,18 +73,20 @@ const ChangePassword: React.FC = () => {
       });
 
       if (response) {
-        toast.success("Submit successfully", { position: "top-right" });
+        toast.success("Chnage password successfully", {
+          position: "top-right",
+        });
         // form.reset();
 
-        localStorage.removeItem("employer_email");
-        localStorage.removeItem("userDetails_employer");
-        sessionStorage.removeItem("__ux_employer_access_");
-        localStorage.removeItem("__ux_employer_refresh_");
-        localStorage.removeItem("role");
+        // localStorage.removeItem("employer_email");
+        // localStorage.removeItem("userDetails_employer");
+        // sessionStorage.removeItem("__ux_employer_access_");
+        // localStorage.removeItem("__ux_employer_refresh_");
+        // localStorage.removeItem("role");
 
-        dispatch(clearCredentials());
+        // dispatch(clearCredentials());
 
-        navigate("/");
+        // navigate("/");
       } else {
         console.error("API error:", response.error);
         toast.error(response.error, {

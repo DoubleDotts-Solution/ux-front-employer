@@ -267,7 +267,7 @@ const ResetPasswordForm: React.FC = () => {
                   buttonClassName="bg-white font-semibold text-base border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
                 />
               </div>
-              <div onClick={() => navigate("/login")}>
+              <div onClick={() => navigate("/")}>
                 <ButtonUx
                   label="Continue"
                   buttonClassName="font-semibold text-primary bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"

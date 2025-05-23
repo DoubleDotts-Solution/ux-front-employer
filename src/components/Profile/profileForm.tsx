@@ -41,10 +41,9 @@ const formSchema = z.object({
   website: z
     .string()
     .min(1, { message: "Profile Link is required." })
-    .regex(
-      /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/,
-      { message: "Please enter a valid URL." }
-    ),
+    .regex(/^(https?:\/\/)?(www\.)?([a-z0-9-]+\.)+[a-z]{2,}(\/[^\s]*)?$/, {
+      message: "Please enter a valid URL.",
+    }),
   logo: z.union([
     z
       .instanceof(File)
@@ -58,12 +57,19 @@ const formSchema = z.object({
   // country: z.string().min(1, {
   //   message: "Location must be specified.",
   // }),
-  country: z.array(z.string()).nonempty({
-    message: "At least one location must be selected.",
-  }),
-  description: z.string().max(200, {
-    message: "About Company must be at least 200 characters.",
-  }),
+  country: z
+    .array(z.string())
+    // .nonempty({
+    //   message: "At least one location must be selected.",
+    // })
+    .optional(),
+  description: z
+    .string()
+    // .max(200, {
+    //   message: "About Company must be at least 200 characters.",
+    // })
+    .nullable()
+    .optional(),
   name: z.string().min(2, {
     message: "Full Name must be at least 2 characters.",
   }),
@@ -87,7 +93,7 @@ const formSchema = z.object({
       message: "Please enter a valid phone number for the selected country.",
     }
   ),
-  designation: z.string().min(1, { message: "Designation must be specified." }),
+  designation: z.string().optional(),
 });
 
 const ProfileForm: React.FC = () => {
@@ -119,15 +125,21 @@ const ProfileForm: React.FC = () => {
     if (!userDetails) return;
 
     const fieldsToSet = [
-      { key: "company_name", value: userDetails.company_name },
-      { key: "website", value: userDetails.website },
-      // { key: "country", value: userDetails.country },
-      { key: "description", value: userDetails.description },
-      { key: "logo", value: userDetails.logo },
-      { key: "designation", value: userDetails.designation?.name },
-      { key: "mobile_no", value: userDetails.mobile_no },
-      { key: "name", value: userDetails.name },
-      { key: "email", value: userDetails.email },
+      { key: "company_name", value: userDetails?.company_name },
+      { key: "website", value: userDetails?.website },
+      // { key: "country", value: userDetails?.country },
+      {
+        key: "description",
+        value:
+          userDetails?.description && userDetails?.description !== "null"
+            ? userDetails?.description
+            : null,
+      },
+      { key: "logo", value: userDetails?.logo },
+      { key: "designation", value: userDetails?.designation?.name },
+      { key: "mobile_no", value: userDetails?.mobile_no },
+      { key: "name", value: userDetails?.name },
+      { key: "email", value: userDetails?.email },
     ];
 
     if (userDetails?.country) {
@@ -162,15 +174,15 @@ const ProfileForm: React.FC = () => {
     if (data.company_name) {
       formData.append("company_name", data.company_name);
     }
+    console.log(data.country);
+
     if (data.country) {
       formData.append(
         "country",
-        data.country.map((location) => `'${location}'`).join(", ")
+        data.country.map((location: any) => `'${location}'`).join(", ") ?? ""
       );
     }
-    if (data.description) {
-      formData.append("description", data.description);
-    }
+    formData.append("description", data?.description ?? "");
     if (data.designation) {
       const designationValue = company.find((a: any) => {
         return a.name === data.designation;
@@ -266,6 +278,8 @@ const ProfileForm: React.FC = () => {
     if (locationMenu.length > 0) {
       form.setValue("country", locationMenu);
       form.clearErrors("country");
+    } else {
+      form.setValue("country", []);
     }
   };
   return (
@@ -419,7 +433,7 @@ const ProfileForm: React.FC = () => {
                             <MultiSelectAutoSuggestions
                               onChange={handleLocationMenuChange}
                               placeholder="Enter Location"
-                              className={`bg-white ${
+                              className={`${
                                 fieldState.error
                                   ? "border-red"
                                   : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
@@ -465,7 +479,11 @@ const ProfileForm: React.FC = () => {
                                 }
 
                                 setCharCount(inputValue.length);
-                                field.onChange(inputValue);
+
+                                const trimmedValue = inputValue.trim();
+                                field.onChange(
+                                  trimmedValue === "" ? null : trimmedValue
+                                );
                               }}
                               value={field.value || ""}
                             />
@@ -614,12 +632,11 @@ const ProfileForm: React.FC = () => {
                             <InputMobile
                               placeholder="Enter your Mobile Number"
                               {...field}
-                              className={`bg-white
-                                      ${
-                                        fieldState?.error
-                                          ? "border-red"
-                                          : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
-                                      } border-2 rounded-[8px]`}
+                              className={`${
+                                fieldState?.error
+                                  ? "border-red"
+                                  : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
+                              } border-2 rounded-[8px]`}
                               type="tel"
                             />
                             {userDetails?.verifyOtp === "yes" ? (

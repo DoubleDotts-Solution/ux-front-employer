@@ -5,6 +5,15 @@
 body {
   font-family: "IBM Plex Sans", sans-serif;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: revert;
+  font-weight: revert;
+}
 input:-webkit-autofill,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
@@ -664,6 +673,9 @@ input[type="range"]::-moz-range-thumb {
 }
 .PhoneInputInput:focus-visible {
   outline: none;
+}
+.PhoneInputInput:focus {
+  background: #fffadf;
 }
 .PhoneInput {
   width: -webkit-fill-available;

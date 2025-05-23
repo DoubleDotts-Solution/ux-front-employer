@@ -190,7 +190,7 @@ export const ContactUs: React.FC = () => {
                               <InputMobile
                                 placeholder="Enter your Mobile Number"
                                 {...field}
-                                className={`bg-white text-primary border-2
+                                className={`text-primary border-2
                                   ${
                                     fieldState?.error
                                       ? "border-red"

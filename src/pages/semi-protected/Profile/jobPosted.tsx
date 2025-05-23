@@ -6,6 +6,7 @@ import Ic_time from "@/assets/images/Ic_time.svg";
 import Ic_rupee from "@/assets/images/Ic_rupee.svg";
 import { Link, useNavigate } from "react-router-dom";
 import Ic_file from "@/assets/images/Ic_file.svg";
+import Img_cancel from "@/assets/images/Img_cancel.png";
 import Img_profile_no_data from "@/assets/images/Img_profile_no_data.png";
 import { convertJobLocation, formatTimeAgo, getJobStatus } from "@/lib/utils";
 import Ic_option from "@/assets/images/Ic_option.svg";
@@ -599,17 +600,16 @@ const JobPosted: React.FC = () => {
           }}
           isOpen={true}
         >
-          <div className="p-5 md:p-8" ref={popup}>
-            <h3 className="text-primary font-semibold text-lg lg:text-xl desktop:text-2xl mb-1 text-center mt-3">
-              Are you Want to delete?
+          <div
+            className="p-5 md:p-8 flex flex-col justify-center items-center"
+            ref={popup}
+          >
+            <img src={Img_cancel} alt="image" className="mb-8" />
+
+            <h3 className="text-primary font-semibold text-lg lg:text-xl desktop:text-2xl mb-8 text-center mt-3">
+              Are you Sure you want to delete?
             </h3>
             <div className="flex items-center pt-[8px] md:pt-[12px] gap-3 md:gap-6">
-              <div className="w-full" onClick={onDelete}>
-                <ButtonUx
-                  label="Cancel"
-                  buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
-                />
-              </div>
               <div
                 className="w-full"
                 onClick={() => {
@@ -617,7 +617,13 @@ const JobPosted: React.FC = () => {
                 }}
               >
                 <ButtonUx
-                  label="Confirm"
+                  label="Yes, Delete"
+                  buttonClassName="bg-white font-semibold text-base w-full border-2 border-primary rounded-[8px] px-6 py-2 h-12 text-primary hover:shadow-shadow1 hover:bg-lightYellow2 focus:bg-lightYellow3"
+                />
+              </div>
+              <div className="w-full" onClick={onDelete}>
+                <ButtonUx
+                  label="No, Keep"
                   buttonClassName="font-semibold text-primary w-full bg-yellow text-base border-2 border-primary rounded-[8px] px-6 py-2 hover:bg-yellow1 hover:shadow-shadow1 focus:bg-yellow2 h-12"
                 />
               </div>

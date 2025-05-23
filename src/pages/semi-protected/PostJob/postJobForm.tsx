@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import Ic_search from "@/assets/images/Ic_search.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -355,7 +354,7 @@ export const PostJobForm: React.FC = () => {
         if (
           key === "skills" &&
           Array.isArray(value) &&
-          value.every((skill) => typeof skill === "number")
+          value.every((skill: any) => typeof skill === "number")
         ) {
           formValue[key] = value.join(",");
         } else if (key === "location" && Array.isArray(value)) {
@@ -698,7 +697,7 @@ export const PostJobForm: React.FC = () => {
                               <MultiSelectAutoSuggestions
                                 onChange={handleLocationMenuChange}
                                 placeholder="Enter Location"
-                                className={`bg-white ${
+                                className={`${
                                   fieldState.error
                                     ? "border-red"
                                     : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
@@ -961,7 +960,7 @@ export const PostJobForm: React.FC = () => {
                                       handleSkillsChange(selectedOptions)
                                     }
                                     placeholder="e.g., UI UX Design, Product Design"
-                                    className={`bg-white pl-8 lg:pl-9 flex items-center h-full ${
+                                    className={`pl-8 lg:pl-9 flex items-center h-full ${
                                       fieldState.error
                                         ? "border-red"
                                         : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
@@ -971,13 +970,6 @@ export const PostJobForm: React.FC = () => {
                                   />
                                 </div>
                               </FormControl>
-                              <div className="bg-white absolute top-[2px] left-[2px] h-[52px] w-[40px] rounded-[8px]">
-                                <img
-                                  src={Ic_search}
-                                  alt="search"
-                                  className="top-[14px] left-[8px] lg:left-[12px] relative"
-                                />
-                              </div>
                             </div>
                           </FormControl>
                           <FormMessage />
