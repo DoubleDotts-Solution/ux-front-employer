@@ -65,14 +65,15 @@ const ChangePassword: React.FC = () => {
     data: z.infer<typeof passwordFormSchema>
   ) => {
     const formData = {
-      password: data.new_password,
+      password: data.password,
+      new_password: data.new_password,
     };
     try {
       const response: any = await handlePassword({
         data: formData,
       });
 
-      if (response) {
+      if (!response.error) {
         toast.success("Chnage password successfully", {
           position: "top-right",
         });
@@ -88,8 +89,8 @@ const ChangePassword: React.FC = () => {
 
         // navigate("/");
       } else {
-        console.error("API error:", response.error);
-        toast.error(response.error, {
+        console.error("API error:", response);
+        toast.error(response.error.data.message, {
           position: "top-right",
         });
       }

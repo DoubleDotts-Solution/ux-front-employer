@@ -69,8 +69,8 @@ const LoginForm: React.FC = () => {
         if (tokenResponse.status === 200) {
           const { accessToken, refreshToken } = tokenResponse.data.message;
           if (accessToken && refreshToken) {
-            sessionStorage.setItem("__ux_employer_access_", accessToken);
-            localStorage.setItem("__ux_employer_refresh_", refreshToken);
+            // sessionStorage.setItem("__ux_employer_access_", accessToken);
+            // localStorage.setItem("__ux_employer_refresh_", refreshToken);
           }
         }
       } catch (error: any) {

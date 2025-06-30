@@ -34,15 +34,15 @@ export function useLoadingWithRefresh() {
           }
         );
 
-        if (response.data.status) {
-          const { tokens, user } = response.data.data;
+        if (response.status === 200 || response.status === 201) {
+          const { accessToken, refreshToken, user } = response.data;
 
-          sessionStorage.setItem("__ux_employer_access_", tokens.accessToken);
-          localStorage.setItem("__ux_employer_refresh_", tokens.refreshToken);
+          sessionStorage.setItem("__ux_employer_access_", accessToken);
+          localStorage.setItem("__ux_employer_refresh_", refreshToken);
           dispatch(
             setCredentials({
-              access_token: tokens.accessToken,
-              refresh_token: tokens.refreshToken,
+              access_token: accessToken,
+              refresh_token: refreshToken,
               user,
             })
           );

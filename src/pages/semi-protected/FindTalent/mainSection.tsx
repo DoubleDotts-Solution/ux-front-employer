@@ -424,6 +424,7 @@ const MainSection: React.FC = () => {
                           Experience: null,
                           WorkPlaceType: [],
                         });
+                        navigate("/find-talent");
                       }
                     }}
                   >
@@ -953,6 +954,7 @@ const MainSection: React.FC = () => {
                         Experience: null,
                         WorkPlaceType: [],
                       });
+                      navigate("/find-talent");
                     }
                   }}
                 >

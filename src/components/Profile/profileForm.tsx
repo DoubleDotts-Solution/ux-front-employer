@@ -174,7 +174,6 @@ const ProfileForm: React.FC = () => {
     if (data.company_name) {
       formData.append("company_name", data.company_name);
     }
-    console.log(data.country);
 
     if (data.country) {
       formData.append(
@@ -601,11 +600,12 @@ const ProfileForm: React.FC = () => {
                                     : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                 } `}
                               type="email"
+                              disable
                             />
                             <img
                               src={Ic_check_circle}
                               alt="icon"
-                              className="absolute top-[12px] right-[12px]"
+                              className="absolute top-[12px] right-[12px] cursor-not-allowed"
                             />
                           </div>
                         </FormControl>

@@ -53,7 +53,8 @@ import {
 import { useSelector } from "react-redux";
 import { PHOTO_URL } from "@/config/constant";
 import JobTagsDisplay from "@/components/jobsTagDisplay";
-import MultiSelectAutoSuggestionsSkills from "@/components/ui/multiSelectAutoSuggestSkills";
+// import MultiSelectAutoSuggestionsSkills from "@/components/ui/multiSelectAutoSuggestSkills";
+import { ComboboxMultiSelect } from "@/components/ui/ComboBox";
 
 const ExperienceArray = [
   { name: "Fresher (Less then 1 Year)" },
@@ -66,10 +67,10 @@ interface Option {
   value: string;
   label: string;
 }
-interface Option2 {
-  value: number;
-  label: string;
-}
+// interface Option2 {
+//   value: number;
+//   label: string;
+// }
 
 export const PostJobForm: React.FC = () => {
   const [isJobPreviewPopupVisible, setJobPreviewPopupVisible] = useState(false);
@@ -126,7 +127,7 @@ export const PostJobForm: React.FC = () => {
 
   const { data: skills } = useGetSkillsQuery(params);
   const skillsName = (skills as any)?.data || [];
-  const options: Option2[] = mapDataToOptions(skillsName);
+  // const options: Option2[] = mapDataToOptions(skillsName);
 
   const getFormSchema = (ApplyByName: any) =>
     z
@@ -337,7 +338,7 @@ export const PostJobForm: React.FC = () => {
   const [createJob] = useCreateJobApiMutation();
   const [updateJob] = useUpdateJobApiMutation();
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: any) => {
     const selectedApplyByName = ApplyByName.find(
       (job: any) => job.id === data.apply_by
     )?.name;
@@ -440,6 +441,8 @@ export const PostJobForm: React.FC = () => {
     const skills = selectedOptions.map((option) => option.value);
 
     if (skills.length > 10) {
+      form.setValue("skills", skills as [number, ...number[]]);
+
       form.setError("skills", {
         type: "manual",
         message: "You can select up to 10 tags only.",
@@ -955,7 +958,7 @@ export const PostJobForm: React.FC = () => {
                             <div className="relative">
                               <FormControl>
                                 <div className="relative">
-                                  <MultiSelectAutoSuggestionsSkills
+                                  {/* <MultiSelectAutoSuggestionsSkills
                                     onChange={(selectedOptions: any) =>
                                       handleSkillsChange(selectedOptions)
                                     }
@@ -967,6 +970,12 @@ export const PostJobForm: React.FC = () => {
                                     } text-base text-primary border-2 rounded-[8px]`}
                                     value={field.value}
                                     options={options}
+                                  /> */}
+                                  <ComboboxMultiSelect
+                                    value={field.value || []}
+                                    onChange={(selectedOptions: any) =>
+                                      handleSkillsChange(selectedOptions)
+                                    }
                                   />
                                 </div>
                               </FormControl>

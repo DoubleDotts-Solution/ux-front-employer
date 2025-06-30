@@ -234,7 +234,7 @@ const JobPostedPerson: React.FC = () => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-gray5 my-4 md:my-6 desktop:my-8"></div>
-      {AppliedJobData.length > 0 && (
+      {AppliedJobData.length > 0 ? (
         <>
           <div className="flex flex-col gap-5">
             {AppliedJobData.map((job: any, index: any) => (
@@ -340,6 +340,8 @@ const JobPostedPerson: React.FC = () => {
             ))}
           </div>
         </>
+      ) : (
+        "No candidate applied for this Job."
       )}
     </>
   );

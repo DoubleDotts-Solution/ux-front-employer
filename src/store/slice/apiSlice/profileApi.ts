@@ -12,7 +12,7 @@ const profileApi = mainApi.injectEndpoints({
     }),
     updatePasswordApi: builder.mutation<any, { data: any }>({
       query: ({ data }) => ({
-        url: `employer/change-password`,
+        url: `employer/change-confirm-password`,
         method: "POST",
         body: data,
       }),

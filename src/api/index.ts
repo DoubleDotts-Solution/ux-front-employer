@@ -40,7 +40,7 @@ api.interceptors.response.use(
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem(
-                "__ux_employer_access_"
+                "__ux_employer_refresh_"
               )}`,
             },
           }
