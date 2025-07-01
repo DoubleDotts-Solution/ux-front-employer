@@ -93,6 +93,8 @@ const Datepicker: React.FC<DatePickerProps> = ({
         peekNextMonth
         showMonthDropdown
         showYearDropdown
+        scrollableYearDropdown
+        yearDropdownItemNumber={100}
       />
     </div>
   );
