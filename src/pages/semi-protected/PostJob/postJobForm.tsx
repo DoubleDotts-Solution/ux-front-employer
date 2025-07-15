@@ -437,11 +437,11 @@ export const PostJobForm: React.FC = () => {
       .filter((word) => word.length > 0).length;
   };
 
-  const handleSkillsChange = (selectedOptions: { value: number }[]) => {
-    const skills = selectedOptions.map((option) => option.value);
+  const handleSkillsChange = (selectedOptions: any) => {
+    // const skills = selectedOptions.map((option) => option.value);
 
-    if (skills.length > 10) {
-      form.setValue("skills", skills as [number, ...number[]]);
+    if (selectedOptions.length > 10) {
+      form.setValue("skills", selectedOptions as [number, ...number[]]);
 
       form.setError("skills", {
         type: "manual",
@@ -450,8 +450,8 @@ export const PostJobForm: React.FC = () => {
       return;
     }
 
-    if (skills.length > 0) {
-      form.setValue("skills", skills as [number, ...number[]]);
+    if (selectedOptions.length > 0) {
+      form.setValue("skills", selectedOptions as [number, ...number[]]);
       form.clearErrors("skills");
     } else {
       form.setError("skills", {
