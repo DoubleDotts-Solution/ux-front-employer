@@ -229,7 +229,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="text"
-                            autocomplete="off"
+                            autoComplete="off"
                           />
                         </div>
                       </FormControl>
@@ -263,7 +263,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="email"
-                            autocomplete="off"
+                            autoComplete="off"
                             disable={isGoogleLogin}
                           />
                         </div>
@@ -311,7 +311,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                             type="text"
-                            autocomplete="off"
+                            autoComplete="off"
                           />
                         </div>
                       </FormControl>
@@ -345,7 +345,7 @@ const RegisterForm: React.FC = () => {
                                               : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                           } `}
                             type="text"
-                            autocomplete="off"
+                            autoComplete="off"
                           />
                         </div>
                       </FormControl>
@@ -421,7 +421,7 @@ const RegisterForm: React.FC = () => {
                                           : "border-[#777777] hover:border-primary focus:border-[2px] focus:border-primary"
                                       } border-2 rounded-[8px]`}
                                 type={isPasswordVisible ? "text" : "password"}
-                                autocomplete="off"
+                                autoComplete="off"
                               />
                               <button
                                 type="button"

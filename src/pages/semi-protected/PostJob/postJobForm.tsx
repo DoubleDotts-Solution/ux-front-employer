@@ -610,7 +610,7 @@ export const PostJobForm: React.FC = () => {
                                       : "border-gray7 hover:border-primary focus:border-[2px] focus:border-primary"
                                   } `}
                                 value={field.value}
-                                autocomplete="off"
+                                autoComplete="off"
                               />
                             </div>
                           </FormControl>
@@ -1331,7 +1331,7 @@ export const PostJobForm: React.FC = () => {
                                       : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   }`}
                                   type="text"
-                                  autocomplete="off"
+                                  autoComplete="off"
                                 />
                               </div>
                             </FormControl>
@@ -1371,7 +1371,7 @@ export const PostJobForm: React.FC = () => {
                                       : "border-gray6 hover:border-primary focus:border-[2px] focus:border-primary"
                                   }`}
                                   type="email"
-                                  autocomplete="off"
+                                  autoComplete="off"
                                 />
                               </div>
                             </FormControl>
