@@ -438,7 +438,7 @@ export const PostJobForm: React.FC = () => {
   };
 
   const handleSkillsChange = (selectedOptions: any) => {
-    // const skills = selectedOptions.map((option) => option.value);
+    // const skills = selectedOptions.map((option) => option);
 
     if (selectedOptions.length > 10) {
       form.setValue("skills", selectedOptions as [number, ...number[]]);
